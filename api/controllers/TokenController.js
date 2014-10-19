@@ -21,7 +21,7 @@ module.exports = {
 						if (!user) {
 							res.send(400, {error: "Invalid credentials."});
 						} else {
-							PasswdService.compare(req.body.passwd, user.hashedPasswd, function(err, ok) {
+							PasswdService.compare(req.body.passwd, user.passwd, function(err, ok) {
 								if (err) return next(err);
 								if (!ok) {
 									res.send(400, {error: "Invalid credentials."});

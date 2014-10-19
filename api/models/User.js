@@ -19,8 +19,9 @@ module.exports = {
       required: true,
       unique: true
     },
-    hashedPasswd: {
-      type: "string"
+    passwd: {
+      type: "string",
+      required: true
     },
     tokens: {
       collection: "token",
@@ -29,20 +30,16 @@ module.exports = {
 
     toJSON: function() {
       var o = this.toObject();
-      delete o.hashedPasswd;
+      delete o.passwd;
       delete o.tokens;
       return o;
     }
   },
 
   beforeCreate: function(values, next) {
-    if (!values.passwd || values.passwd != values.passwdConfirmation) {
-      return next({err: ["Password doesn't match password confirmation."]});
-    }
-
     PasswdService.hash(values.passwd, function(err, hash) {
       if (err) return next(err);
-      values.hashedPasswd = hash;
+      values.passwd = hash;
       next();
     });
   }

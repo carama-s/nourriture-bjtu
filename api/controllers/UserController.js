@@ -6,6 +6,14 @@
  */
 
 module.exports = {
-	
+	signup: function(req, res, next) {
+		if (req.method != "POST") {
+			res.send(405);
+		} else {
+			User.create(req.body, function(err, user) {
+				if (err) return next(err);
+				res.send(user);
+			});
+		}
+	}
 };
-
