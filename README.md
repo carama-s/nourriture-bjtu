@@ -1,3 +1,7 @@
-# nourriture-bjtu-api
+nourriture-bjtu-api
+===============
 
-a [Sails](http://sailsjs.org) application
+Nourriture project API.
+
+* Jenkins url: http://jenkins.dennajort.fr/job/nourriture-bjtu-api-master/
+* API url: http://api.nourriture.dennajort.fr/
