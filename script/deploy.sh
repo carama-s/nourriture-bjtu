@@ -1,6 +1,6 @@
 #!/bin/bash
 ssh nourriture-prod@nourriture.dennajort.fr <<EOF
-  cd ~/Nourriture-BJTU
+  cd ~/nourriture-bjtu-api
   git pull
   npm install --production
   forever restartall
