@@ -19,12 +19,12 @@ module.exports = {
 					.exec(function(err, user) {
 						if (err) return next(err);
 						if (!user) {
-							res.send(400, {error: "Invalid credentials."});
+							res.send(400, {error: "Invalid credentials. User doesn't exists."});
 						} else {
 							PasswdService.compare(req.body.passwd, user.passwd, function(err, ok) {
 								if (err) return next(err);
 								if (!ok) {
-									res.send(400, {error: "Invalid credentials."});
+									res.send(400, {error: "Invalid credentials. Wrong password."});
 								} else if (user.tokens.length > 0) {
 									res.send({token: user.tokens[0].token});
 								} else {

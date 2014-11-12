@@ -11,7 +11,8 @@ module.exports = {
   attributes: {
     username: {
       type: "string",
-      required: true
+      required: true,
+      unique: true
     },
     email: {
       type: "string",
@@ -42,5 +43,17 @@ module.exports = {
       values.passwd = hash;
       next();
     });
+  },
+
+  beforeUpdate: function(values, next) {
+    if (values.passwd !== undefined) {
+      PasswdService.hash(values.passwd, function(err, hash) {
+        if (err) return next(err);
+        values.passwd = hash;
+        next();
+      });
+    } else {
+      next();
+    }
   }
 };
