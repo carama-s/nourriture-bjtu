@@ -34,10 +34,15 @@ function findOne(model) {
 function updateOne(model) {
   return function(req, res, next) {
     if (!validObjectid(req.params.oid)) return next("route");
-    model.findByIdAndUpdate(req.params.oid, req.body, function(err, entry) {
+    model.findById(req.params.oid, function(err, entry) {
       if (err) return next(err);
       if (entry === null) return next("route");
-      res.json(entry);
+      _.extend(entry, req.body);
+      entry.save(function(err, entry) {
+        if (err && err.name == "ValidationError") return res.status(400).json(err);
+        if (err) return next(err);
+        res.json(entry);
+      });
     });
   };
 }
