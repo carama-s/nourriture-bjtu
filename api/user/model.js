@@ -17,7 +17,10 @@ var userSchema = mongoose.Schema({
   passwd: {
     type: String,
     required: true
-  }
+  },
+  tokens: [{
+    token: {type: String, required: true, unique: true}
+  }]
 });
 
 userSchema.statics.hashPasswd = function(data, done) {
@@ -43,6 +46,7 @@ userSchema.pre("save", function(next) {
 if (!userSchema.options.toJSON) userSchema.options.toJSON = {};
 userSchema.options.toJSON.transform = function(doc, ret, opts) {
   delete ret.passwd;
+  delete ret.tokens;
 };
 
 userSchema.plugin(require("mongoose-unique-validator"));
