@@ -1,0 +1,8 @@
+{
+  "mongoose": {
+    "uri": "mongodb://127.0.0.1/nourriture"
+  },
+  "express": {
+    "port": 3000
+  }
+}
