@@ -1,2 +1,2 @@
 #!/bin/bash
-exec forever start app.js --prod
+exec forever start bin/start.js --prod
