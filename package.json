@@ -25,9 +25,9 @@
     "errorhandler": "^1.2.2"
   },
   "scripts": {
-    "start": "node bin/start.js"
+    "start": "node ./start.js"
   },
-  "main": "app.js",
+  "main": "app/index.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/gossel_j/nourriture-bjtu-api.git"

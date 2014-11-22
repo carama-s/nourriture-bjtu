@@ -1,6 +1,6 @@
 #!/usr/bin/node
-var app = require("../app.js");
-var config = require("../config.json");
+var app = require("./app");
+var config = require("./app/config.json");
 
 console.log("Connecting to MongoDB...");
 app.db.on("error", function(err) {
