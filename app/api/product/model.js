@@ -20,7 +20,8 @@ var productSchema = new mongoose.Schema({
     unit: {
       type: String,
       required: true
-    }
+    },
+    tags: [String]
   }
 });
 

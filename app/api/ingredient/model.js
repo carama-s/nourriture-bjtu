@@ -5,7 +5,8 @@ var ingredientSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true
-  }
+  },
+  tags: [String]
 });
 
 var Ingredient = mongoose.model("Ingredient", ingredientSchema);
