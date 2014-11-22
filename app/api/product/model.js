@@ -1,7 +1,7 @@
 var mongoose = require("mongoose");
 var validate = require("mongoose-validator");
 
-var productSchema = mongoose.Schema({
+var productSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true
@@ -12,17 +12,15 @@ var productSchema = mongoose.Schema({
     required: true
   },
   quantity: {
-    type: mongoose.Schema({
-      value: {
-        type: Number,
-        required: true,
-        min: 0
-      },
-      unit: {
-        type: String,
-        required: true
-      }
-    })
+    value: {
+      type: Number,
+      required: true,
+      min: 0
+    },
+    unit: {
+      type: String,
+      required: true
+    }
   }
 });
 

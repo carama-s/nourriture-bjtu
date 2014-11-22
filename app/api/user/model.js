@@ -2,7 +2,7 @@ var mongoose = require("mongoose");
 var validate = require("mongoose-validator");
 var bcrypt = require("bcrypt");
 
-var userSchema = mongoose.Schema({
+var userSchema = new mongoose.Schema({
   username: {
     type: String,
     unique: true,
