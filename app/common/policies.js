@@ -4,7 +4,7 @@ function policyWrapper(fn) {
       if (allow) {
         return next();
       } else {
-        return res.status(403).end();
+        return res.status(403).json({error: "Forbidden"});
       }
     });
   }
@@ -12,5 +12,6 @@ function policyWrapper(fn) {
 
 module.exports = {
   policyWrapper: policyWrapper,
-  authenticated: policyWrapper(function(req, res, cb) { return cb(Boolean(req.user)); })
+  isAuthenticated: policyWrapper(function(req, res, cb) { return cb(Boolean(req.user)); }),
+  isSuperAdmin: policyWrapper(function(req, res, cb) { return cb(Boolean(req.user && (req.user.admin <= 0))) })
 };

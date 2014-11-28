@@ -44,7 +44,7 @@ router.route("/")
 
 router.route("/:oid")
   .get(common.rest.findOne(User))
-  .put(common.rest.updateOne(User))
-  .delete(common.rest.removeOne(User));
+  .put(common.policies.isSuperAdmin, common.rest.updateOne(User))
+  .delete(common.policies.isSuperAdmin, common.rest.removeOne(User));
 
 module.exports = router;

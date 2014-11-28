@@ -20,8 +20,19 @@ var userSchema = new mongoose.Schema({
   },
   tokens: [{
     token: {type: String, required: true, unique: true}
-  }]
+  }],
+  admin: {
+    type: Number,
+    required: true,
+    default: 10
+  }
 });
+
+/*
+  admin is a Number
+  10: Normal user
+  0: SuperAdmin
+*/
 
 userSchema.statics.hashPasswd = function(data, done) {
   bcrypt.hash(data, 10, done);
