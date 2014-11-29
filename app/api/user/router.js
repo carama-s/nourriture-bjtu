@@ -38,9 +38,23 @@ router.route("/get_token")
     }
   });
 
+router.route("/create_user")
+  .post(function(req, res, next) {
+    var user = new User({
+      username: req.body.username,
+      passwd: req.body.passwd,
+      email: req.body.email
+    });
+    user.save(function(err, nuser) {
+      if (err && err.name == "ValidationError") return res.status(400).json(err);
+      if (err) return next(err);
+      res.json(nuser);
+    });
+  });
+
 router.route("/")
   .get(common.rest.find(User))
-  .post(common.rest.create(User));
+  .post(common.policies.isSuperAdmin, common.rest.create(User));
 
 router.route("/:oid")
   .get(common.rest.findOne(User))
