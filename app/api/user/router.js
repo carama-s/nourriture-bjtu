@@ -38,7 +38,7 @@ router.route("/get_token")
     }
   });
 
-router.route("/create_user")
+router.route("/signup")
   .post(function(req, res, next) {
     var user = new User({
       username: req.body.username,
