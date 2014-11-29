@@ -1,2 +1,2 @@
 #!/bin/bash
-NODE_ENV=production exec forever start ./start.js
+NODE_ENV=production exec forever start ./manage.js runserver

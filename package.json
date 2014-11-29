@@ -19,13 +19,14 @@
     "qs": "^2.3.3",
     "requireindex": "^1.1.0",
     "underscore": "^1.7.0",
-    "valid-objectid": "0.0.1"
+    "valid-objectid": "0.0.1",
+    "yargs": "^1.3.3"
   },
   "devDependencies": {
     "errorhandler": "^1.2.2"
   },
   "scripts": {
-    "start": "node ./start.js"
+    "start": "node ./manage.js"
   },
   "main": "app/index.js",
   "repository": {
