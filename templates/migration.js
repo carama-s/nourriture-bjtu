@@ -1,8 +1,10 @@
-function up(api, cb) {
+var mongoose = require("mongoose");
+
+function up(cb) {
   return cb();
 }
 
-function down(api, cb) {
+function down(cb) {
   return cb();
 }
 
