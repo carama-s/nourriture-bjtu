@@ -5,7 +5,11 @@ if (require.main === module) {
 
   function runserver(args) {
     var argv = yargs(args)
-      .options("p", {alias: "port", default: 3000, requiresArg: true})
+      .options("p", {
+        alias: "port",
+        default: process.env.PORT || 3000,
+        requiresArg: true
+      })
       .argv;
     var app = require("./app");
     console.log("Connecting to MongoDB...");
