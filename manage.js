@@ -2,47 +2,32 @@
 global._ = require("underscore");
 
 if (require.main === module) {
-  var yargs = require("yargs");
-  var config = require("./config");
+  var commands = require("./commands");
+  var command = process.argv[2];
 
-  function runserver(args) {
-    var mongoose = require("mongoose");
-    var argv = yargs(args)
-      .options("p", {
-        alias: "port",
-        default: process.env.PORT || config.http.port,
-        requiresArg: true
-      })
-      .argv;
-
-    var db = mongoose.connection;
-    var app = require("./app.js");
-
-    db.on("error", function(err) {
-      console.log("Error connection to MongoDB:", err);
-    });
-
-    db.once("open", function() {
-      console.log("Connected to MongoDB !");
-      console.log();
-      console.log("Starting HTTP server...");
-      app.listen(argv.p, function() {
-        console.log("HTTP server started on port %d !", argv.p);
-        console.log();
-      });
-    });
-
-    console.log("Connecting to MongoDB...");
-    mongoose.connect(config.mongoose.uri);
+  function show_commands() {
+    console.log("The following commands are available");
+    console.log();
+    for (c in commands) {
+      console.log("   %s : %s", c, commands[c].desc);
+    }
   }
 
-  switch (process.argv[2]) {
-    case "runserver":
-      return runserver(process.argv.slice(3));
-    case undefined:
-      console.error("Provide a command please");
-      process.exit(1);
-    default:
-      console.error("Command %s unknown", process.argv[2]);
+  if (command === undefined) {
+    console.error("Provide a command please");
+    console.error();
+    show_commands();
+    process.exit(1);
   }
+
+  var fn = commands[command];
+
+  if (fn === undefined) {
+    console.error("Command %s unknown", process.argv[2]);
+    console.error();
+    show_commands();
+    process.exit(1);
+  }
+
+  fn.fn(process.argv.slice(3));
 }
