@@ -3,12 +3,12 @@ function runserver(args) {
   var mongoose = require("mongoose");
 
   var argv = require("yargs")(args)
-  .options("p", {
-    alias: "port",
-    default: process.env.PORT || config.http.port,
-    requiresArg: true
-  })
-  .argv;
+    .options("p", {
+      alias: "port",
+      default: process.env.PORT || config.http.port,
+      requiresArg: true
+    })
+    .argv;
 
   var db = mongoose.connection;
   var app = require("../app.js");

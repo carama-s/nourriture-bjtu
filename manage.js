@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 global._ = require("underscore");
+global.__rootDir = __dirname;
 
 if (require.main === module) {
   var commands = require("./commands");
