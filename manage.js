@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+global._ = require("underscore");
 
 if (require.main === module) {
   var yargs = require("yargs");
@@ -15,7 +16,7 @@ if (require.main === module) {
       .argv;
 
     var db = mongoose.connection;
-    var app = require("./app");
+    var app = require("./app.js");
 
     db.on("error", function(err) {
       console.log("Error connection to MongoDB:", err);
@@ -25,7 +26,7 @@ if (require.main === module) {
       console.log("Connected to MongoDB !");
       console.log();
       console.log("Starting HTTP server...");
-      app.app.listen(argv.p, function() {
+      app.listen(argv.p, function() {
         console.log("HTTP server started on port %d !", argv.p);
         console.log();
       });

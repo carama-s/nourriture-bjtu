@@ -4,6 +4,7 @@ var morgan = require("morgan");
 var passport = require("passport");
 var BearerStrategy = require('passport-http-bearer').Strategy;
 var api = require("./api");
+var User = api.user.model;
 
 // Passport config
 
@@ -12,13 +13,13 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(id, done) {
-  api.user.model.findById(id, function (err, user) {
+  User.findById(id, function (err, user) {
     done(err, user);
   });
 });
 
 passport.use(new BearerStrategy(function(accessToken, next) {
-  api.user.model.findOne()
+  User.findOne()
   .elemMatch("tokens", {token: accessToken})
   .exec(function(err, user) {
     if (err) return next(err);
