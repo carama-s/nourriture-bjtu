@@ -32,7 +32,11 @@ function add_migration(args) {
     fs.copy(
       path.join(__rootDir, "templates", "migration.js"),
       path.join(__rootDir, "migrations", final_name),
-      function() {
+      function(err) {
+        if (err) {
+          console.error("Can't copy migration template");
+          process.exit(1);
+        }
         console.log("Migration %s created !", final_name);
         process.exit(0);
       }
