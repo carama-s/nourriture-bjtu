@@ -39,10 +39,9 @@ router.route("/signup")
       passwd: req.body.passwd,
       email: req.body.email
     });
-    user.save(function(err, nuser) {
-      if (err && err.name == "ValidationError") return res.status(400).json(err);
-      if (err) return next(err);
-      res.json(nuser);
+    Q.ninvoke(user, "save").then(res.json.bind(res), function(err) {
+      if (err.name == "ValidationError") return res.status(400).json(err);
+      next(err);
     });
   });
 
