@@ -34,11 +34,8 @@ router.route("/get_token")
 
 router.route("/signup")
   .post(function(req, res, next) {
-    var user = new User({
-      username: req.body.username,
-      passwd: req.body.passwd,
-      email: req.body.email
-    });
+    var data = _.omit(req.body, "tokens", "admin");
+    var user = new User(data);
     Q.ninvoke(user, "save")
       .then(res.json.bind(res), function(err) {
         if (err.name == "ValidationError") return res.status(400).json(err);
