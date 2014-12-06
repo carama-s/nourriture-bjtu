@@ -10,7 +10,8 @@ router.route("/add")
     recipe.creator = req.user._id;
     Q.ninvoke(recipe, "save")
       .then(res.json.bind(res), function(err) {
-
+        if (err.name == "ValidationError") return res.status(400).json(err);
+        next(err);
       });
   });
 
