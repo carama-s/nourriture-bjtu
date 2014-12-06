@@ -46,6 +46,18 @@ router.route("/signup")
       });
   });
 
+router.route("/update")
+  .post(common.policies.isAuthenticated, function(req, res, next) {
+    var data = _.pick(req.body, "passwd");
+    _.extend(req.user, data);
+    console.log(req.user.saveQ);
+    Q.ninvoke(req.user, "save")
+      .then(res.json.bind(res), function(err) {
+        if (err.name == "ValidationError") return res.status(400).json(err);
+        next(err);
+      });
+  });
+
 router.route("/")
   .get(common.rest.find(User))
   .post(common.policies.isSuperAdmin, common.rest.create(User));
