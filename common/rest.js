@@ -8,10 +8,9 @@ function find(model) {
 
 function create(model) {
   return function(req, res, next) {
-    model.create(req.body, function(err, entry) {
-      if (err && err.name == "ValidationError") return res.status(400).json(err);
-      if (err) return next(err);
-      res.json(entry);
+    Q.ninvoke(model, "create", req.body).then(res.json.bind(res), function(err) {
+      if (err.name == "ValidationError") return res.status(400).json(err);
+      next(err);
     });
   };
 }
@@ -19,38 +18,34 @@ function create(model) {
 function findOne(model) {
   return function(req, res, next) {
     if (!validObjectid(req.params.oid)) return next("route");
-    model.findById(req.params.oid, function(err, entry) {
-      if (err) return next(err);
+    Q.ninvoke(model, "findById", req.params.oid).then(function(entry) {
       if (entry === null) return next("route");
       res.json(entry);
-    });
+    }, next);
   };
 }
 
 function updateOne(model) {
   return function(req, res, next) {
     if (!validObjectid(req.params.oid)) return next("route");
-    model.findById(req.params.oid, function(err, entry) {
-      if (err) return next(err);
+    Q.ninvoke(model, "findById", req.params.oid).then(function(entry) {
       if (entry === null) return next("route");
       _.extend(entry, req.body);
-      entry.save(function(err, entry) {
-        if (err && err.name == "ValidationError") return res.status(400).json(err);
-        if (err) return next(err);
-        res.json(entry);
+      return Q.ninvoke(entry, "save").then(res.json.bind(res), function(err) {
+        if (err.name == "ValidationError") return res.status(400).json(err);
+        next(err);
       });
-    });
+    }, next);
   };
 }
 
 function removeOne(model) {
   return function(req, res, next) {
     if (!validObjectid(req.params.oid)) return next("route");
-    model.findByIdAndRemove(req.params.oid, function(err, entry) {
-      if (err) return next(err);
+    Q.ninvoke(model, "findByIdAndRemove", req.params.oid).then(function(entry) {
       if (entry === null) return next("route");
       res.json(entry);
-    });
+    }, next);
   };
 }
 
