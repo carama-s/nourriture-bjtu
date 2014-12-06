@@ -1,5 +1,3 @@
-var crypto = require("crypto");
-var uuid = require("node-uuid");
 var express = require("express");
 var User = require("./model.js");
 
@@ -20,9 +18,7 @@ router.route("/get_token")
                 } else if (user.tokens.length > 0) {
                   res.json({token: user.tokens[0].token});
                 } else {
-                  var shasum = crypto.createHash("sha256");
-                  shasum.update(uuid.v1());
-                  var token = {token: shasum.digest("hex")};
+                  var token = {token: User.generateToken()};
                   user.tokens.push(token);
                   return Q.ninvoke(user, "save")
                     .then(function() {

@@ -1,6 +1,8 @@
 var mongoose = require("mongoose");
 var validate = require("mongoose-validator");
 var bcrypt = require("bcrypt");
+var crypto = require("crypto");
+var uuid = require("node-uuid");
 
 var userSchema = new mongoose.Schema({
   username: {
@@ -38,6 +40,12 @@ userSchema.statics.hashPasswd = function(data, done) {
   var d = Q.defer();
   bcrypt.hash(data, 10, d.makeNodeResolver());
   return d.promise.nodeify(done);
+};
+
+userSchema.statics.generateToken = function() {
+  var shasum = crypto.createHash("sha256");
+  shasum.update(uuid.v1());
+  return shasum.digest("hex");
 };
 
 userSchema.methods.checkPasswd = function(passwd, done) {

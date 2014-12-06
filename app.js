@@ -18,12 +18,11 @@ passport.deserializeUser(function(id, done) {
 
 passport.use(new BearerStrategy(function(accessToken, next) {
   User.findOne()
-  .elemMatch("tokens", {token: accessToken})
-  .exec(function(err, user) {
-    if (err) return next(err);
-    if (!user) return next(null, undefined);
-    return next(null, user);
-  });
+    .elemMatch("tokens", {token: accessToken})
+    .exec()
+    .then(function(user) {
+      next(null, (!user) ? undefined : user);
+    }, next);
 }));
 
 // Express config
