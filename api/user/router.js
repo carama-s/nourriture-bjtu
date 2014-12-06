@@ -8,14 +8,11 @@ var router = express.Router();
 router.route("/get_token")
   .post(function(req, res, next) {
     if (req.body.email && req.body.passwd) {
-      User.findOne({email: req.body.email})
-      .exec(function(err, user) {
-        if (err) return next(err);
+      return User.findOne({email: req.body.email}).exec().then(function(user) {
         if (!user) {
           res.status(400).json({error: "Invalid credentials. User doesn't exists."});
         } else {
-          user.checkPasswd(req.body.passwd, function(err, ok) {
-            if (err) return next(err);
+          return user.checkPasswd(req.body.passwd).then(function(ok) {
             if (!ok) {
               res.status(400).json({error: "Invalid credentials. Wrong password."});
             } else if (user.tokens.length > 0) {
@@ -25,16 +22,13 @@ router.route("/get_token")
               shasum.update(uuid.v1());
               var token = {token: shasum.digest("hex")};
               user.tokens.push(token);
-              user.save(function(err, user) {
-                if (err) return next(err);
+              return Q.ninvoke(user, "save").then(function() {
                 res.json(token);
-              });
+              }, next);
             }
-          });
+          }, next);
         }
-      });
-    } else {
-      res.status(400).json({error: "Missing parameters."});
+      }, next);
     }
   });
 

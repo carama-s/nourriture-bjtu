@@ -35,11 +35,15 @@ var userSchema = new mongoose.Schema({
 */
 
 userSchema.statics.hashPasswd = function(data, done) {
-  bcrypt.hash(data, 10, done);
+  var d = Q.defer();
+  bcrypt.hash(data, 10, d.makeNodeResolver());
+  return d.promise.nodeify(done);
 };
 
 userSchema.methods.checkPasswd = function(passwd, done) {
-  bcrypt.compare(passwd, this.passwd, done);
+  var d = Q.defer();
+  bcrypt.compare(passwd, this.passwd, d.makeNodeResolver());
+  return d.promise.nodeify(done);
 };
 
 userSchema.pre("save", function(next) {
@@ -47,11 +51,10 @@ userSchema.pre("save", function(next) {
 
   if (!user.isModified("passwd")) return next();
 
-  User.hashPasswd(user.passwd, function(err, hash) {
-    if (err) return next(err);
+  User.hashPasswd(user.passwd).then(function(hash) {
     user.passwd = hash;
     next();
-  });
+  }, next);
 });
 
 if (!userSchema.options.toJSON) userSchema.options.toJSON = {};

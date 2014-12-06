@@ -3,10 +3,7 @@ validObjectid = require("valid-objectid").isValid;
 function find(model) {
   return function(req, res, next) {
     var query = common.qsToFind(model.find(), req.query);
-    query.exec(function(err, entries) {
-      if (err) return next(err);
-      res.json(entries);
-    });
+    return query.exec().then(res.json.bind(res), next);
   };
 }
 

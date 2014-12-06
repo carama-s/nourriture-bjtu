@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 global._ = require("underscore");
+global.Q = require("q");
 global.__rootDir = __dirname;
 
 if (require.main === module) {
