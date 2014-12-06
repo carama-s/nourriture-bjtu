@@ -2,8 +2,7 @@ validObjectid = require("valid-objectid").isValid;
 
 function find(model) {
   return function(req, res, next) {
-    var query = common.qsToFind(model.find(), req.query);
-    return query.exec().then(res.json.bind(res), next);
+    common.qsToFind(model.find(), req.query).exec().then(res.json.bind(res), next);
   };
 }
 
