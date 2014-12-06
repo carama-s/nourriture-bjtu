@@ -59,10 +59,11 @@ userSchema.pre("save", function(next) {
 
   if (!user.isModified("passwd")) return next();
 
-  User.hashPasswd(user.passwd).then(function(hash) {
-    user.passwd = hash;
-    next();
-  }, next);
+  User.hashPasswd(user.passwd)
+    .then(function(hash) {
+      user.passwd = hash;
+      next();
+    }, next);
 });
 
 if (!userSchema.options.toJSON) userSchema.options.toJSON = {};
