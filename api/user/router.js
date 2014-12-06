@@ -8,7 +8,7 @@ var router = express.Router();
 router.route("/get_token")
   .post(function(req, res, next) {
     if (req.body.email && req.body.passwd) {
-      return User.findOne({email: req.body.email}).exec().then(function(user) {
+      User.findOne({email: req.body.email}).exec().then(function(user) {
         if (!user) {
           res.status(400).json({error: "Invalid credentials. User doesn't exists."});
         } else {
@@ -24,11 +24,12 @@ router.route("/get_token")
               user.tokens.push(token);
               return Q.ninvoke(user, "save").then(function() {
                 res.json(token);
-              }, next);
+              });
             }
-          }, next);
+          });
         }
-      }, next);
+      })
+      .then(null, next);
     }
   });
 

@@ -5,7 +5,7 @@ global.__rootDir = __dirname;
 
 if (require.main === module) {
   var commands = require("./commands");
-  var command = process.argv[2];
+  var command = process.argv[2] || "runserver";
 
   function show_commands() {
     console.log("The following commands are available");
@@ -13,13 +13,6 @@ if (require.main === module) {
     for (c in commands) {
       console.log("   %s : %s", c, commands[c].desc);
     }
-  }
-
-  if (command === undefined) {
-    console.error("Provide a command please");
-    console.error();
-    show_commands();
-    process.exit(1);
   }
 
   var fn = commands[command];
