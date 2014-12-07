@@ -40,6 +40,10 @@ if (app.get("env") === 'development') {
 
 app.use(require("compression")());
 app.use(require("cors")());
+app.use(function(req, res, next) {
+  console.log(req.headers);
+  next();
+});
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(passport.initialize());
