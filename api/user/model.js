@@ -36,10 +36,8 @@ var userSchema = new mongoose.Schema({
   0: SuperAdmin
 */
 
-userSchema.statics.hashPasswd = function(data, done) {
-  var d = Q.defer();
-  bcrypt.hash(data, 10, d.makeNodeResolver());
-  return d.promise.nodeify(done);
+userSchema.statics.hashPasswd = function(data) {
+  return Q.nfcall(bcrypt.hash, data, 10);
 };
 
 userSchema.statics.generateToken = function() {
@@ -48,10 +46,8 @@ userSchema.statics.generateToken = function() {
   return shasum.digest("hex");
 };
 
-userSchema.methods.checkPasswd = function(passwd, done) {
-  var d = Q.defer();
-  bcrypt.compare(passwd, this.passwd, d.makeNodeResolver());
-  return d.promise.nodeify(done);
+userSchema.methods.checkPasswd = function(passwd) {
+  return Q.nfcall(bcrypt.compare, passwd, this.passwd);
 };
 
 userSchema.pre("save", function(next) {
