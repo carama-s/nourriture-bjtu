@@ -46,7 +46,7 @@ app.use(function(req, res, next) {
   });
   next();
 });
-app.use(require("cors")());
+app.use(require("cors")({origin: true}));
 app.use(function(req, res, next) {
   console.log(req.headers);
   res.on("finish", function() {
