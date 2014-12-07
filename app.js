@@ -38,12 +38,7 @@ if (app.get("env") === 'development') {
   app.use(morgan("combined"));
 }
 
-app.use(require("cors")({
-  credentials: true,
-  origin: function(or, cb) {
-    cb(null, true);
-  }
-}));
+app.use(require("cors")());
 app.use(require("compression")());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
