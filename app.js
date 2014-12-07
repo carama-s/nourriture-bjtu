@@ -47,6 +47,13 @@ app.use(function(req, res, next) {
   next();
 });
 app.use(require("cors")());
+app.use(function(req, res, next) {
+  console.log(req.headers);
+  res.on("finish", function() {
+    console.log(res._headers);
+  });
+  next();
+});
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(passport.initialize());
