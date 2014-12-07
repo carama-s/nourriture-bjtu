@@ -39,6 +39,7 @@ if (app.get("env") === 'development') {
 }
 
 app.use(require("compression")());
+app.use(require("cors")());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(passport.initialize());
