@@ -38,7 +38,26 @@ if (app.get("env") === 'development') {
   app.use(morgan("combined"));
 }
 
-app.use(require("cors")());
+app.use(function(req, res, next) {
+  var Origin = req.get("Origin");
+  var isPreflight = false;
+  if (Origin === undefined) return next();
+  if (req.method == "OPTIONS") {
+    var AccessControlRequestMethod = req.get("Access-Control-Request-Method");
+    isPreflight = (AccessControlRequestMethod !== undefined);
+  }
+  if (isPreflight) {
+    // Should check good header in Access-Control-Request-Method header
+    var AccessControlRequestHeader = req.get("Access-Control-Request-Header");
+    res.set("Access-Control-Allow-Method", "GET,HEAD,PUT,PATCH,POST,DELETE");
+    if (AccessControlRequestHeader ==! undefined) res.set("Access-Control-Allow-Header", AccessControlRequestHeader);
+  } else {
+    // Maybe set Access-Control-Expose-Headers header
+  }
+  res.set("Access-Control-Allow-Origin", Origin);
+  if (!isPreflight) return next();
+  res.status(204).end();
+});
 app.use(require("compression")());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
