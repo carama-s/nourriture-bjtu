@@ -38,7 +38,7 @@ if (app.get("env") === 'development') {
   app.use(morgan("combined"));
 }
 
-app.use(function(req, res, next) {
+//app.use(function(req, res, next) {
   var Origin = req.get("Origin");
   var isPreflight = false;
   if (Origin === undefined) return next();
@@ -58,6 +58,7 @@ app.use(function(req, res, next) {
   if (!isPreflight) return next();
   res.status(204).end();
 });
+
 app.use(require("compression")());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
