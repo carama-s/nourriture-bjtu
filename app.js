@@ -41,6 +41,9 @@ if (app.get("env") === 'development') {
 app.use(require("compression")());
 app.use(function(req, res, next) {
   console.log(req.headers);
+  res.on("finish", function() {
+    console.log(res._headers);
+  });
   next();
 });
 app.use(require("cors")());
