@@ -19,11 +19,14 @@ router.route("/get_token")
                   res.json({token: user.tokens[0].token});
                 } else {
                   var token = {token: User.generateToken()};
+                  var d = Q.defer();
                   user.tokens.push(token);
-                  return Q.ninvoke(user, "save")
-                    .then(function() {
-                      res.json(token);
-                    });
+                  user.save(function(err) {
+                    if (err) return d.reject(err);
+                    res.json(token);
+                    d.resolve();
+                  });
+                  return d.promise;
                 }
               });
           }
@@ -36,22 +39,22 @@ router.route("/signup")
   .post(function(req, res, next) {
     var data = _.omit(req.body, "tokens", "admin");
     var user = new User(data);
-    Q.ninvoke(user, "save")
-      .then(res.json.bind(res), function(err) {
-        if (err.name == "ValidationError") return res.status(400).json(err);
-        next(err);
-      });
+    user.save(function(err, u) {
+      if (err && err.name == "ValidationError") return res.status(400).json(err);
+      if (err) return next(err);
+      res.json(u);
+    });
   });
 
 router.route("/update")
   .post(common.policies.isAuthenticated, function(req, res, next) {
     var data = _.pick(req.body, "passwd");
     _.extend(req.user, data);
-    Q.ninvoke(req.user, "save")
-      .then(res.json.bind(res), function(err) {
-        if (err.name == "ValidationError") return res.status(400).json(err);
-        next(err);
-      });
+    user.save(function(err, u) {
+      if (err && err.name == "ValidationError") return res.status(400).json(err);
+      if (err) return next(err);
+      res.json(u);
+    });
   });
 
 router.route("/")

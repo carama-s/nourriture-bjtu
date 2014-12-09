@@ -2,55 +2,55 @@ validObjectid = require("valid-objectid").isValid;
 
 function find(model) {
   return function(req, res, next) {
-    Q(common.qsToFind(model.find(), req.query).exec()).then(res.json.bind(res), next);
+    common.qsToFind(model.find(), req.query).exec().then(res.json.bind(res), next);
   };
 }
 
 function create(model) {
   return function(req, res, next) {
-    Q.ninvoke(model, "create", req.body)
-      .then(res.json.bind(res), function(err) {
-        if (err.name == "ValidationError") return res.status(400).json(err);
-        next(err);
-      });
+    model.create(req.body, function(err, entry) {
+      if (err && err.name == "ValidationError") return res.status(400).json(err);
+      if (err) return next(err);
+      res.json(entry);
+    });
   };
 }
 
 function findOne(model) {
   return function(req, res, next) {
     if (!validObjectid(req.params.oid)) return next("route");
-    Q.ninvoke(model, "findById", req.params.oid)
-      .then(function(entry) {
-        if (entry === null) return next("route");
-        res.json(entry);
-      }, next);
+    model.findById(req.params.oid, function(err, entry) {
+      if (err) return next(err);
+      if (entry === null) return next("route");
+      res.json(entry);
+    });
   };
 }
 
 function updateOne(model) {
   return function(req, res, next) {
     if (!validObjectid(req.params.oid)) return next("route");
-    Q.ninvoke(model, "findById", req.params.oid)
-      .then(function(entry) {
-        if (entry === null) return next("route");
-        _.extend(entry, req.body);
-        return Q.ninvoke(entry, "save")
-          .then(res.json.bind(res), function(err) {
-            if (err.name == "ValidationError") return res.status(400).json(err);
-            next(err);
-          });
-      }, next);
+    model.findById(req.params.oid, function(err, entry) {
+      if (err) return next(err);
+      if (entry === null) return next("route");
+      _.extend(entry, req.body);
+      entry.save(function(err, data) {
+        if (err && err.name == "ValidationError") return res.status(400).json(err);
+        if (err) return next(err);
+        res.json(data);
+      });
+    });
   };
 }
 
 function removeOne(model) {
   return function(req, res, next) {
     if (!validObjectid(req.params.oid)) return next("route");
-    Q.ninvoke(model, "findByIdAndRemove", req.params.oid)
-      .then(function(entry) {
-        if (entry === null) return next("route");
-        res.json(entry);
-      }, next);
+    model.findByIdAndRemove(req.params.oid, function(err, entry) {
+      if (err) return next(err);
+      if (entry === null) return next("route");
+      res.json(entry);
+    });
   };
 }
 

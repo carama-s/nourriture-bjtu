@@ -8,11 +8,11 @@ router.route("/add")
     var data = _.omit(req.body, "creator");
     var recipe = Recipe(data);
     recipe.creator = req.user._id;
-    Q.ninvoke(recipe, "save")
-      .then(res.json.bind(res), function(err) {
-        if (err.name == "ValidationError") return res.status(400).json(err);
-        next(err);
-      });
+    recipe.save(function(err, r) {
+      if (err && err.name == "ValidationError") return res.status(400).json(err);
+      if (err) return next(err);
+      res.json(r);
+    });
   });
 
 router.route("/")
