@@ -5,4 +5,4 @@ echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | 
 apt-get update
 # install missing package
 apt-get install mongodb-org-server nodejs-legacy npm nginx git redis-server
-npm install -g forever
+npm install -g pm2
