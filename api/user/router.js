@@ -57,6 +57,11 @@ router.route("/update")
     });
   });
 
+router.route("/me")
+  .get(common.policies.isAuthenticated, function(req, res, next) {
+    res.json(req.user);
+  });
+
 router.route("/")
   .get(common.rest.find(User))
   .post(common.policies.isSuperAdmin, common.rest.create(User));
