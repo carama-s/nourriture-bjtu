@@ -9,12 +9,12 @@ router.route("/get_token")
       User.findOne({email: req.body.email}).exec()
         .then(function(user) {
           if (!user) {
-            res.status(400).json({error: "Invalid credentials. User doesn't exists."});
+            res.status(400).json({error: "Invalid credentials."});
           } else {
             return user.checkPasswd(req.body.passwd)
               .then(function(ok) {
                 if (!ok) {
-                  res.status(400).json({error: "Invalid credentials. Wrong password."});
+                  res.status(400).json({error: "Invalid credentials."});
                 } else if (user.tokens.length > 0) {
                   res.json({token: user.tokens[0].token});
                 } else {
