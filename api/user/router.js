@@ -16,14 +16,14 @@ router.route("/get_token")
                 if (!ok) {
                   res.status(400).json({error: "Invalid credentials."});
                 } else if (user.tokens.length > 0) {
-                  res.json({token: user.tokens[0].token});
+                  res.json({token: user.tokens[0].token, user: user});
                 } else {
-                  var token = {token: User.generateToken()};
+                  var token = User.generateToken();
                   var d = Q.defer();
-                  user.tokens.push(token);
+                  user.tokens.push({token: token});
                   user.save(function(err) {
                     if (err) return d.reject(err);
-                    res.json(token);
+                    res.json({token: token, user: user});
                     d.resolve();
                   });
                   return d.promise;
