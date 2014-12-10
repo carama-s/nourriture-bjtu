@@ -5,28 +5,28 @@
   "description": "an Express application",
   "keywords": [],
   "dependencies": {
-    "bcrypt": "^0.8.0",
-    "body-parser": "^1.9.2",
-    "compression": "^1.2.0",
-    "cors": "^2.5.2",
-    "express": "^4.10.2",
-    "fs-extra": "^0.12.0",
-    "mongoose": "^3.8.19",
-    "mongoose-unique-validator": "^0.4.1",
-    "mongoose-validator": "^1.0.2",
-    "morgan": "^1.5.0",
-    "node-uuid": "^1.4.1",
-    "passport": "^0.2.1",
-    "passport-http-bearer": "^1.0.1",
-    "q": "^1.1.2",
-    "qs": "^2.3.3",
-    "requireindex": "^1.1.0",
-    "underscore": "^1.7.0",
+    "bcrypt": "~0.8.0",
+    "body-parser": "~1.10.0",
+    "compression": "~1.2.0",
+    "cors": "~2.5.2",
+    "express": "~4.10.2",
+    "fs-extra": "~0.12.0",
+    "mongoose": "~3.8.20",
+    "mongoose-unique-validator": "~0.4.1",
+    "mongoose-validator": "~1.0.2",
+    "morgan": "~1.5.0",
+    "node-uuid": "~1.4.1",
+    "passport": "~0.2.1",
+    "passport-http-bearer": "~1.0.1",
+    "q": "~1.1.2",
+    "qs": "~2.3.3",
+    "requireindex": "~1.1.0",
+    "underscore": "~1.7.0",
     "valid-objectid": "0.0.1",
-    "yargs": "^1.3.3"
+    "yargs": "~1.3.3"
   },
   "devDependencies": {
-    "errorhandler": "^1.2.2"
+    "errorhandler": "~1.3.0"
   },
   "scripts": {
     "start": "node ./manage.js"
