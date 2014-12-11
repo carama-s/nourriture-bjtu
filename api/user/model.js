@@ -4,7 +4,16 @@ var bcrypt = require("bcrypt");
 var crypto = require("crypto");
 var uuid = require("node-uuid");
 
-var userSchema = new mongoose.Schema({
+var Token = new mongoose.Schema({
+  token: {
+    type: String,
+    required: true
+  }
+});
+
+Token.plugin(require("mongoose-unique-validator"));
+
+var User = new mongoose.Schema({
   username: {
     type: String,
     unique: true,
@@ -20,9 +29,7 @@ var userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  tokens: [{
-    token: {type: String, required: true, unique: true}
-  }],
+  tokens: [Token],
   admin: {
     type: Number,
     required: true,
@@ -36,40 +43,38 @@ var userSchema = new mongoose.Schema({
   0: SuperAdmin
 */
 
-userSchema.statics.hashPasswd = function(data) {
+User.statics.hashPasswd = function(data) {
   return Q.nfcall(bcrypt.hash, data, 10);
 };
 
-userSchema.statics.generateToken = function() {
+User.statics.generateToken = function() {
   var shasum = crypto.createHash("sha256");
   shasum.update(uuid.v1());
   return shasum.digest("hex");
 };
 
-userSchema.methods.checkPasswd = function(passwd) {
+User.methods.checkPasswd = function(passwd) {
   return Q.nfcall(bcrypt.compare, passwd, this.passwd);
 };
 
-userSchema.pre("save", function(next) {
+User.pre("save", function(next) {
   var user = this;
 
   if (!user.isModified("passwd")) return next();
 
-  User.hashPasswd(user.passwd)
+  User.statics.hashPasswd(user.passwd)
     .then(function(hash) {
       user.passwd = hash;
       next();
     }, next);
 });
 
-if (!userSchema.options.toJSON) userSchema.options.toJSON = {};
-userSchema.options.toJSON.transform = function(doc, ret, opts) {
+if (!User.options.toJSON) User.options.toJSON = {};
+User.options.toJSON.transform = function(doc, ret, opts) {
   delete ret.passwd;
   delete ret.tokens;
 };
 
-userSchema.plugin(require("mongoose-unique-validator"));
+User.plugin(require("mongoose-unique-validator"));
 
-var User = mongoose.model("User", userSchema);
-
-module.exports = User;
+module.exports = mongoose.model("User", User);

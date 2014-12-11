@@ -5,6 +5,7 @@
   "description": "an Express application",
   "keywords": [],
   "dependencies": {
+    "async": "~0.9.0",
     "bcrypt": "~0.8.0",
     "body-parser": "~1.10.0",
     "compression": "~1.2.0",
