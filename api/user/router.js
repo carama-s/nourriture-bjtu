@@ -15,23 +15,15 @@ router.route("/get_token")
               .then(function(ok) {
                 if (!ok) {
                   res.status(400).json({error: "Invalid credentials."});
-                } else if (user.tokens.length > 0) {
-                  res.json({token: user.tokens[0].token, user: user});
                 } else {
-                  var token = User.generateToken();
-                  var d = Q.defer();
-                  user.tokens.push({token: token});
-                  user.save(function(err) {
-                    if (err) return d.reject(err);
-                    res.json({token: token, user: user});
-                    d.resolve();
-                  });
-                  return d.promise;
+                  res.json({token: user.token.token, user: user});
                 }
               });
           }
         })
         .then(null, next);
+    } else {
+      res.status(400).json({error: "Missing data"});
     }
   });
 
@@ -50,7 +42,7 @@ router.route("/update")
   .post(common.policies.isAuthenticated, function(req, res, next) {
     var data = _.pick(req.body, "passwd");
     _.extend(req.user, data);
-    user.save(function(err, u) {
+    req.user.save(function(err, u) {
       if (err && err.name == "ValidationError") return res.status(400).json(err);
       if (err) return next(err);
       res.json(u);

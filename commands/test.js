@@ -1,4 +1,5 @@
 function test(args) {
+  process.env.NODE_ENV = "test";
   var fs = require("fs");
   var path = require("path");
   var api = require("../api");
@@ -23,7 +24,7 @@ function test(args) {
     console.log("Connected to MongoDB !");
     mocha.run(function(failures) {
       conn.db.dropDatabase(function() {
-        mongoose.disconnect();  
+        mongoose.disconnect();
       });
       process.on('exit', function () {
         process.exit(failures);

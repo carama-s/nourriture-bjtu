@@ -17,9 +17,7 @@ passport.deserializeUser(function(id, done) {
 });
 
 passport.use(new BearerStrategy(function(accessToken, next) {
-  User.findOne()
-    .elemMatch("tokens", {token: accessToken})
-    .exec()
+  User.findOne({token: {token: accessToken}}).exec()
     .then(function(user) {
       next(null, (!user) ? undefined : user);
     }, next);
@@ -29,13 +27,15 @@ passport.use(new BearerStrategy(function(accessToken, next) {
 
 var app = express();
 
-if (app.get("env") === 'development') {
+if (app.get("env") === 'production') {
+  app.set("trust proxy", "loopback");
+  app.use(morgan("combined"));
+} else if (app.get("env") === "test") {
+  app.set("trust proxy");
+} else {
   app.set("trust proxy");
   app.set("json spaces", 2);
   app.use(morgan("dev"));
-} else {
-  app.set("trust proxy", "loopback");
-  app.use(morgan("combined"));
 }
 
 app.use(require("cors")());

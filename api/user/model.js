@@ -4,14 +4,11 @@ var bcrypt = require("bcrypt");
 var crypto = require("crypto");
 var uuid = require("node-uuid");
 
-var Token = new mongoose.Schema({
-  token: {
-    type: String,
-    required: true
-  }
-});
-
-Token.plugin(require("mongoose-unique-validator"));
+function generateToken() {
+  var shasum = crypto.createHash("sha256");
+  shasum.update(uuid.v1());
+  return shasum.digest("hex");
+}
 
 var User = new mongoose.Schema({
   username: {
@@ -29,7 +26,14 @@ var User = new mongoose.Schema({
     type: String,
     required: true
   },
-  tokens: [Token],
+  token: {
+    token: {
+      type: String,
+      required: true,
+      unique: true,
+      default: generateToken
+    }
+  },
   admin: {
     type: Number,
     required: true,
@@ -47,11 +51,7 @@ User.statics.hashPasswd = function(data) {
   return Q.nfcall(bcrypt.hash, data, 10);
 };
 
-User.statics.generateToken = function() {
-  var shasum = crypto.createHash("sha256");
-  shasum.update(uuid.v1());
-  return shasum.digest("hex");
-};
+User.statics.generateToken = generateToken;
 
 User.methods.checkPasswd = function(passwd) {
   return Q.nfcall(bcrypt.compare, passwd, this.passwd);
@@ -72,7 +72,7 @@ User.pre("save", function(next) {
 if (!User.options.toJSON) User.options.toJSON = {};
 User.options.toJSON.transform = function(doc, ret, opts) {
   delete ret.passwd;
-  delete ret.tokens;
+  delete ret.token;
 };
 
 User.plugin(require("mongoose-unique-validator"));
