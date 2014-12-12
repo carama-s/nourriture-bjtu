@@ -38,6 +38,28 @@ router.route("/signup")
     });
   });
 
+router.route("/change_passwd")
+  .post(common.policies.isAuthenticated, function(req, res, next) {
+    if (req.body.old_passwd && req.body.new_passwd) {
+      req.user.checkPasswd(req.body.old_passwd)
+        .then(function(ok) {
+          if (!ok) return res.status(400).json({error: "Invalid credentials."});
+          var d = Q.defer();
+          req.user.passwd = req.body.new_passwd;
+          req.user.save(function(err, u) {
+            if (err && err.name == "ValidationError") return res.status(400).json(err);
+            if (err) return d.reject(err);
+            res.json(u);
+            d.resolve();
+          });
+          return d.promise;
+        })
+        .then(null, next);
+    } else {
+      res.status(400).json({error: "Missing data"});
+    }
+  });
+
 router.route("/update")
   .post(common.policies.isAuthenticated, function(req, res, next) {
     var data = _.pick(req.body, "firstname", "lastname", "gender");

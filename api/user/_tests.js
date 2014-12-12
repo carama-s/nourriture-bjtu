@@ -223,7 +223,7 @@ describe("User", function() {
     });
   });
 
-  describe("Custom routes get_token, me, update", function() {
+  describe("Custom routes get_token, me, update, change_passwd", function() {
     var user = new User({firstname: "a", lastname: "b", username: "user", email: "right@example.com", passwd: "right"});
 
     before("clean the DB", function(done) {
@@ -288,6 +288,50 @@ describe("User", function() {
       request(app)
         .get("/user/me")
         .expect(403)
+        .end(done);
+    });
+
+    it("/user/change_passwd no Auth", function(done) {
+      request(app)
+        .post("/user/change_passwd")
+        .send({old_passwd: "right", new_passwd: "right"})
+        .expect(403)
+        .end(done);
+    });
+
+    it("/user/change_passwd missing old_passwd", function(done) {
+      request(app)
+        .post("/user/change_passwd")
+        .set("Authorization", "Bearer " + user.token.token)
+        .send({new_passwd: "right"})
+        .expect(400)
+        .end(done);
+    });
+
+    it("/user/change_passwd missing new_passwd", function(done) {
+      request(app)
+        .post("/user/change_passwd")
+        .set("Authorization", "Bearer " + user.token.token)
+        .send({old_passwd: "right"})
+        .expect(400)
+        .end(done);
+    });
+
+    it("/user/change_passwd wrong passwd", function(done) {
+      request(app)
+        .post("/user/change_passwd")
+        .set("Authorization", "Bearer " + user.token.token)
+        .send({old_passwd: "wrong", new_passwd: "right"})
+        .expect(400)
+        .end(done);
+    });
+
+    it("/user/change_passwd Success", function(done) {
+      request(app)
+        .post("/user/change_passwd")
+        .set("Authorization", "Bearer " + user.token.token)
+        .send({old_passwd: "right", new_passwd: "right"})
+        .expect(200)
         .end(done);
     });
 
