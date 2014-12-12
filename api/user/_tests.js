@@ -330,9 +330,15 @@ describe("User", function() {
       request(app)
         .post("/user/change_passwd")
         .set("Authorization", "Bearer " + user.token.token)
-        .send({old_passwd: "right", new_passwd: "right"})
+        .send({old_passwd: "right", new_passwd: "foo"})
         .expect(200)
-        .end(done);
+        .end(function(err, res) {
+          request(app)
+            .post("/user/get_token")
+            .send({email: user.email, passwd: "foo"})
+            .expect(200)
+            .end(done);
+        });
     });
 
     it("/user/update Error", function(done) {
