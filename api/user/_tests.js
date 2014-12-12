@@ -9,8 +9,8 @@ var app = require("../../app.js");
 
 describe("User", function() {
   describe("REST", function() {
-    var nUser = new User({username: "nUser", email: "nUser@example.com", passwd: "test", admin: 10});
-    var aUser = new User({username: "aUser", email: "aUser@example.com", passwd: "test", admin: 0});
+    var nUser = new User({firstname: "a", lastname: "b", username: "nUser", email: "nUser@example.com", passwd: "test", admin: 10});
+    var aUser = new User({firstname: "a", lastname: "b", username: "aUser", email: "aUser@example.com", passwd: "test", admin: 0});
     var testUser = undefined;
 
     before("clean the DB", function(done) {
@@ -37,7 +37,7 @@ describe("User", function() {
     it("POST /user/ no auth", function(done) {
       request(app)
         .post("/user/")
-        .send({username: "test", email: "test@test.com", passwd: "test"})
+        .send({firstname: "a", lastname: "b", username: "test", email: "test@test.com", passwd: "test"})
         .expect(403)
         .end(done);
     });
@@ -46,7 +46,7 @@ describe("User", function() {
       request(app)
         .post("/user/")
         .set("Authorization", "Bearer " + nUser.token.token)
-        .send({username: "test", email: "test@test.com", passwd: "test"})
+        .send({firstname: "a", lastname: "b", username: "test", email: "test@test.com", passwd: "test"})
         .expect(403)
         .end(done);
     });
@@ -55,7 +55,7 @@ describe("User", function() {
       request(app)
         .post("/user/")
         .set("Authorization", "Bearer " + aUser.token.token)
-        .send({username: "test", email: "test@test.com", passwd: "test"})
+        .send({firstname: "a", lastname: "b", username: "test", email: "test@test.com", passwd: "test"})
         .expect(200)
         .end(function(err, res) {
           if (err) return done(err);
@@ -133,7 +133,7 @@ describe("User", function() {
   });
 
   describe("Custom routes signup", function() {
-    var eUser = new User({username: "foo", email: "foo@bar.com", passwd: "foo"});
+    var eUser = new User({firstname: "a", lastname: "b", username: "foo", email: "foo@bar.com", passwd: "foo"});
 
     before("clean the DB", function(done) {
       conn.db.dropDatabase(function(err) {
@@ -145,7 +145,7 @@ describe("User", function() {
     it("/user/signup Missing email", function(done) {
       request(app)
         .post("/user/signup")
-        .send({username: "test", passwd: "foo"})
+        .send({firstname: "a", lastname: "b", username: "test", passwd: "foo"})
         .expect(400)
         .end(done);
     });
@@ -153,7 +153,7 @@ describe("User", function() {
     it("/user/signup Missing username", function(done) {
       request(app)
         .post("/user/signup")
-        .send({email: "test@test.com", passwd: "foo"})
+        .send({firstname: "a", lastname: "b", email: "test@test.com", passwd: "foo"})
         .expect(400)
         .end(done);
     });
@@ -161,15 +161,39 @@ describe("User", function() {
     it("/user/signup Missing passwd", function(done) {
       request(app)
         .post("/user/signup")
-        .send({username: "test", email: "test@test.com"})
+        .send({firstname: "a", lastname: "b", username: "test", email: "test@test.com"})
         .expect(400)
         .end(done);
+    });
+
+    it("/user/signup Missing firstname", function(done) {
+      request(app)
+      .post("/user/signup")
+      .send({email: "test@test.com", lastname: "b", username: "test", passwd: "foo"})
+      .expect(400)
+      .end(done);
+    });
+
+    it("/user/signup Missing lastname", function(done) {
+      request(app)
+      .post("/user/signup")
+      .send({firstname: "a", email: "test@test.com", username: "test", passwd: "foo"})
+      .expect(400)
+      .end(done);
+    });
+
+    it("/user/signup wrong gender", function(done) {
+      request(app)
+      .post("/user/signup")
+      .send({firstname: "a", lastname: "b", username: "test", email: "test@test.com", passwd: "foo", gender: "wrong"})
+      .expect(400)
+      .end(done);
     });
 
     it("/user/signup passwd is empty", function(done) {
       request(app)
         .post("/user/signup")
-        .send({username: "test", email: "test@test.com", passwd: ""})
+        .send({firstname: "a", lastname: "b", username: "test", email: "test@test.com", passwd: ""})
         .expect(400)
         .end(done);
     });
@@ -177,15 +201,15 @@ describe("User", function() {
     it("/user/signup Email exists", function(done) {
       request(app)
         .post("/user/signup")
-        .send({username: "test", email: eUser.email, passwd: "foo"})
+        .send({firstname: "a", lastname: "b", username: "test", email: eUser.email, passwd: "foo"})
         .expect(400)
         .end(done);
     });
 
-    it("/user/signup Email exists", function(done) {
+    it("/user/signup Username exists", function(done) {
       request(app)
         .post("/user/signup")
-        .send({username: eUser.username, email: "test@test.com", passwd: "foo"})
+        .send({firstname: "a", lastname: "b", username: eUser.username, email: "test@test.com", passwd: "foo"})
         .expect(400)
         .end(done);
     });
@@ -193,14 +217,14 @@ describe("User", function() {
     it("/user/signup Success", function(done) {
       request(app)
         .post("/user/signup")
-        .send({username: "test", email: "test@test.com", passwd: "foo"})
+        .send({firstname: "a", lastname: "b", username: "test", email: "test@test.com", passwd: "foo"})
         .expect(200)
         .end(done);
     });
   });
 
   describe("Custom routes get_token, me, update", function() {
-    var user = new User({username: "user", email: "right@example.com", passwd: "right"});
+    var user = new User({firstname: "a", lastname: "b", username: "user", email: "right@example.com", passwd: "right"});
 
     before("clean the DB", function(done) {
       conn.db.dropDatabase(function(err) {
@@ -270,7 +294,7 @@ describe("User", function() {
     it("/user/update Error", function(done) {
       request(app)
         .post("/user/update")
-        .send({passwd: "right"})
+        .send({username: "lol"})
         .expect(403)
         .end(done);
     });
@@ -279,7 +303,7 @@ describe("User", function() {
       request(app)
       .post("/user/update")
       .set("Authorization", "Bearer " + user.token.token)
-      .send({passwd: "right"})
+      .send({username: "lol"})
       .expect(200)
       .end(done);
     });

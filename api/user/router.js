@@ -40,7 +40,7 @@ router.route("/signup")
 
 router.route("/update")
   .post(common.policies.isAuthenticated, function(req, res, next) {
-    var data = _.pick(req.body, "passwd");
+    var data = _.pick(req.body, "firstname", "lastname", "gender");
     _.extend(req.user, data);
     req.user.save(function(err, u) {
       if (err && err.name == "ValidationError") return res.status(400).json(err);

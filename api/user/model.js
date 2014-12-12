@@ -22,6 +22,20 @@ var User = new mongoose.Schema({
     unique: true,
     validate: [validate({validator: "isEmail"})]
   },
+  firstname: {
+    type: String,
+    required: true
+  },
+  lastname: {
+    type: String,
+    required: true
+  },
+  gender: {
+    type: String,
+    required: true,
+    default: "na",
+    enum: ["male", "female", "na"]
+  },
   passwd: {
     type: String,
     required: true
