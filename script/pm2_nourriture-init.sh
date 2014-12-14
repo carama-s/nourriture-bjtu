@@ -16,7 +16,7 @@
 # Description: PM2 is the next gen process manager for Node.js
 ### END INIT INFO
 
-NAME=pm2
+NAME=pm2_nourriture
 PM2=/usr/bin/pm2
 USER=nourriture-prod
 
