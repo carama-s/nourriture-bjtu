@@ -225,11 +225,15 @@ describe("User", function() {
 
   describe("Custom routes get_token, me, update, change_passwd", function() {
     var user = new User({firstname: "a", lastname: "b", username: "user", email: "right@example.com", passwd: "right"});
+    var otherUser = new User({firstname: "a", lastname: "b", username: "otherUser", email: "other@example.com", passwd: "right"});
 
     before("clean the DB", function(done) {
       conn.db.dropDatabase(function(err) {
         if (err) return done(err);
-        user.save(done);
+        async.parallel([user.save.bind(user), otherUser.save.bind(otherUser)], function(err) {
+          if (err) return done(err);
+          done();
+        });
       });
     });
 
@@ -349,13 +353,22 @@ describe("User", function() {
         .end(done);
     });
 
+    it("/user/update Duplicate email", function(done) {
+      request(app)
+        .post("/user/update")
+        .set("Authorization", "Bearer " + user.token.token)
+        .send({email: otherUser.email})
+        .expect(400)
+        .end(done);
+    });
+
     it("/user/update Success", function(done) {
       request(app)
-      .post("/user/update")
-      .set("Authorization", "Bearer " + user.token.token)
-      .send({username: "lol"})
-      .expect(200)
-      .end(done);
+        .post("/user/update")
+        .set("Authorization", "Bearer " + user.token.token)
+        .send({username: "lol"})
+        .expect(200)
+        .end(done);
     });
   });
 });
