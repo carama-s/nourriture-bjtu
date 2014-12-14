@@ -362,6 +362,15 @@ describe("User", function() {
         .end(done);
     });
 
+    it("/user/update Same email as before", function(done) {
+      request(app)
+      .post("/user/update")
+      .set("Authorization", "Bearer " + user.token.token)
+      .send({email: user.email})
+      .expect(200)
+      .end(done);
+    });
+
     it("/user/update Success", function(done) {
       request(app)
         .post("/user/update")
