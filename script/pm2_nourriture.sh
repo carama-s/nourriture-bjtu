@@ -17,7 +17,7 @@
 ### END INIT INFO
 
 NAME=pm2_nourriture
-PM2=/usr/bin/pm2
+PM2=/usr/local/bin/pm2
 USER=nourriture-prod
 
 super() {
