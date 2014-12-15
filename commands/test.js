@@ -5,6 +5,7 @@ function test(args) {
   var api = require("../api");
   var Mocha = require("mocha");
   var mongoose = require("mongoose");
+  var Grid = require("gridfs-stream");
   var mocha = new Mocha;
 
   for (name in api) {
@@ -21,6 +22,9 @@ function test(args) {
   });
 
   conn.once("open", function() {
+    if (global.gfs == undefined) {
+      global.gfs = Grid(conn.db, mongoose.mongo);
+    }
     console.log("Connected to MongoDB !");
     mocha.run(function(failures) {
       conn.db.dropDatabase(function() {

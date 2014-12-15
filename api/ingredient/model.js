@@ -1,24 +1,52 @@
 var mongoose = require("mongoose");
 var validate = require("mongoose-validator");
+var Q = require("q");
+var ObjectId = mongoose.Schema.Types.ObjectId;
 
-var ingredientSchema = new mongoose.Schema({
+var Ingredient = new mongoose.Schema({
   name: {
     type: String,
     required: true
   },
   tags: [String],
   photo: {
-    type: String
+    type: ObjectId,
+    ref: 'GridFile'
   },
   description: String,
   category: {
     type: String,
-    enum: ["chocolate", "spice", "cheese", "bread", "egg", "fruit", "vegetable", "other"]
+    enum: ["chocolate", "spice", "cheese", "bread", "egg", "fruit", "vegetable", "other"],
+    default: "other"
   },
   cooking_tips: String,
   allergy: [String]
 });
 
-var Ingredient = mongoose.model("Ingredient", ingredientSchema);
+Ingredient.methods.changePhoto = function(new_photo) {
+  var d = Q.defer();
+  if (this.photo !== undefined) {
+    this.populate("photo", function(err, tmp) {
+      if (err) return d.reject(err);
+      tmp.photo.remove(function(err) {
+        if (err) return d.reject(err);
+        tmp.photo = new_photo;
+        d.resolve();
+      });
+    });
+  } else {
+    this.photo = new_photo;
+    setImmediate(d.resolve);
+  }
+  return d.promise;
+};
 
-module.exports = Ingredient;
+Ingredient.pre("remove", function(next) {
+  if (this.photo === undefined) return next();
+  this.photo.remove(function(err) {
+    if (err) return next(err);
+    next();
+  });
+});
+
+module.exports = mongoose.model("Ingredient", Ingredient);

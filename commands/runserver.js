@@ -1,6 +1,7 @@
 function runserver(args) {
   var config = require("../config");
   var mongoose = require("mongoose");
+  var Grid = require("gridfs-stream");
 
   var argv = require("yargs")(args)
     .options("p", {
@@ -18,6 +19,9 @@ function runserver(args) {
   });
 
   db.once("open", function() {
+    if (global.gfs == undefined) {
+      global.gfs = Grid(db.db, mongoose.mongo);
+    }
     console.log("Connected to MongoDB !");
     console.log();
     console.log("Starting HTTP server...");
