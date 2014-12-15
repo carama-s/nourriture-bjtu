@@ -6,7 +6,17 @@ var ingredientSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  tags: [String]
+  tags: [String],
+  photo: {
+    type: String
+  },
+  description: String,
+  category: {
+    type: String,
+    enum: ["chocolate", "spice", "cheese", "bread", "egg", "fruit", "vegetable", "other"]
+  },
+  cooking_tips: String,
+  allergy: [String]
 });
 
 var Ingredient = mongoose.model("Ingredient", ingredientSchema);
