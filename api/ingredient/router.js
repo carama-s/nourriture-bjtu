@@ -16,12 +16,14 @@ router.route("/create")
     var data = _.omit(req.body, "photo_name");
     var ing = new Ingredient(data);
     ing.save(function(err, ing) {
+      if (err && err.name == "ValidationError") return res.status(400).json(err);
       if (err) return next(err);
       var photo = req.files.photo
       if (photo === undefined) return res.json(ing);
       ing.changePhoto(photo.name)
         .then(function() {
           ing.save(function(err, ing) {
+            if (err && err.name == "ValidationError") return res.status(400).json(err);
             if (err) return next(err);
             res.json(ing);
           });
