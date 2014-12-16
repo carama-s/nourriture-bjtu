@@ -1,5 +1,6 @@
 var express = require("express");
 var bodyParser = require("body-parser");
+var multer  = require("multer");
 var morgan = require("morgan");
 var passport = require("passport");
 var BearerStrategy = require('passport-http-bearer').Strategy;
@@ -42,6 +43,9 @@ app.use(require("cors")());
 app.use(require("compression")());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+app.use(multer({
+  dest: "/tmp/nourriture/multer/"
+}));
 app.use(passport.initialize());
 
 app.use(function(req, res, next) {

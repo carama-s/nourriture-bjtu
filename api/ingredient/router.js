@@ -5,7 +5,7 @@ var router = express.Router();
 
 router.route("/")
   .get(common.rest.find(Ingredient))
-  .post(common.policies.isAuthenticated, common.rest.create(Ingredient));
+  .post(common.policies.isSuperAdmin, common.rest.create(Ingredient));
 
 router.route("/:oid")
   .get(common.rest.findOne(Ingredient))

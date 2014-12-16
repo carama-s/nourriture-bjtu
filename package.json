@@ -12,11 +12,12 @@
     "cors": "~2.5.2",
     "express": "~4.10.2",
     "fs-extra": "~0.12.0",
-    "gridfs-stream": "^0.5.3",
+    "gridfs-stream": "~0.5.3",
     "mongoose": "~3.8.20",
     "mongoose-unique-validator": "~0.4.1",
     "mongoose-validator": "~1.0.2",
     "morgan": "~1.5.0",
+    "multer": "~0.1.6",
     "node-uuid": "~1.4.1",
     "passport": "~0.2.1",
     "passport-http-bearer": "~1.0.1",
@@ -28,9 +29,9 @@
     "yargs": "~1.3.3"
   },
   "devDependencies": {
-    "chai": "^1.10.0",
+    "chai": "~1.10.0",
     "errorhandler": "~1.3.0",
-    "mocha": "^2.0.1",
+    "mocha": "~2.0.1",
     "supertest": "^0.15.0"
   },
   "scripts": {
