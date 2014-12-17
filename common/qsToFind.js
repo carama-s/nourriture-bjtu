@@ -3,9 +3,17 @@ function qsToFind(model, qs) {
   var per_page = 10;
   if (qs.per_page !== undefined) per_page = qs.per_page;
   if (qs.where !== undefined) {
-    try {
-      ret = ret.find(JSON.parse(qs.where))
-    } catch(err) {}
+    var where = qs.where;
+    if (typeof(where) == "string") {
+      try {
+        where = JSON.parse(where);
+      } catch(err) {
+        where = undefined;
+      }
+    }
+    if (typeof(where) == "object") {
+      ret = ret.find(where);
+    }
   }
   if (qs.sort !== undefined) {
     var v = qs.sort;
