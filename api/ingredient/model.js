@@ -21,7 +21,8 @@ var Ingredient = new mongoose.Schema({
     default: "other"
   },
   cooking_tips: String,
-  allergy: [String]
+  allergy: [String],
+  period: [Number]
 });
 
 Ingredient.virtual("photo_path").get(function() {
