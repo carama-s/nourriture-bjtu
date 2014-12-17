@@ -1,31 +1,27 @@
 validObjectid = require("valid-objectid").isValid;
 
-function count(model) {
-  return function(req, res, next) {
+function rest(model) {
+  var fn = {};
+
+  fn.count = function(req, res, next) {
     common.qsToFind(model.find(), req.query).count().exec().then(function(nb) {
       res.json({count: nb});
     }, next);
   };
-}
 
-function find(model) {
-  return function(req, res, next) {
+  fn.find = function(req, res, next) {
     common.qsToFind(model.find(), req.query).exec().then(res.json.bind(res), next);
   };
-}
 
-function create(model) {
-  return function(req, res, next) {
+  fn.create = function(req, res, next) {
     model.create(req.body, function(err, entry) {
       if (err && err.name == "ValidationError") return res.status(400).json(err);
       if (err) return next(err);
       res.json(entry);
     });
   };
-}
 
-function findOne(model) {
-  return function(req, res, next) {
+  fn.findOne = function(req, res, next) {
     if (!validObjectid(req.params.oid)) return next("route");
     model.findById(req.params.oid, function(err, entry) {
       if (err) return next(err);
@@ -33,10 +29,8 @@ function findOne(model) {
       res.json(entry);
     });
   };
-}
 
-function updateOne(model) {
-  return function(req, res, next) {
+  fn.updateOne = function(req, res, next) {
     if (!validObjectid(req.params.oid)) return next("route");
     model.findById(req.params.oid, function(err, entry) {
       if (err) return next(err);
@@ -49,10 +43,8 @@ function updateOne(model) {
       });
     });
   };
-}
 
-function removeOne(model) {
-  return function(req, res, next) {
+  fn.removeOne = function(req, res, next) {
     if (!validObjectid(req.params.oid)) return next("route");
     model.findByIdAndRemove(req.params.oid, function(err, entry) {
       if (err) return next(err);
@@ -60,13 +52,8 @@ function removeOne(model) {
       res.json(entry);
     });
   };
+
+  return fn;
 }
 
-module.exports = {
-  find: find,
-  create: create,
-  findOne: findOne,
-  updateOne: updateOne,
-  removeOne: removeOne,
-  count: count
-};
+module.exports = rest;

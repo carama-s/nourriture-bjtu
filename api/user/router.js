@@ -76,16 +76,18 @@ router.route("/me")
     res.json(req.user);
   });
 
+var rest = common.rest(User);
+
 router.route("/count")
-  .get(common.rest.count(User));
+  .get(rest.count);
 
 router.route("/")
-  .get(common.rest.find(User))
-  .post(common.policies.isSuperAdmin, common.rest.create(User));
+  .get(rest.find)
+  .post(common.policies.isSuperAdmin, rest.create);
 
 router.route("/:oid")
-  .get(common.rest.findOne(User))
-  .put(common.policies.isSuperAdmin, common.rest.updateOne(User))
-  .delete(common.policies.isSuperAdmin, common.rest.removeOne(User));
+  .get(rest.findOne)
+  .put(common.policies.isSuperAdmin, rest.updateOne)
+  .delete(common.policies.isSuperAdmin, rest.removeOne);
 
 module.exports = router;

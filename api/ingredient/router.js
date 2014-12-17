@@ -31,16 +31,18 @@ router.route("/create")
     });
   });
 
+var rest = common.rest(Ingredient);
+
 router.route("/count")
-  .get(common.rest.count(Ingredient));
+  .get(rest.count);
 
 router.route("/")
-  .get(common.rest.find(Ingredient))
-  .post(common.policies.isSuperAdmin, common.rest.create(Ingredient));
+  .get(rest.find)
+  .post(common.policies.isSuperAdmin, rest.create);
 
 router.route("/:oid")
-  .get(common.rest.findOne(Ingredient))
-  .put(common.policies.isSuperAdmin, common.rest.updateOne(Ingredient))
-  .delete(common.rest.removeOne(Ingredient));
+  .get(rest.findOne)
+  .put(common.policies.isSuperAdmin, rest.updateOne)
+  .delete(rest.removeOne);
 
 module.exports = router;

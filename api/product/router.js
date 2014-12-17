@@ -3,16 +3,18 @@ var Product = require("./model.js");
 
 var router = express.Router();
 
+var rest = common.rest(Product);
+
 router.route("/count")
-  .get(common.rest.count(Product));
+  .get(rest.count);
 
 router.route("/")
-  .get(common.rest.find(Product))
-  .post(common.policies.isAuthenticated, common.rest.create(Product));
+  .get(rest.find)
+  .post(common.policies.isAuthenticated, rest.create);
 
 router.route("/:oid")
-  .get(common.rest.findOne(Product))
-  .put(common.policies.isSuperAdmin, common.rest.updateOne(Product))
-  .delete(common.policies.isSuperAdmin, common.rest.removeOne(Product));
+  .get(rest.findOne)
+  .put(common.policies.isSuperAdmin, rest.updateOne)
+  .delete(common.policies.isSuperAdmin, rest.removeOne);
 
 module.exports = router;

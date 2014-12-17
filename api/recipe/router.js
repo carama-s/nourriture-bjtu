@@ -15,16 +15,18 @@ router.route("/add")
     });
   });
 
+var rest = common.rest(Recipe);
+
 router.route("/count")
-  .get(common.rest.count(Recipe));
+  .get(rest.count);
 
 router.route("/")
-  .get(common.rest.find(Recipe))
-  .post(common.policies.isSuperAdmin, common.rest.create(Recipe));
+  .get(rest.find)
+  .post(common.policies.isSuperAdmin, rest.create);
 
 router.route("/:oid")
-  .get(common.rest.findOne(Recipe))
-  .put(common.policies.isSuperAdmin, common.rest.updateOne(Recipe))
-  .delete(common.policies.isSuperAdmin, common.rest.removeOne(Recipe));
+  .get(rest.findOne)
+  .put(common.policies.isSuperAdmin, rest.updateOne)
+  .delete(common.policies.isSuperAdmin, rest.removeOne);
 
 module.exports = router;
