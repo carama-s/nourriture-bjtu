@@ -2,7 +2,11 @@ function qsToFind(model, qs) {
   var ret = model;
   var per_page = 10;
   if (qs.per_page !== undefined) per_page = qs.per_page;
-  if (qs.where !== undefined) ret = ret.find(qs.where);
+  if (qs.where !== undefined) {
+    try {
+      ret = ret.find(JSON.parse(qs.where))
+    } catch(err) {}
+  }
   if (qs.sort !== undefined) {
     var v = qs.sort;
     ret = ret.sort((v.join !== undefined) ? v.join(" ") : v);
