@@ -1,5 +1,13 @@
 validObjectid = require("valid-objectid").isValid;
 
+function count(model) {
+  return function(req, res, next) {
+    common.qsToFind(model.find(), req.query).count().exec().then(function(nb) {
+      res.json({count: nb});
+    }, next);
+  };
+}
+
 function find(model) {
   return function(req, res, next) {
     common.qsToFind(model.find(), req.query).exec().then(res.json.bind(res), next);
@@ -59,5 +67,6 @@ module.exports = {
   create: create,
   findOne: findOne,
   updateOne: updateOne,
-  removeOne: removeOne
+  removeOne: removeOne,
+  count: count
 };

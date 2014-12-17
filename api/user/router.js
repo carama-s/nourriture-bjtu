@@ -76,6 +76,9 @@ router.route("/me")
     res.json(req.user);
   });
 
+router.route("/count")
+  .get(common.rest.count(User));
+
 router.route("/")
   .get(common.rest.find(User))
   .post(common.policies.isSuperAdmin, common.rest.create(User));

@@ -31,6 +31,9 @@ router.route("/create")
     });
   });
 
+router.route("/count")
+  .get(common.rest.count(Ingredient));
+
 router.route("/")
   .get(common.rest.find(Ingredient))
   .post(common.policies.isSuperAdmin, common.rest.create(Ingredient));

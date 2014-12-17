@@ -3,6 +3,9 @@ var Product = require("./model.js");
 
 var router = express.Router();
 
+router.route("/count")
+  .get(common.rest.count(Product));
+
 router.route("/")
   .get(common.rest.find(Product))
   .post(common.policies.isAuthenticated, common.rest.create(Product));
