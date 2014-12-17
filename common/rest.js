@@ -1,4 +1,5 @@
-validObjectid = require("valid-objectid").isValid;
+var validObjectid = require("valid-objectid").isValid;
+var async = require("async");
 
 function rest(model) {
   var fn = {};
@@ -19,6 +20,16 @@ function rest(model) {
       if (err) return next(err);
       res.json(entry);
     });
+  };
+
+  fn.remove = function(req, res, next) {
+    common.qsToFind(model.find(), req.query).exec().then(function(entries) {
+      var tasks = _.map(entries, function(entry) { return entry.save.bind(entry); })
+      async.parallel(tasks, function(err, results) {
+        if (err) return next(err);
+        res.json(results);
+      });
+    }, next);
   };
 
   fn.findOne = function(req, res, next) {
@@ -46,10 +57,13 @@ function rest(model) {
 
   fn.removeOne = function(req, res, next) {
     if (!validObjectid(req.params.oid)) return next("route");
-    model.findByIdAndRemove(req.params.oid, function(err, entry) {
+    model.findById(req.params.oid, function(err, entry) {
       if (err) return next(err);
       if (entry === null) return next("route");
-      res.json(entry);
+      entry.remove(function(err) {
+        if (err) return next(err);
+        res.json(entry);
+      });
     });
   };
 
