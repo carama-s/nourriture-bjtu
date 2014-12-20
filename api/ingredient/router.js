@@ -16,6 +16,15 @@ router.route("/create")
     onFileUploadStart: onFileUploadStart
   }), function(req, res, next) {
     var data = _.omit(req.body, "photo_name");
+    ["tags", "allergy", "period"].forEach(function(k) {
+      if (data.hasOwnProperty(k)) {
+        try {
+          data[k] = JSON.parse(data[k]);
+        } catch(err) {
+          data[k] = undefined;
+        }
+      }
+    });
     var ing = new Ingredient(data);
     ing.save(function(err, ing) {
       if (err && err.name == "ValidationError") return res.status(400).json(err);
@@ -43,6 +52,15 @@ router.route("/:oid/update")
       if (err) return next(err);
       if (ing === null) return next("route");
       var data = _.omit(req.body, "photo_name");
+      ["tags", "allergy", "period"].forEach(function(k) {
+        if (data.hasOwnProperty(k)) {
+          try {
+            data[k] = JSON.parse(data[k]);
+          } catch(err) {
+            data[k] = undefined;
+          }
+        }
+      });
       _.extend(ing, data);
       ing.save(function(err, ing) {
         if (err && err.name == "ValidationError") return res.status(400).json(err);
