@@ -11,7 +11,6 @@ var onFileUploadStart = function (file) {
 };
 
 function parseBodyData(data) {
-  console.log(data);
   ["tags", "allergy", "period"].forEach(function(k) {
     if (data.hasOwnProperty(k)) {
       switch (typeof(data[k])) {
