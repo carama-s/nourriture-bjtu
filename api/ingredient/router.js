@@ -10,21 +10,35 @@ var onFileUploadStart = function (file) {
   if (!mime_regex.test(file.mimetype)) return false;
 };
 
+function parseBodyData(data) {
+  console.log(data);
+  ["tags", "allergy", "period"].forEach(function(k) {
+    if (data.hasOwnProperty(k)) {
+      switch (typeof(data[k])) {
+      case "array":
+        break;
+      case "string":
+        try {
+          data[k] = JSON.parse(data[k]);
+        } catch(err) {
+          data[k] = undefined;
+        }
+        break;
+      default:
+        data[k] = undefined;
+      }
+    }
+  });
+  return data;
+}
+
 router.route("/create")
   .post(common.policies.isAuthenticated, multer({
     dest: Ingredient.PHOTO_DIR,
     onFileUploadStart: onFileUploadStart
   }), function(req, res, next) {
     var data = _.omit(req.body, "photo_name");
-    ["tags", "allergy", "period"].forEach(function(k) {
-      if (data.hasOwnProperty(k)) {
-        try {
-          data[k] = JSON.parse(data[k]);
-        } catch(err) {
-          data[k] = undefined;
-        }
-      }
-    });
+    data = parseBodyData(data);
     var ing = new Ingredient(data);
     ing.save(function(err, ing) {
       if (err && err.name == "ValidationError") return res.status(400).json(err);
@@ -52,15 +66,7 @@ router.route("/:oid/update")
       if (err) return next(err);
       if (ing === null) return next("route");
       var data = _.omit(req.body, "photo_name");
-      ["tags", "allergy", "period"].forEach(function(k) {
-        if (data.hasOwnProperty(k)) {
-          try {
-            data[k] = JSON.parse(data[k]);
-          } catch(err) {
-            data[k] = undefined;
-          }
-        }
-      });
+      data = parseBodyData(data);
       _.extend(ing, data);
       ing.save(function(err, ing) {
         if (err && err.name == "ValidationError") return res.status(400).json(err);
