@@ -27,7 +27,7 @@ function rest(model) {
       var tasks = _.map(entries, function(entry) { return entry.remove.bind(entry); })
       async.parallel(tasks, function(err, results) {
         if (err) return next(err);
-        res.json(_.flatten(results), true);
+        res.json(_.flatten(results, true));
       });
     }, next);
   };
