@@ -97,7 +97,8 @@ router.route("/count")
 
 router.route("/")
   .get(rest.find)
-  .post(common.policies.isSuperAdmin, rest.create);
+  .post(common.policies.isSuperAdmin, rest.create)
+  .delete(rest.remove);
 
 router.route("/:oid")
   .get(rest.findOne)
