@@ -24,10 +24,10 @@ function rest(model) {
 
   fn.remove = function(req, res, next) {
     common.qsToFind(model.find(), req.query).exec().then(function(entries) {
-      var tasks = _.map(entries, function(entry) { return entry.save.bind(entry); })
+      var tasks = _.map(entries, function(entry) { return entry.remove.bind(entry); })
       async.parallel(tasks, function(err, results) {
         if (err) return next(err);
-        res.json(results);
+        res.json(_.flatten(results), true);
       });
     }, next);
   };
