@@ -1,0 +1,12 @@
+[
+  {"name": "Fruit", "value": "fruit", "color": "grey"},
+  {"name": "Chocolate", "value": "chocolate", "color": "marron"},
+  {"name": "Spice", "value": "spice", "color": "orange"},
+  {"name": "Cheese", "value": "cheese", "color": "yellow"},
+  {"name": "Bread", "value": "bread", "color": "white"},
+  {"name": "Egg", "value": "egg", "color": "lightgrey"},
+  {"name": "Vegetable", "value": "vegetable", "color": "green"},
+  {"name": "Meat", "value": "meat", "color": "red"},
+  {"name": "Fish", "value": "fish", "color": "blue"},
+  {"name": "Other", "value": "other", "color": "white"}
+]

@@ -1,6 +1,7 @@
 var express = require("express");
 var Ingredient = require("./model.js");
 var multer = require("multer");
+var categories = require("./categories")
 
 var router = express.Router();
 
@@ -30,6 +31,11 @@ function parseBodyData(data) {
   });
   return data;
 }
+
+router.route("/categories")
+  .get(function(req, res, next) {
+    res.json(categories);
+  });
 
 router.route("/create")
   .post(common.policies.isAuthenticated, multer({

@@ -3,6 +3,7 @@ var validate = require("mongoose-validator");
 var Q = require("q");
 var fs = require("fs-extra");
 var path = require("path");
+var categories = require("./categories");
 
 var PHOTO_DIR = path.join(__rootDir, "uploads", "ingredient");
 var PHOTO_URI = "/uploads/ingredient/";
@@ -17,7 +18,7 @@ var Ingredient = new mongoose.Schema({
   description: String,
   category: {
     type: String,
-    enum: ["chocolate", "spice", "cheese", "bread", "egg", "fruit", "vegetable", "other"],
+    enum: _.map(categories, function(cat) {return cat.value;}),
     default: "other"
   },
   cooking_tips: String,
