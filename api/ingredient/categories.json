@@ -1,7 +1,7 @@
 [
   {"name": "Bread", "value": "bread", "color": "white"},
   {"name": "Cheese", "value": "cheese", "color": "yellow"},
-  {"name": "Chocolate", "value": "chocolate", "color": "marron"},
+  {"name": "Chocolate", "value": "chocolate", "color": "brown"},
   {"name": "Egg", "value": "egg", "color": "lightgrey"},
   {"name": "Fish", "value": "fish", "color": "blue"},
   {"name": "Fruit", "value": "fruit", "color": "grey"},
