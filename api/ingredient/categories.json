@@ -1,12 +1,12 @@
 [
-  {"name": "Bread", "value": "bread", "color": "white"},
-  {"name": "Cheese", "value": "cheese", "color": "yellow"},
-  {"name": "Chocolate", "value": "chocolate", "color": "brown"},
-  {"name": "Egg", "value": "egg", "color": "lightgrey"},
-  {"name": "Fish", "value": "fish", "color": "blue"},
-  {"name": "Fruit", "value": "fruit", "color": "grey"},
-  {"name": "Meat", "value": "meat", "color": "red"},
-  {"name": "Spice", "value": "spice", "color": "orange"},
-  {"name": "Vegetable", "value": "vegetable", "color": "green"},
-  {"name": "Other", "value": "other", "color": "white"}
+  {"name": "Bread", "value": "bread"},
+  {"name": "Cheese", "value": "cheese"},
+  {"name": "Chocolate", "value": "chocolate"},
+  {"name": "Egg", "value": "egg"},
+  {"name": "Fish", "value": "fish"},
+  {"name": "Fruit", "value": "fruit"},
+  {"name": "Meat", "value": "meat"},
+  {"name": "Spice", "value": "spice"},
+  {"name": "Vegetable", "value": "vegetable"},
+  {"name": "Other", "value": "other"}
 ]

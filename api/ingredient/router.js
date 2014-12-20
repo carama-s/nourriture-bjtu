@@ -98,11 +98,11 @@ router.route("/count")
 router.route("/")
   .get(rest.find)
   .post(common.policies.isSuperAdmin, rest.create)
-  .delete(rest.remove);
+  .delete(common.policies.isAuthenticated, rest.remove);
 
 router.route("/:oid")
   .get(rest.findOne)
   .put(common.policies.isSuperAdmin, rest.updateOne)
-  .delete(rest.removeOne);
+  .delete(common.policies.isAuthenticated, rest.removeOne);
 
 module.exports = router;
