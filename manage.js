@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+process.env.NODE_PATH = "./libs";
+require("module")._initPaths();
 global._ = require("underscore");
 global.Q = require("q");
 global.__rootDir = __dirname;

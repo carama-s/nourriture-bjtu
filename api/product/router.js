@@ -1,5 +1,6 @@
 var express = require("express");
 var Product = require("./model.js");
+var common = require("common");
 
 var router = express.Router();
 

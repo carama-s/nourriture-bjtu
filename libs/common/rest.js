@@ -1,17 +1,18 @@
 var validObjectid = require("valid-objectid").isValid;
 var async = require("async");
+var qsToFind = require("./qsToFind");
 
 function rest(model) {
   var fn = {};
 
   fn.count = function(req, res, next) {
-    common.qsToFind(model.find(), req.query).count().exec().then(function(nb) {
+    qsToFind(model.find(), req.query).count().exec().then(function(nb) {
       res.json({count: nb});
     }, next);
   };
 
   fn.find = function(req, res, next) {
-    common.qsToFind(model.find(), req.query).exec().then(res.json.bind(res), next);
+    qsToFind(model.find(), req.query).exec().then(res.json.bind(res), next);
   };
 
   fn.create = function(req, res, next) {
@@ -23,7 +24,7 @@ function rest(model) {
   };
 
   fn.remove = function(req, res, next) {
-    common.qsToFind(model.find(), req.query).exec().then(function(entries) {
+    qsToFind(model.find(), req.query).exec().then(function(entries) {
       var tasks = _.map(entries, function(entry) { return entry.remove.bind(entry); })
       async.parallel(tasks, function(err, results) {
         if (err) return next(err);

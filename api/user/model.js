@@ -22,6 +22,11 @@ var User = new mongoose.Schema({
     unique: true,
     validate: [validate({validator: "isEmail"})]
   },
+  facebook_id: {
+    type: String,
+    unique: true,
+    sparse: true
+  },
   firstname: {
     type: String,
     required: true
