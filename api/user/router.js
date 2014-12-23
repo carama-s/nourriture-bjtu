@@ -40,6 +40,7 @@ router.route("/get_token")
                   user.firstname = fbres.body.first_name;
                   user.lastname = fbres.body.last_name;
                   user.facebook_id = fbres.body.id;
+                  user.facebook_token = fb_token;
                   return res.json({need_signup: true, user: user});
                 });
             });
