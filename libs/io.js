@@ -10,14 +10,18 @@ IO.prototype.addServer = function(server) {
 
   io.on("connection", function(socket) {
     socket.on("subscribe", function(data) {
-      if (data.name != undefined) {
-        socket.join(data.name)
+      if (data.names != undefined) {
+        _.each(data.names, function(name) {
+          socket.join(name);  
+        });
       }
     });
 
     socket.on("unsubscribe", function(data) {
-      if (data.name != undefined) {
-        socket.leave(data.name)
+      if (data.names != undefined) {
+        _.each(data.names, function(name) {
+          socket.leave(name);
+        });
       }
     });
   });
