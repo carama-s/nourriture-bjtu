@@ -23,8 +23,6 @@ IO.prototype.addServer = function(server) {
   });
 
   this.on("DBEvent", function(name, data) {
-    console.log("New event %s", name);
-    console.log(data);
     io.to(name).emit(name, data);
   });
 };
