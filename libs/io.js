@@ -6,7 +6,7 @@ function IO() {}
 util.inherits(IO, events.EventEmitter);
 
 IO.prototype.addServer = function(server) {
-  var io = require("socket.io")(server, {origins: "*"});
+  var io = require("socket.io")(server, {origins: "*", 'transports': ['websocket', 'polling']});
 
   io.on("connection", function(socket) {
     socket.on("subscribe", function(data) {
