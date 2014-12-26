@@ -50,7 +50,7 @@ Ingredient.methods.changePhoto = function(new_photo_name) {
     if (err) return d.reject(err);
     this.photo_name = new_photo_name;
     return d.resolve();
-  });
+  }.bind(this));
   return d.promise;
 };
 
