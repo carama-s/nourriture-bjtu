@@ -19,7 +19,7 @@ var ingredientMulter = multer({
 
 function parseBodyData(data) {
   ["tags", "allergy", "period"].forEach(function(k) {
-    if (data.k !== undefined) {
+    if (data[k] !== undefined) {
       switch (typeof(data[k])) {
       case "array":
         break;
