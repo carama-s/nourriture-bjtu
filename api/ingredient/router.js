@@ -64,11 +64,11 @@ function ingredientUpdate(req, res, next) {
   Ingredient.findById(req.params.oid, function(err, ing) {
     if (err) return next(err);
     if (ing === null) return next("route");
+    console.log(req.body);
+    console.log(req.files);
     var data = _.omit(req.body, "photo_name");
     data = parseBodyData(data);
     console.log(data);
-    console.log(req.body);
-    console.log(req.files);
     _.extend(ing, data);
     ing.save(function(err, ing) {
       if (err && err.name == "ValidationError") return res.status(400).json(err);
