@@ -57,7 +57,7 @@ app.use(function(req, res, next) {
 
 for (model in api) {
   if (api[model].router !== undefined) {
-    app.use("/" + model, api[model].router);
+    app.use("/api/" + model, api[model].router);
   }
 }
 
