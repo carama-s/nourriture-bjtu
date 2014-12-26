@@ -6,13 +6,13 @@ function IO() {}
 util.inherits(IO, events.EventEmitter);
 
 IO.prototype.addServer = function(server) {
-  var io = require("socket.io")(server);
+  var io = require("socket.io")(server, {origins: "*"});
 
   io.on("connection", function(socket) {
     socket.on("subscribe", function(data) {
       if (data.names != undefined) {
         _.each(data.names, function(name) {
-          socket.join(name);  
+          socket.join(name);
         });
       }
     });
