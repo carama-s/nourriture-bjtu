@@ -66,12 +66,16 @@ function ingredientUpdate(req, res, next) {
     if (ing === null) return next("route");
     var data = _.omit(req.body, "photo_name");
     data = parseBodyData(data);
+    console.log(data);
+    console.log(req.body);
+    console.log(req.files);
     _.extend(ing, data);
     ing.save(function(err, ing) {
       if (err && err.name == "ValidationError") return res.status(400).json(err);
       if (err) return next(err);
       var photo = req.files.photo
       if (photo === undefined) return res.json(ing);
+      console.log(photo);
       ing.changePhoto(photo.name)
         .then(function() {
           ing.save(function(err, ing) {
