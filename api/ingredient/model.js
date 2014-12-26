@@ -4,6 +4,7 @@ var Q = require("q");
 var fs = require("fs-extra");
 var path = require("path");
 var categories = require("./categories");
+var io = require("io.js");
 
 var PHOTO_DIR = path.join(__rootDir, "uploads", "ingredient");
 var PHOTO_URI = "/uploads/ingredient/";
@@ -59,6 +60,8 @@ Ingredient.pre("remove", function(next) {
     return next(err);
   });
 });
+
+io.getHandler(Ingredient, "ingredient").postNew().postUpdate().postRemove();
 
 if (!Ingredient.options.toJSON) Ingredient.options.toJSON = {};
 Ingredient.options.toJSON.virtuals = true;

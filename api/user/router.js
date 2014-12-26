@@ -46,7 +46,7 @@ router.route("/get_token")
             });
         })
         .then(null, next);
-    }  else {
+    } else {
       res.status(400).json({error: "Missing data"});
     }
   });

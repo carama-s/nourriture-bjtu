@@ -65,4 +65,10 @@ if (app.get("env") === 'development') {
   app.use(require("errorhandler")());
 }
 
-module.exports = app;
+// Socket.io config
+
+var server = require("http").Server(app);
+var io = require("io.js");
+io.addServer(server);
+
+module.exports = server;
