@@ -52,23 +52,23 @@ IO.prototype.getHandler = function(model, name) {
 
   h.postNew = function() {
     addWasNew();
-    model.post("save", function(doc) {
-      if (doc._wasNew) io.dbEvent(name + ".new", doc);
+    model.post("save", function() {
+      if (this._wasNew) io.dbEvent(name + ".new", this);
     });
     return h;
   };
 
   h.postUpdate = function() {
     addWasNew();
-    model.post("save", function(doc) {
-      if (!doc._wasNew) io.dbEvent(name + ".update", doc);
+    model.post("save", function() {
+      if (!this._wasNew) io.dbEvent(name + ".update", this);
     });
     return h;
   };
 
   h.postRemove = function() {
-    model.post("remove", function(doc) {
-      io.dbEvent(name + ".remove", doc);
+    model.post("remove", function() {
+      io.dbEvent(name + ".remove", this);
     });
     return h;
   };
