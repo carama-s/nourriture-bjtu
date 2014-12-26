@@ -23,9 +23,9 @@ describe("User", function() {
       });
     });
 
-    it("GET /user/", function(done) {
+    it("GET /api/user/", function(done) {
       request(app)
-        .get("/user/")
+        .get("/api/user/")
         .expect(200)
         .expect(function(res) {
           res.body.should.be.a("Array");
@@ -34,26 +34,26 @@ describe("User", function() {
         .end(done);
     });
 
-    it("POST /user/ no auth", function(done) {
+    it("POST /api/user/ no auth", function(done) {
       request(app)
-        .post("/user/")
+        .post("/api/user/")
         .send({firstname: "a", lastname: "b", username: "test", email: "test@test.com", passwd: "test"})
         .expect(403)
         .end(done);
     });
 
-    it("POST /user/ normal user", function(done) {
+    it("POST /api/user/ normal user", function(done) {
       request(app)
-        .post("/user/")
+        .post("/api/user/")
         .set("Authorization", "Bearer " + nUser.token.token)
         .send({firstname: "a", lastname: "b", username: "test", email: "test@test.com", passwd: "test"})
         .expect(403)
         .end(done);
     });
 
-    it("POST /user/ admin user", function(done) {
+    it("POST /api/user/ admin user", function(done) {
       request(app)
-        .post("/user/")
+        .post("/api/user/")
         .set("Authorization", "Bearer " + aUser.token.token)
         .send({firstname: "a", lastname: "b", username: "test", email: "test@test.com", passwd: "test"})
         .expect(200)
@@ -64,40 +64,40 @@ describe("User", function() {
         });
     });
 
-    it("GET /user/:oid valid", function(done) {
+    it("GET /api/user/:oid valid", function(done) {
       request(app)
-        .get("/user/" + testUser._id)
+        .get("/api/user/" + testUser._id)
         .expect(200)
         .end(done);
     });
 
-    it("GET /user/:oid invalid", function(done) {
+    it("GET /api/user/:oid invalid", function(done) {
       request(app)
-      .get("/user/123456789")
+      .get("/api/user/123456789")
       .expect(404)
       .end(done);
     });
 
-    it("PUT /user/:oid no auth", function(done) {
+    it("PUT /api/user/:oid no auth", function(done) {
       request(app)
-        .put("/user/" + testUser._id)
+        .put("/api/user/" + testUser._id)
         .send({username: "toto"})
         .expect(403)
         .end(done);
     });
 
-    it("PUT /user/:oid normal user", function(done) {
+    it("PUT /api/user/:oid normal user", function(done) {
       request(app)
-        .put("/user/" + testUser._id)
+        .put("/api/user/" + testUser._id)
         .set("Authorization", "Bearer " + nUser.token.token)
         .send({username: "toto"})
         .expect(403)
         .end(done);
     });
 
-    it("PUT /user/:oid admin user", function(done) {
+    it("PUT /api/user/:oid admin user", function(done) {
       request(app)
-        .put("/user/" + testUser._id)
+        .put("/api/user/" + testUser._id)
         .set("Authorization", "Bearer " + aUser.token.token)
         .send({username: "toto"})
         .expect(200)
@@ -108,24 +108,24 @@ describe("User", function() {
         });
     });
 
-    it("DELETE /user/:oid no auth", function(done) {
+    it("DELETE /api/user/:oid no auth", function(done) {
       request(app)
-        .delete("/user/" + testUser._id)
+        .delete("/api/user/" + testUser._id)
         .expect(403)
         .end(done);
     });
 
-    it("DELETE /user/:oid normal user", function(done) {
+    it("DELETE /api/user/:oid normal user", function(done) {
       request(app)
-        .delete("/user/" + testUser._id)
+        .delete("/api/user/" + testUser._id)
         .set("Authorization", "Bearer " + nUser.token.token)
         .expect(403)
         .end(done);
     });
 
-    it("DELETE /user/:oid admin user", function(done) {
+    it("DELETE /api/user/:oid admin user", function(done) {
       request(app)
-        .put("/user/" + testUser._id)
+        .put("/api/user/" + testUser._id)
         .set("Authorization", "Bearer " + aUser.token.token)
         .expect(200)
         .end(done);
@@ -142,81 +142,81 @@ describe("User", function() {
       });
     });
 
-    it("/user/signup Missing email", function(done) {
+    it("/api/user/signup Missing email", function(done) {
       request(app)
-        .post("/user/signup")
+        .post("/api/user/signup")
         .send({firstname: "a", lastname: "b", username: "test", passwd: "foo"})
         .expect(400)
         .end(done);
     });
 
-    it("/user/signup Missing username", function(done) {
+    it("/api/user/signup Missing username", function(done) {
       request(app)
-        .post("/user/signup")
+        .post("/api/user/signup")
         .send({firstname: "a", lastname: "b", email: "test@test.com", passwd: "foo"})
         .expect(400)
         .end(done);
     });
 
-    it("/user/signup Missing passwd", function(done) {
+    it("/api/user/signup Missing passwd", function(done) {
       request(app)
-        .post("/user/signup")
+        .post("/api/user/signup")
         .send({firstname: "a", lastname: "b", username: "test", email: "test@test.com"})
         .expect(400)
         .end(done);
     });
 
-    it("/user/signup Missing firstname", function(done) {
+    it("/api/user/signup Missing firstname", function(done) {
       request(app)
-      .post("/user/signup")
+      .post("/api/user/signup")
       .send({email: "test@test.com", lastname: "b", username: "test", passwd: "foo"})
       .expect(400)
       .end(done);
     });
 
-    it("/user/signup Missing lastname", function(done) {
+    it("/api/user/signup Missing lastname", function(done) {
       request(app)
-      .post("/user/signup")
+      .post("/api/user/signup")
       .send({firstname: "a", email: "test@test.com", username: "test", passwd: "foo"})
       .expect(400)
       .end(done);
     });
 
-    it("/user/signup wrong gender", function(done) {
+    it("/api/user/signup wrong gender", function(done) {
       request(app)
-      .post("/user/signup")
+      .post("/api/user/signup")
       .send({firstname: "a", lastname: "b", username: "test", email: "test@test.com", passwd: "foo", gender: "wrong"})
       .expect(400)
       .end(done);
     });
 
-    it("/user/signup passwd is empty", function(done) {
+    it("/api/user/signup passwd is empty", function(done) {
       request(app)
-        .post("/user/signup")
+        .post("/api/user/signup")
         .send({firstname: "a", lastname: "b", username: "test", email: "test@test.com", passwd: ""})
         .expect(400)
         .end(done);
     });
 
-    it("/user/signup Email exists", function(done) {
+    it("/api/user/signup Email exists", function(done) {
       request(app)
-        .post("/user/signup")
+        .post("/api/user/signup")
         .send({firstname: "a", lastname: "b", username: "test", email: eUser.email, passwd: "foo"})
         .expect(400)
         .end(done);
     });
 
-    it("/user/signup Username exists", function(done) {
+    it("/api/user/signup Username exists", function(done) {
       request(app)
-        .post("/user/signup")
+        .post("/api/user/signup")
         .send({firstname: "a", lastname: "b", username: eUser.username, email: "test@test.com", passwd: "foo"})
         .expect(400)
         .end(done);
     });
 
-    it("/user/signup Success", function(done) {
+    it("/api/user/signup Success", function(done) {
       request(app)
-        .post("/user/signup")
+        .post("/api/user/signup")
         .send({firstname: "a", lastname: "b", username: "test", email: "test@test.com", passwd: "foo"})
         .expect(200)
         .end(done);
@@ -237,9 +237,9 @@ describe("User", function() {
       });
     });
 
-    it("/user/get_token Sucess", function(done) {
+    it("/api/user/get_token Sucess", function(done) {
       request(app)
-        .post("/user/get_token")
+        .post("/api/user/get_token")
         .send({email: user.email, passwd: "right"})
         .expect(200)
         .expect(function(res) {
@@ -248,132 +248,132 @@ describe("User", function() {
         .end(done);
     });
 
-    it("/user/get_token Missing email", function(done) {
+    it("/api/user/get_token Missing email", function(done) {
       request(app)
-        .post("/user/get_token")
+        .post("/api/user/get_token")
         .send({passwd: "right"})
         .expect(400)
         .end(done);
     });
 
-    it("/user/get_token Missing passwd", function(done) {
+    it("/api/user/get_token Missing passwd", function(done) {
       request(app)
-        .post("/user/get_token")
+        .post("/api/user/get_token")
         .send({email: user.email})
         .expect(400)
         .end(done);
     });
 
-    it("/user/get_token Wrong email", function(done) {
+    it("/api/user/get_token Wrong email", function(done) {
       request(app)
-        .post("/user/get_token")
+        .post("/api/user/get_token")
         .send({email: "wrong@example.com", passwd: "right"})
         .expect(400)
         .end(done);
     });
 
-    it("/user/get_token Wrong passwd", function(done) {
+    it("/api/user/get_token Wrong passwd", function(done) {
       request(app)
-        .post("/user/get_token")
+        .post("/api/user/get_token")
         .send({email: user.email, passwd: "wrong"})
         .expect(400)
         .end(done);
     });
 
-    it("/user/me Success", function(done) {
+    it("/api/user/me Success", function(done) {
       request(app)
-        .get("/user/me")
+        .get("/api/user/me")
         .set("Authorization", "Bearer " + user.token.token)
         .expect(200)
         .end(done);
     });
 
-    it("/user/me Error", function(done) {
+    it("/api/user/me Error", function(done) {
       request(app)
-        .get("/user/me")
+        .get("/api/user/me")
         .expect(403)
         .end(done);
     });
 
-    it("/user/change_passwd no Auth", function(done) {
+    it("/api/user/change_passwd no Auth", function(done) {
       request(app)
-        .post("/user/change_passwd")
+        .post("/api/user/change_passwd")
         .send({old_passwd: "right", new_passwd: "right"})
         .expect(403)
         .end(done);
     });
 
-    it("/user/change_passwd missing old_passwd", function(done) {
+    it("/api/user/change_passwd missing old_passwd", function(done) {
       request(app)
-        .post("/user/change_passwd")
+        .post("/api/user/change_passwd")
         .set("Authorization", "Bearer " + user.token.token)
         .send({new_passwd: "right"})
         .expect(400)
         .end(done);
     });
 
-    it("/user/change_passwd missing new_passwd", function(done) {
+    it("/api/user/change_passwd missing new_passwd", function(done) {
       request(app)
-        .post("/user/change_passwd")
+        .post("/api/user/change_passwd")
         .set("Authorization", "Bearer " + user.token.token)
         .send({old_passwd: "right"})
         .expect(400)
         .end(done);
     });
 
-    it("/user/change_passwd wrong passwd", function(done) {
+    it("/api/user/change_passwd wrong passwd", function(done) {
       request(app)
-        .post("/user/change_passwd")
+        .post("/api/user/change_passwd")
         .set("Authorization", "Bearer " + user.token.token)
         .send({old_passwd: "wrong", new_passwd: "right"})
         .expect(400)
         .end(done);
     });
 
-    it("/user/change_passwd Success", function(done) {
+    it("/api/user/change_passwd Success", function(done) {
       request(app)
-        .post("/user/change_passwd")
+        .post("/api/user/change_passwd")
         .set("Authorization", "Bearer " + user.token.token)
         .send({old_passwd: "right", new_passwd: "foo"})
         .expect(200)
         .end(function(err, res) {
           request(app)
-            .post("/user/get_token")
+            .post("/api/user/get_token")
             .send({email: user.email, passwd: "foo"})
             .expect(200)
             .end(done);
         });
     });
 
-    it("/user/update Error", function(done) {
+    it("/api/user/update Error", function(done) {
       request(app)
-        .post("/user/update")
+        .post("/api/user/update")
         .send({username: "lol"})
         .expect(403)
         .end(done);
     });
 
-    it("/user/update Duplicate email", function(done) {
+    it("/api/user/update Duplicate email", function(done) {
       request(app)
-        .post("/user/update")
+        .post("/api/user/update")
         .set("Authorization", "Bearer " + user.token.token)
         .send({email: otherUser.email})
         .expect(400)
         .end(done);
     });
 
-    it("/user/update Same email as before", function(done) {
+    it("/api/user/update Same email as before", function(done) {
       request(app)
-      .post("/user/update")
+      .post("/api/user/update")
       .set("Authorization", "Bearer " + user.token.token)
       .send({email: user.email})
       .expect(200)
       .end(done);
     });
 
-    it("/user/update Success", function(done) {
+    it("/api/user/update Success", function(done) {
       request(app)
-        .post("/user/update")
+        .post("/api/user/update")
         .set("Authorization", "Bearer " + user.token.token)
         .send({username: "lol"})
         .expect(200)
