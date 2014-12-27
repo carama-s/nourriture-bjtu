@@ -36,8 +36,8 @@ module.exports.http = {
 
     order: [
       'startRequestTimer',
-//      'cookieParser',
-//      'session',
+      'cookieParser',
+      'session',
       'myRequestLogger',
 //      'bodyParser',
       "formidable",
