@@ -40,7 +40,6 @@ module.exports.http = {
       'session',
       'myRequestLogger',
 //      'bodyParser',
-      "myCors",
       "formidable",
       'handleBodyParserError',
       'compress',
@@ -61,14 +60,7 @@ module.exports.http = {
   * Example custom middleware; logs each request to the console.              *
   *                                                                           *
   ****************************************************************************/
-
-    myCors: require("cors")(function(req, next) {
-      var opts = {origin: true};
-      var headers = req.get("Access-Control-Request-Headers");
-      if (headers) opts.allowedHeaders = headers;
-      next(null, opts);
-    }),
-
+  
     passportInit: passport.initialize(),
 
     passportConfig: function(req, res, next) {
