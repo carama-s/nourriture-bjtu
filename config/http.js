@@ -62,7 +62,11 @@ module.exports.http = {
   *                                                                           *
   ****************************************************************************/
 
-    cors: require("cors")(),
+    cors: require("cors")(function(req, next) {
+      var opts = {origin: true};
+      sails.log(req);
+      next(null, opts);
+    }),
 
     passportInit: passport.initialize(),
 
