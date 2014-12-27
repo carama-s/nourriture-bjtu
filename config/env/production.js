@@ -19,4 +19,11 @@ module.exports = {
 
    port: process.env.PORT || 3000,
 
+   session: {
+     adapter: 'redis',
+     host: 'localhost',
+     port: 6379,
+     db: 0,
+     prefix: 'nourriture-sess:'
+   }
 };
