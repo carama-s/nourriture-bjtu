@@ -22,12 +22,14 @@
 
 module.exports.routes = {
 
+  "GET /api/user/count": "UserController.count",
   "GET /api/user/me": "UserController.me",
   "POST /api/user/get_token": "UserController.get_token",
   "POST /api/user/signup": "UserController.signup",
   "POST /api/user/change_passwd": "UserController.change_passwd",
   "POST /api/user/update": "UserController.update_self",
 
+  "GET /api/ingredient/count": "IngredientController.count",
   "GET /api/ingredient/categories": "IngredientController.categories"
 
 };

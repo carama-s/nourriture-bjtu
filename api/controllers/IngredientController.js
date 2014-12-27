@@ -91,8 +91,13 @@ function categories(req, res, next) {
 	res.json(Ingredient.CATEGORIES);
 }
 
+function count(req, res, next) {
+	CountView(Ingredient)(req, res, next);
+}
+
 module.exports = {
 	create: ingredientCreate,
 	update: ingredientUpdate,
-	categories: categories
+	categories: categories,
+	count: count
 };

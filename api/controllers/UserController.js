@@ -97,10 +97,15 @@ function update_self(req, res, next) {
 	}, ValCb(res, next));
 }
 
+function count(req, res, next) {
+	CountView(User)(req, res, next);
+}
+
 module.exports = {
 	"me": me,
 	"get_token": get_token,
 	"signup": signup,
 	"change_passwd": change_passwd,
-	"update_self": update_self
+	"update_self": update_self,
+	"count": count
 };
