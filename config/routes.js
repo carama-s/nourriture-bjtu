@@ -22,8 +22,6 @@
 
 module.exports.routes = {
 
-//  "OPTIONS /*": "CorsController.preflight",
-
   "GET /api/user/count": "UserController.count",
   "GET /api/user/me": "UserController.me",
   "POST /api/user/get_token": "UserController.get_token",
