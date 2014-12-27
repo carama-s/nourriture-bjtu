@@ -6,6 +6,7 @@
   "keywords": [],
   "dependencies": {
     "bcrypt": "^0.8.0",
+    "cors": "^2.5.2",
     "ejs": "~0.8.4",
     "formidable": "^1.0.16",
     "fs-extra": "^0.13.0",

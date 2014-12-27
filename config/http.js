@@ -40,6 +40,7 @@ module.exports.http = {
       'session',
       'myRequestLogger',
 //      'bodyParser',
+      "cors",
       "formidable",
       'handleBodyParserError',
       'compress',
@@ -60,6 +61,8 @@ module.exports.http = {
   * Example custom middleware; logs each request to the console.              *
   *                                                                           *
   ****************************************************************************/
+
+    cors: require("cors")(),
 
     passportInit: passport.initialize(),
 
