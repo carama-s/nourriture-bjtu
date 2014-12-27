@@ -6,5 +6,8 @@
  */
 
 module.exports = {
-	preflight: require("cors")()
+	preflight: function(req, res, next) {
+		sails.log("HELLLO CORS");
+		require("cors")()(req, res, next);
+	}
 };
