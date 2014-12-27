@@ -64,7 +64,8 @@ module.exports.http = {
 
     cors: require("cors")(function(req, next) {
       var opts = {origin: true};
-      sails.log(req);
+      var headers = req.get("Access-Control-Request-Headers");
+      if (headers) opts.allowedHeaders = headers;
       next(null, opts);
     }),
 
