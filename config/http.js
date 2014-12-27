@@ -40,7 +40,7 @@ module.exports.http = {
       'session',
       'myRequestLogger',
 //      'bodyParser',
-      "cors",
+      "myCors",
       "formidable",
       'handleBodyParserError',
       'compress',
@@ -62,7 +62,7 @@ module.exports.http = {
   *                                                                           *
   ****************************************************************************/
 
-    cors: require("cors")(function(req, next) {
+    myCors: require("cors")(function(req, next) {
       var opts = {origin: true};
       var headers = req.get("Access-Control-Request-Headers");
       if (headers) opts.allowedHeaders = headers;
