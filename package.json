@@ -41,5 +41,12 @@
     "url": "git://github.com/gossel_j/nourriture-bjtu-api.git"
   },
   "author": "gossel_j",
-  "license": ""
+  "license": "",
+  "devDependencies": {
+    "chai": "^1.10.0",
+    "grunt-mocha-test": "^0.12.4",
+    "mocha": "^2.1.0",
+    "sails-memory": "^0.10.3",
+    "supertest": "^0.15.0"
+  }
 }

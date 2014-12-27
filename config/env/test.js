@@ -1,7 +1,7 @@
 /**
- * Production environment settings
+ * Development environment settings
  *
- * This file can include shared settings for a production environment,
+ * This file can include shared settings for a development team,
  * such as API keys or remote database passwords.  If you're using
  * a version control solution for your Sails app, this file will
  * be committed to your repository unless you add it to your .gitignore
@@ -11,12 +11,8 @@
  */
 
 module.exports = {
-
   models: {
     migrate: "alter",
-    connection: "mongoDB"
-  },
-
-   port: process.env.PORT || 3000,
-
+    connection: 'memoryDB'
+  }
 };
