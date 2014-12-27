@@ -22,7 +22,7 @@
 
 module.exports.routes = {
 
-  "OPTIONS /*": "CorsController.preflight",
+//  "OPTIONS /*": "CorsController.preflight",
 
   "GET /api/user/count": "UserController.count",
   "GET /api/user/me": "UserController.me",

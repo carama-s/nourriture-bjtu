@@ -42,7 +42,7 @@ module.exports.http = {
 //      'bodyParser',
       "formidable",
       'handleBodyParserError',
-      "cors",
+//      "cors",
       'compress',
       'methodOverride',
       'poweredBy',
