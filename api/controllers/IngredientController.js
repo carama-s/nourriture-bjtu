@@ -65,15 +65,16 @@ function ingredientUpdate(req, res, next) {
 			if (photo === undefined || !isImage(photo)) return res.json(ing);
 			var app_path = path.join(Ingredient.PHOTO_URI, path.basename(photo.path));
 			if (ing.photo != undefined) {
-				ing.photo.change_path(app_path);
-				ing.photo.save().then(function(up) {
-					fs.move(photo.path, up.real_path(), function(err) {
-						if (err) return next(err);
-						res.json(ing);
-					});
-				}, ValCb(res, next));
+				return ing.photo.change_path(app_path).then(function() {
+					return ing.photo.save().then(function(up) {
+						fs.move(photo.path, up.real_path(), function(err) {
+							if (err) return next(err);
+							res.json(ing);
+						});
+					}, ValCb(res, next));
+				});
 			} else {
-				Upload.create({path: app_path}).then(function(up) {
+				return Upload.create({path: app_path}).then(function(up) {
 					fs.move(photo.path, up.real_path(), function(err) {
 						if (err) return next(err);
 						ing.photo = up;
