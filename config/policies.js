@@ -32,7 +32,7 @@ module.exports.policies = {
     findOne: true,
     create: "isSuperAdmin",
     update: "isSuperAdmin",
-    delete: "isSuperAdmin",
+    destroy: "isSuperAdmin",
   },
 
   IngredientController: {
@@ -42,7 +42,7 @@ module.exports.policies = {
     findOne: true,
     create: "isAuthenticated",
     update: "isAuthenticated",
-    delete: "isAuthenticated"
+    destroy: "isAuthenticated"
   },
 
   TokenController: {"*": false},
