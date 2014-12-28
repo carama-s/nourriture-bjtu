@@ -29,6 +29,7 @@ module.exports.policies = {
     update_self: "isAuthenticated",
 
     find: true,
+    findOne: true,
     create: "isSuperAdmin",
     update: "isSuperAdmin",
     delete: "isSuperAdmin",
@@ -38,6 +39,7 @@ module.exports.policies = {
     "*": false,
 
     find: true,
+    findOne: true,
     create: "isAuthenticated",
     update: "isAuthenticated",
     delete: "isAuthenticated"
