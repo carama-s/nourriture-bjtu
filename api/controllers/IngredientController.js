@@ -55,7 +55,7 @@ function ingredientCreate(req, res, next) {
 }
 
 function ingredientUpdate(req, res, next) {
-	Ingredient.findById(req.params.id).populate("photo").then(function(ing) {
+	Ingredient.findOneById(req.params.id).populate("photo").then(function(ing) {
 		if (ing === undefined) return next("route");
 		var data = _.omit(req.body, "photo");
 		data = parseBodyData(data);
