@@ -64,16 +64,8 @@ function ingredientUpdate(req, res, next) {
 			var photo = req.files.photo;
 			if (photo === undefined || !isImage(photo)) return res.json(ing);
 			var app_path = path.join(Ingredient.PHOTO_URI, path.basename(photo.path));
-			if (ing.photo != undefined) {
-				return ing.photo.change_path(app_path).then(function() {
-					return ing.photo.save().then(function(up) {
-						fs.move(photo.path, up.real_path(), function(err) {
-							if (err) return next(err);
-							res.json(ing);
-						});
-					}, ValCb(res, next));
-				});
-			} else {
+
+			function setPhoto() {
 				return Upload.create({path: app_path}).then(function(up) {
 					fs.move(photo.path, up.real_path(), function(err) {
 						if (err) return next(err);
@@ -84,6 +76,11 @@ function ingredientUpdate(req, res, next) {
 					});
 				}, next);
 			}
+
+			if (ing.photo === undefined) return setPhoto();
+			return ing.photo.destroy().then(function() {
+				return setPhoto();
+			});
 		}, ValCb(res, next));
 	}, next);
 }

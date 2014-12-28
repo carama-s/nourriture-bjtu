@@ -12,6 +12,10 @@ var Q = require("q");
 UPLOAD_DIR = path.join(__dirname, "..", "..", "uploads");
 UPLOAD_URI = "/uploads/";
 
+function real_path(up) {
+  return path.join(UPLOAD_DIR, up.path);
+}
+
 module.exports = {
 
   attributes: {
@@ -26,24 +30,14 @@ module.exports = {
     },
 
     real_path: function() {
-      return path.join(UPLOAD_DIR, this.path);
-    },
-
-    change_path: function(new_path) {
-      if (!this.path || this.path == new_path) return Q();
-      var d = Q.defer();
-      fs.remove(this.real_path(), function(err) {
-        if (err) return d.reject(err);
-        d.resolve();
-      });
-      return d.promise;
+      return real_path(this);
     }
   },
 
   afterDestroy: function(uploads, next) {
     var tasks = _.map(uploads, function(up) {
       return function(cb) {
-        fs.remove(up.real_path(), cb);
+        fs.remove(real_path(up), cb);
       }
     });
     async.parallel(tasks, function(err) {
