@@ -5,6 +5,40 @@
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 
+/**
+*	@api {get} /api/user Find Users
+*	@apiName FindUser
+*	@apiGroup User
+*
+* @apiSuccess {String} username Username of User
+* @apiSuccess {String} email Email of User
+* @apiSuccess {String} lastname Lastname of User
+* @apiSuccess {String} firstname Firstname of User
+* @apiSuccess {String} gender Gender of User
+* @apiSuccess {Number} admin Admin level of User
+*
+*	@apiSuccessExample Success-Response:
+*	HTTP/1.1 200 OK
+*	[
+*		{
+*			"username": "johndoe",
+*			"email": "john.doe@example.com",
+*			"lastname": "John",
+*			"firstname": "Doe",
+*			"gender": "male",
+*			"admin": 10
+*		},
+*		{
+*			"username": "janedoe",
+*			"email": "jane.doe@example.com",
+*			"lastname": "Jane",
+*			"firstname": "Doe",
+*			"gender": "female",
+*			"admin": 0
+*		}
+*	]
+*/
+
 var actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
 
 function me(req, res, next) {

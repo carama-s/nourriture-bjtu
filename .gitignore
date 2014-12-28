@@ -1,6 +1,8 @@
 /config/local.js
 /node_modules
 /bower_components
+/assets/api/doc
+!/assets/api/doc/.gitkeep
 .tmp
 dump.rdb
 lib-cov
