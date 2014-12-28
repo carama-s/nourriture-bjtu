@@ -7,7 +7,7 @@
 
 /**
 *	@api {get} /api/user Find Users
-*	@apiName FindUser
+*	@apiName FindUsers
 *	@apiGroup User
 *
 * @apiSuccess {String} username Username of User
@@ -37,6 +37,32 @@
 *			"admin": 0
 *		}
 *	]
+*/
+
+/**
+*	@api {get} /api/user/:id FindOne User
+* @apiName FindOneUser
+* @apiGroup User
+*
+*	@apiParam	{String} id User unique ID
+*
+* @apiSuccess {String} username Username of User
+* @apiSuccess {String} email Email of User
+* @apiSuccess {String} lastname Lastname of User
+* @apiSuccess {String} firstname Firstname of User
+* @apiSuccess {String} gender Gender of User
+* @apiSuccess {Number} admin Admin level of User
+*
+*	@apiSuccessExample Success-Response:
+*	HTTP/1.1 200 OK
+*	{
+*		"username": "johndoe",
+*		"email": "john.doe@example.com",
+*		"lastname": "John",
+*		"firstname": "Doe",
+*		"gender": "male",
+*		"admin": 10
+*	}
 */
 
 var actionUtil = require('sails/lib/hooks/blueprints/actionUtil');
