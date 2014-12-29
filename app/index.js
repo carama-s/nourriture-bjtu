@@ -43,11 +43,15 @@ function APP() {
         obj.app = app;
         console.log("Express app loaded !");
 
-        // Socket.io config
+        // HTTP Server
         var server = require("http").Server(app);
-        //var io = require("io.js");
-        //io.addServer(server);
         obj.server = server;
+
+        // Socket.io config
+        var IO = require("./io.js");
+        var io = new IO(config.http.prefix + config.http.io_uri);
+        io.addServer(server);
+        obj.io = io;
       });
     });
   };
