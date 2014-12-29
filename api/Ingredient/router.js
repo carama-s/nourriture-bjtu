@@ -83,7 +83,7 @@ function categories(req, res, next) {
 }
 
 function ingredientAutocomplete(req, res, next) {
-	Ingredient.find({name: {"like": req.query.name}})
+	Ingredient.find({name: {"contains": req.query.name}})
 	.limit(10)
 	.populate("photo").then(function(ings) {
 		res.json(ings);
