@@ -1,10 +1,13 @@
 var config = require("../config");
 var Waterline = require("waterline");
+var IO = require("./io.js");
 
 function APP() {
   var obj = {};
   global.APP = obj;
   obj.config = config;
+  var io = new IO(config.http.prefix + config.http.io_uri);
+  obj.io = io;  
 
   obj.initialize = function() {
     console.log("Initializing...");
@@ -48,10 +51,7 @@ function APP() {
         obj.server = server;
 
         // Socket.io config
-        var IO = require("./io.js");
-        var io = new IO(config.http.prefix + config.http.io_uri);
         io.addServer(server);
-        obj.io = io;
       });
     });
   };

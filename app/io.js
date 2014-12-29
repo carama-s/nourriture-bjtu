@@ -39,4 +39,21 @@ IO.prototype.dbEvent = function(name, data) {
   this.emit("DBEvent", name, data);
 };
 
+IO.prototype.handler = function(Model) {
+  var ident = Model.identity;
+  var io = this;
+
+  return {
+    create: function(data) {
+      io.dbEvent(ident + ".create", data);
+    },
+    update: function(data) {
+      io.dbEvent(ident + ".update", data);
+    },
+    destroy: function(data) {
+      io.dbEvent(ident + ".destroy", data);
+    }
+  };
+};
+
 module.exports = IO;

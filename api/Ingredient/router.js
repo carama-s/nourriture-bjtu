@@ -31,16 +31,21 @@ function ingredientCreate(req, res, next) {
 	var data = _.omit(req.body, "photo");
 	data = parseBodyData(data);
 
+	function finish(ing) {
+		APP.io.handler(Ingredient).create(ing);
+		return res.json(ing);
+	}
+
 	Ingredient.create(data).then(function(ing) {
 		var photo = req.files.photo;
-		if (photo === undefined || !isImage(photo)) return res.json(ing);
+		if (photo === undefined || !isImage(photo)) return finish(ing);
 		var app_path = path.join(Ingredient.PHOTO_URI, path.basename(photo.path));
 		Upload.create({path: app_path}).then(function(up) {
 			fs.move(photo.path, up.real_path(), function(err) {
 				if (err) return next(err);
 				ing.photo = up;
 				ing.save().then(function(ing) {
-					res.json(ing);
+					finish(ing);
 				}, next)
 			});
 		}, next);
@@ -48,6 +53,12 @@ function ingredientCreate(req, res, next) {
 }
 
 function ingredientUpdate(req, res, next) {
+
+	function finish(ing) {
+		APP.io.handler(Ingredient).update(ing);
+		return res.json(ing);
+	}
+
 	Ingredient.findOneById(req.params.id).populate("photo").then(function(ing) {
 		if (ing === undefined) return next("route");
 		var data = _.omit(req.body, "photo");
@@ -55,7 +66,7 @@ function ingredientUpdate(req, res, next) {
 		_.extend(ing, data);
 		ing.save().then(function(ing) {
 			var photo = req.files.photo;
-			if (photo === undefined || !isImage(photo)) return res.json(ing);
+			if (photo === undefined || !isImage(photo)) return finish(ing);
 			var app_path = path.join(Ingredient.PHOTO_URI, path.basename(photo.path));
 
 			function setPhoto() {
@@ -64,7 +75,7 @@ function ingredientUpdate(req, res, next) {
 						if (err) return next(err);
 						ing.photo = up;
 						ing.save().then(function(ing) {
-							res.json(ing);
+							finish(ing);
 						}, next)
 					});
 				}, next);
