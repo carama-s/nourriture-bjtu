@@ -12,13 +12,13 @@ module.exports = function(cb) {
         if (sort) query = query.sort(sort);
         if (limit) query = query.limit(limit);
         if (skip) query = query.skip(skip);
-        query.then(function(entries) {
+        query.populateAll().then(function(entries) {
           res.json(entries);
         }, next);
       },
 
       "findOne": function(req, res, next) {
-        Model.findOneById(req.params.id).then(function(entry) {
+        Model.findOneById(req.params.id).populateAll().then(function(entry) {
           if (!entry) return next("route");
           res.json(entry);
         }, next);
@@ -34,7 +34,7 @@ module.exports = function(cb) {
       },
 
       "update": function(req, res, next) {
-        Model.findById(req.params.id).then(function(entry) {
+        Model.findById(req.params.id).populateAll().then(function(entry) {
           if (!entry) return next("route");
           _.extend(model, req.body);
           return model.save().then(function(entry) {

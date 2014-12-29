@@ -39,7 +39,7 @@ module.exports = {
 
     toJSON: function() {
       var obj = this.toObject();
-      if (obj.photo) obj.photo_url = obj.photo.uri();
+      if (obj.photo.uri) obj.photo_url = obj.photo.uri();
       return obj;
     }
   },
