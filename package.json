@@ -21,7 +21,6 @@
     "qs": "~2.3.3",
     "request": "^2.51.0",
     "requireindex": "~1.1.0",
-    "sails": "^0.10.5",
     "sails-disk": "^0.10.6",
     "sails-mongo": "^0.10.4",
     "socket.io": "^1.2.1",
