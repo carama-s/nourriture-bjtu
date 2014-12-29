@@ -8,8 +8,6 @@
 * @apiUse SuccessResponseUser
 */
 
-var express = require("express");
-
 function me(req, res, next) {
 	res.json(req.user);
 }
@@ -101,7 +99,7 @@ function update_self(req, res, next) {
 }
 
 module.exports = function(pol) {
-	var router = express.Router();
+	var router = require("express").Router();
 
 	router.route("/me")
 	.get(pol.isAuthenticated, me);
