@@ -24,6 +24,7 @@ module.exports = {
     },
 
     real_path: function() {
+      console.log(this);
       return real_path(this);
     }
   },

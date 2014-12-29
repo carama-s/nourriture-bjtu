@@ -36,7 +36,6 @@ function ingredientCreate(req, res, next) {
 		if (photo === undefined || !isImage(photo)) return res.json(ing);
 		var app_path = path.join(Ingredient.PHOTO_URI, path.basename(photo.path));
 		Upload.create({path: app_path}).then(function(up) {
-			console.log(up);
 			fs.move(photo.path, up.real_path(), function(err) {
 				if (err) return next(err);
 				ing.photo = up;
