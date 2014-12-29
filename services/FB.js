@@ -44,5 +44,5 @@ module.exports = function(cb) {
   fb.getAccessToken(config.app_id, config.app_secret).then(function(ok) {
     if (!ok) return cb("Can't connect to facebook");
     cb(null, fb);
-  });
+  }, cb);
 };
