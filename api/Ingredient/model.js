@@ -48,6 +48,8 @@ module.exports = {
     Upload.destroy({id: _.pluck(ings, 'photo')}).exec(next);
   },
 
+  toPopulate: ["photo"],
+
   CATEGORIES: CATEGORIES,
   PHOTO_URI: PHOTO_URI,
 };

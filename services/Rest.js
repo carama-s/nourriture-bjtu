@@ -9,16 +9,27 @@ module.exports = function(cb) {
         var skip = parser.skip();
         var query = Model.find();
         if (criteria) query = query.where(criteria);
-        if (sort) query = query.sort(sort);
         if (limit) query = query.limit(limit);
         if (skip) query = query.skip(skip);
-        query.populateAll().then(function(entries) {
+        if (sort) query = query.sort(sort);
+        if (Model.toPopulate) {
+          _.each(Model.toPopulate, function(field) {
+            query = query.populate(field);
+          });
+        }
+        query.then(function(entries) {
           res.json(entries);
         }, next);
       },
 
       "findOne": function(req, res, next) {
-        Model.findOneById(req.params.id).populateAll().then(function(entry) {
+        var query = Model.findOneById(req.params.id);
+        if (Model.toPopulate) {
+          _.each(Model.toPopulate, function(field) {
+            query = query.populate(field);
+          });
+        }
+        query.then(function(entry) {
           if (!entry) return next("route");
           res.json(entry);
         }, next);
@@ -34,7 +45,13 @@ module.exports = function(cb) {
       },
 
       "update": function(req, res, next) {
-        Model.findById(req.params.id).populateAll().then(function(entry) {
+        var query = Model.findById(req.params.id);
+        if (Model.toPopulate) {
+          _.each(Model.toPopulate, function(field) {
+            query = query.populate(field);
+          });
+        }
+        query.then(function(entry) {
           if (!entry) return next("route");
           _.extend(model, req.body);
           return model.save().then(function(entry) {

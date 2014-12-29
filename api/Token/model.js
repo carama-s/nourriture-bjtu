@@ -24,5 +24,7 @@ module.exports = {
     }
   },
 
+  toPopulate: ["user"],
+
   generateToken: generateToken
 };
