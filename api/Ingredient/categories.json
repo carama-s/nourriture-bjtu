@@ -1,0 +1,12 @@
+[
+  {"name": "Bread", "value": "bread"},
+  {"name": "Cheese", "value": "cheese"},
+  {"name": "Chocolate", "value": "chocolate"},
+  {"name": "Egg", "value": "egg"},
+  {"name": "Fish", "value": "fish"},
+  {"name": "Fruit", "value": "fruit"},
+  {"name": "Meat", "value": "meat"},
+  {"name": "Spice", "value": "spice"},
+  {"name": "Vegetable", "value": "vegetable"},
+  {"name": "Other", "value": "other"}
+]

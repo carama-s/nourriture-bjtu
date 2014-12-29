@@ -1,7 +1,8 @@
 {
   "apps" : [{
     "name"        : "nourriture-api",
-    "script"      : "app.js",
+    "script"      : "manage.js",
+    "args"        : "['runserver']",
     "log_date_format"  : "YYYY-MM-DD HH:mm Z",
     "env": {
       "NODE_ENV": "production"
