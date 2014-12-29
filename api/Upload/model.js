@@ -1,7 +1,7 @@
 var path = require("path");
 var fs = require("fs-extra");
 
-var UPLOAD_DIR = APP.config.http.upload_path;
+var UPLOAD_DIR = APP.config.http.upload_dir;
 var UPLOAD_URI = "/uploads/";
 
 function real_path(up) {
@@ -24,7 +24,6 @@ module.exports = {
     },
 
     real_path: function() {
-      console.log(this);
       return real_path(this);
     }
   },
