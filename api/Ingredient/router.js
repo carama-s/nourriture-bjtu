@@ -82,6 +82,14 @@ function categories(req, res, next) {
 	res.json(Ingredient.CATEGORIES);
 }
 
+function ingredientAutocomplete(req, res, next) {
+	Ingredient.find({name: {"like": req.query.name}})
+	.limit(10)
+	.populate("photo").then(function(ings) {
+		res.json(ings);
+	}, next);
+}
+
 module.exports = function(pol) {
 	var router = require("express").Router();
 
@@ -92,6 +100,9 @@ module.exports = function(pol) {
 
 	router.route("/count")
 	.get(rest.count);
+
+	router.route("/autocomplete")
+	.get(ingredientAutocomplete);
 
 	router.route("/")
 	.get(rest.find)
