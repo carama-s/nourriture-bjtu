@@ -2,8 +2,7 @@ var passport = require("passport");
 var BearerStrategy = require('passport-http-bearer').Strategy;
 var formidable = require("formidable");
 var morgan = require("morgan");
-var async = require("async");
-var _ = require("lodash");
+var fs = require("fs-extra");
 
 module.exports = function(app) {
   // Passport config
@@ -82,6 +81,6 @@ module.exports = function(app) {
       });
     })(req, res);
   });
-  
+
   return app;
 };
