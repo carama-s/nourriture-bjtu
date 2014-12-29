@@ -55,9 +55,7 @@ module.exports = function(cb) {
       "count": function(req, res, next) {
         var parser = ReqParser(req);
         var criteria = parser.criteria();
-        var query = Model.find();
-        if (criteria) query = query.where(criteria);
-        query.count().then(function(count) {
+        Model.count(criteria).then(function(count) {
           res.json({count: count});
         }, next);
       }
