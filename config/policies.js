@@ -30,6 +30,7 @@ module.exports.policies = {
 
     find: true,
     findOne: true,
+    count: true,
     create: "isSuperAdmin",
     update: "isSuperAdmin",
     destroy: "isSuperAdmin",
@@ -40,6 +41,7 @@ module.exports.policies = {
 
     find: true,
     findOne: true,
+    count: true,
     create: "isAuthenticated",
     update: "isAuthenticated",
     destroy: "isAuthenticated"
