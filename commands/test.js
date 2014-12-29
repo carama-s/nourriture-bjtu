@@ -23,6 +23,8 @@ function test(args) {
         process.on('exit', function () {
           process.exit(failures);
         });
+
+        app.stop().then(null, process.exit);
       });
     });
   });

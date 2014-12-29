@@ -3,17 +3,15 @@ var Waterline = require("waterline");
 
 function APP() {
   var obj = {};
+  global.APP = obj;
   obj.config = config;
 
   obj.initialize = function() {
     console.log("Initializing...");
-    global.APP = obj;
-    var D = Q.defer();
     // Load services
     console.log("Loading services...");
     var services = require("../services");
-    async.parallel(services, function(err, results) {
-      if (err) return D.reject(err);
+    return Q.nfcall(async.parallel, services).then(function(results) {
       console.log("Services loaded !")
       _.extend(global, results);
       obj.services = results;
@@ -28,8 +26,7 @@ function APP() {
       });
       console.log("Models loaded !");
       console.log("Connecting to DB...");
-      orm.initialize(config.waterline, function(err, models) {
-        if (err) return D.reject(err);
+      return Q.ninvoke(orm, "initialize", config.waterline).then(function(models) {
         console.log("Connected to DB !");
 
         var collections = _.transform(models.collections, function(result, value, key) {
@@ -51,12 +48,13 @@ function APP() {
         //var io = require("io.js");
         //io.addServer(server);
         obj.server = server;
-
-        D.resolve();
       });
     });
+  };
 
-    return D.promise;
+  obj.stop = function() {
+    if (!obj.orm) return Q();
+    return Q.ninvoke(orm, "teardown");
   };
 
   return obj;

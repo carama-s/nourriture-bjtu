@@ -4,7 +4,7 @@ var CATEGORIES = require("./categories.json");
 
 module.exports = {
 
-  connection: "localDisk",
+  connection: "default",
   identity: "ingredient",
 
   types: {

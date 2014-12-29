@@ -9,7 +9,7 @@ function real_path(up) {
 }
 
 module.exports = {
-  connection: "localDisk",
+  connection: "default",
   identity: "upload",
 
   attributes: {

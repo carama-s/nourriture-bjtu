@@ -18,7 +18,7 @@ function runserver(args) {
       console.log();
     });
   }, function(err) {
-    console.error("Can't start server: ", err);
+    console.trace(err);
     process.exit(1);
   });
 }

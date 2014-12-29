@@ -8,7 +8,7 @@ function generateToken() {
 }
 
 module.exports = {
-  connection: "localDisk",
+  connection: "default",
   identity: "token",
 
   attributes: {

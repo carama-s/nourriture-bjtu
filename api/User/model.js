@@ -5,7 +5,7 @@ function hashPasswd(data) {
 }
 
 module.exports = {
-  connection: "localDisk",
+  connection: "default",
   identity: "user",
 
   attributes: {
