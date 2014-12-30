@@ -1,20 +1,20 @@
 var express = require("express");
-var initMiddlewares = require("./middlewares.js");
+var middlewares = require("./middlewares");
 var path = require("path");
 var serveStatic = require("serve-static");
 
 module.exports = function(api) {
   var app = express();
-  app = initMiddlewares(app);
+  app = middlewares.before(app);
 
-  var config = require("../config").http;
-  var policies = require("../policies");
+  var config = APP.config.http;
+  var policies = require("./policies");
 
   _.forOwn(api, function(value, key) {
     var router = value.router;
     if (router === undefined) return;
-    var prefix = config.prefix + "/" + key.toLowerCase();
-    app.use(prefix, router(policies, "/" + key.toLowerCase()));
+    var prefix = "/" + key.toLowerCase();
+    app.use(config.prefix + prefix, router(policies, prefix));
   });
 
   app.get(config.prefix + "/api-docs", function(req, res, next) {
@@ -23,9 +23,7 @@ module.exports = function(api) {
 
   app.use(config.prefix + "/ui", serveStatic(path.join(__rootDir, "ui")));
 
-  if (app.get("env") === 'development') {
-    app.use(require("errorhandler")());
-  }
+  app = middlewares.after(app);
 
   return app;
 };
