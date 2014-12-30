@@ -97,13 +97,13 @@ function ingredientAutocomplete(req, res, next) {
 	Ingredient.find({name: {"contains": req.query.name}})
 	.limit(10)
 	.populate("photo").then(function(ings) {
-		ings = _.mapValues(ings, function(ing) {
+		ings = _.map(ings, function(ing) {
 			if (ing.photo && ing.photo.uri) {
 				ing.photo_url = "http://nourriture.dennajort.fr" + ing.photo.uri();
 			}
 			return ing;
 		})
-		res.json({results: ings});
+		res.json(ings);
 	}, next);
 }
 
