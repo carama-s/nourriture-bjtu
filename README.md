@@ -4,7 +4,8 @@ nourriture-bjtu-api
 Nourriture project API.
 
 * Jenkins url: http://jenkins.dennajort.fr/job/nourriture-bjtu-api-master/
-* API url: http://api.nourriture.dennajort.fr/
+* API url: http://nourriture.dennajort.fr/api/
+* API doc url: http://nourriture.dennajort.fr/api/ui/
 
 To install development environment
 
@@ -16,11 +17,11 @@ npm install
 To start the development server
 
 ```shell
-npm start
+./manage.js runserver
 ```
 
 To start test
 
 ```shell
-npm test
+./manager.js test
 ```
