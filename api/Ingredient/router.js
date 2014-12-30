@@ -103,7 +103,7 @@ function ingredientAutocomplete(req, res, next) {
 			}
 			return ing;
 		})
-		res.json(ings);
+		res.json({results: ings});
 	}, next);
 }
 
