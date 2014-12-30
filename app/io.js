@@ -1,16 +1,12 @@
 var events = require("events");
 var util = require("util");
 
-function IO(path) {
-  this._path = path;
-}
+function IO() {}
 
 util.inherits(IO, events.EventEmitter);
 
 IO.prototype.addServer = function(server) {
-  var io = require("socket.io")(server, {
-    path: this._path
-  });
+  var io = require("socket.io")(server);
 
   io.on("connection", function(socket) {
     socket.on("subscribe", function(data) {

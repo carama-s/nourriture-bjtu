@@ -27,6 +27,11 @@ module.exports = function(app) {
 
   // Express config
 
+  app.use(function(req, res, next) {
+    console.log("HELLO THIS IS A REQUEST !");
+    next();
+  });
+
   if (app.get("env") === 'production') {
     app.set("trust proxy", "loopback");
     app.use(morgan("combined"));
@@ -38,7 +43,10 @@ module.exports = function(app) {
     app.use(morgan("dev"));
   }
 
-  app.use(require("cors")());
+  app.use(require("cors")({
+    origin: true,
+    credentials: true
+  }));
   app.use(require("compression")());
   app.use(function(req, res, next) {
     var form = new formidable.IncomingForm();

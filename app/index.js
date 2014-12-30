@@ -7,7 +7,7 @@ function APP() {
   var obj = {};
   global.APP = obj;
   obj.config = config;
-  var io = new IO(config.http.prefix + config.http.io_uri);
+  var io = new IO();
   obj.io = io;
   obj.swag = new Swagger();
 
