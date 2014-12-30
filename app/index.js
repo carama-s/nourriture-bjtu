@@ -1,13 +1,15 @@
 var config = require("../config");
 var Waterline = require("waterline");
 var IO = require("./io.js");
+var Swagger = require("./swagger.js");
 
 function APP() {
   var obj = {};
   global.APP = obj;
   obj.config = config;
   var io = new IO(config.http.prefix + config.http.io_uri);
-  obj.io = io;  
+  obj.io = io;
+  obj.swag = new Swagger();
 
   obj.initialize = function() {
     console.log("Initializing...");

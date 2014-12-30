@@ -24,6 +24,38 @@ module.exports = function(cb) {
         }, next);
       },
 
+      "swagFind": function(swag, id, schema) {
+        swag("/", {
+          "get": {
+            "operationId": id,
+            "parameters": [{
+              "name": "where",
+              "in": "formData",
+              "type": "string"
+            }, {
+              "name": "limit",
+              "in": "formData",
+              "type": "integer"
+            }, {
+              "name": "skip",
+              "in": "formData",
+              "type": "integer"
+            }, {
+              "name": "sort",
+              "in": "formData",
+              "type": "string"
+            }],
+            "responses": {
+              "400": {"schema": {"$ref": "#/definitions/error"}},
+              "200": {
+                "type": "array",
+                "items": {"$ref": schema}
+              }
+            }
+          }
+        });
+      },
+
       "findOne": function(req, res, next) {
         var query = Model.findOneById(req.params.id);
         if (Model.toPopulate) {
@@ -35,6 +67,24 @@ module.exports = function(cb) {
           if (!entry) return next("route");
           res.json(entry);
         }, next);
+      },
+
+      "swagFindOne": function(swag, id, schema) {
+        swag("/{id}", {
+          "get": {
+            "operationId": id,
+            "parameters": [{
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "string"
+            }],
+            "responses": {
+              "400": {"schema": {"$ref": "#/definitions/error"}},
+              "200": {"schema": {"$ref": schema}}
+            }
+          }
+        });
       },
 
       "create": function(req, res, next) {
@@ -80,7 +130,27 @@ module.exports = function(cb) {
         Model.count(criteria).then(function(count) {
           res.json({count: count});
         }, next);
-      }
+      },
+
+      "swagCount": function(swag, id) {
+        swag("/count", {
+          "get": {
+            "operationId": id,
+            "parameters": [{
+              "name": "where",
+              "in": "formData",
+              "type": "string"
+            }],
+            "responses": {
+              "200": {
+                "properties": {
+                  "count": {"type": "integer"}
+                }
+              }
+            }
+          }
+        });
+      },
     }
   });
 };

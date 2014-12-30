@@ -1,13 +1,3 @@
-/**
-*	@api {get} /api/user/me Me
-* @apiName Me
-* @apiGroup User
-*
-* @apiUse AuthorizationHeader
-* @apiUse SuccessUser
-* @apiUse SuccessResponseUser
-*/
-
 function me(req, res, next) {
 	res.json(req.user);
 }
@@ -98,109 +88,194 @@ function update_self(req, res, next) {
 	}, ValCb(res, next));
 }
 
-module.exports = function(pol) {
+module.exports = function(pol, prefix) {
+	APP.swag.addDefinition({
+		"resGetTokenOK": {
+			"properties": {
+				"token": {"schema": {"$ref": "#/definitions/tokenModel"}},
+				"user": {"schema": {"$ref": "#/definitions/userModel"}}
+			}
+		},
+		"tokenModel": {
+			"properties": {
+				"token": {"type": "string"}
+			}
+		},
+		"userModel": {
+			"required": ["firstname", "lastname", "username", "email", "passwd", "gender", "admin"],
+			"properties": {
+				"username": {"type": "string"},
+				"email": {"type": "string"},
+				"passwd": {"type": "string"},
+				"firstname": {"type": "string"},
+				"lastname": {"type": "string"},
+				"gender": {"type": "string", "enum": ["na", "male", "female"], "default": "na"},
+				"admin": {"type": "integer", "default": 10}
+			}
+		}
+	});
+
+	var swag = APP.swag.handlerPaths(prefix, ["User"]);
 	var router = require("express").Router();
 
-	router.route("/me")
-	.get(pol.isAuthenticated, me);
+	router.route("/me").get(pol.isAuthenticated, me);
+	swag("/me", {
+		"get": {
+			"operationId": "meUser",
+			"parameters": [],
+			"responses": {
+				"403": {"schema": {"$ref": "#/definitions/error"}},
+				"200": {"schema": {"$ref": "#/definitions/userModel"}}
+			}
+		}
+	});
 
-	router.route("/get_token")
-	.post(get_token);
+	router.route("/get_token").post(get_token);
+	swag("/get_token", {
+		"post": {
+			"operationId": "getTokenUser",
+			"parameters": [{
+				"name": "email",
+				"in": "formData",
+				"type": "string"
+			}, {
+				"name": "passwd",
+				"in": "formData",
+				"type": "string"
+			}, {
+				"name": "facebook_id",
+				"in": "formData",
+				"type": "string"
+			}, {
+				"name": "facebook_token",
+				"in": "formData",
+				"type": "string"
+			}],
+			"responses": {
+				"400": {"schema": {"$ref": "#/definitions/error"}},
+				"200": {"schema": {"$ref": "#/definitions/resGetTokenOK"}}
+			}
+		}
+	});
 
-	router.route("/signup")
-	.post(signup);
+	router.route("/signup").post(signup);
+	swag("/signup", {
+		"post": {
+			"operationId": "signupUser",
+			"parameters": [{
+				"name": "email",
+				"in": "formData",
+				"type": "string",
+				"required": true
+			}, {
+				"name": "passwd",
+				"in": "formData",
+				"type": "string",
+				"required": true
+			}, {
+				"name": "facebook_id",
+				"in": "formData",
+				"type": "string"
+			}, {
+				"name": "facebook_token",
+				"in": "formData",
+				"type": "string"
+			}, {
+				"name": "username",
+				"in": "formData",
+				"type": "string",
+				"required": true
+			}, {
+				"name": "firstname",
+				"in": "formData",
+				"type": "string",
+				"required": true
+			}, {
+				"name": "lastname",
+				"in": "formData",
+				"type": "string",
+				"required": true
+			}, {
+				"name": "gender",
+				"in": "formData",
+				"type": "string",
+				"enum": ["na", "male", "female"],
+				"default": "na"
+			}],
+			"responses": {
+				"400": {"schema": {"$ref": "#/definitions/error"}},
+				"200": {"schema": {"$ref": "#/definitions/resGetTokenOK"}}
+			}
+		}
+	});
 
-	router.route("/change_passwd")
-	.post(pol.isAuthenticated, change_passwd);
+	router.route("/change_passwd").post(pol.isAuthenticated, change_passwd);
+	swag("/change_passwd", {
+		"post": {
+			"operationId": "changePasswdUser",
+			"parameters": [{
+				"name": "old_passwd",
+				"in": "formData",
+				"type": "string",
+				"required": true
+			}, {
+				"name": "new_passwd",
+				"in": "formData",
+				"type": "string",
+				"required": true
+			}],
+			"responses": {
+				"403": {"schema": {"$ref": "#/definitions/error"}},
+				"200": {"schema": {"$ref": "#/definitions/userModel"}}
+			}
+		}
+	});
 
-	router.route("/update")
-	.post(pol.isAuthenticated, update_self);
+	router.route("/update").post(pol.isAuthenticated, update_self);
+	swag("/update", {
+		"post": {
+			"operationId": "updateUser",
+			"parameters": [{
+				"name": "email",
+				"in": "formData",
+				"type": "string"
+			}, {
+				"name": "firstname",
+				"in": "formData",
+				"type": "string"
+			}, {
+				"name": "lastname",
+				"in": "formData",
+				"type": "string"
+			}, {
+				"name": "gender",
+				"in": "formData",
+				"type": "string",
+				"enum": ["na", "male", "female"]
+			}],
+			"responses": {
+				"400": {"schema": {"$ref": "#/definitions/error"}},
+				"200": {"schema": {"$ref": "#/definitions/userModel"}}
+			}
+		}
+	});
 
 	var rest = Rest(User);
 
 	router.route("/count")
 	.get(rest.count);
+	rest.swagCount(swag, "countUser");
 
 	router.route("/")
 	.get(rest.find)
 	.post(pol.isSuperAdmin, rest.create);
+	rest.swagFind(swag, "findUser", "#/definitions/userModel");
 
 	router.route("/:id")
 	.get(rest.findOne)
 	.put(pol.isSuperAdmin, rest.update)
 	.delete(pol.isSuperAdmin, rest.destroy);
+	rest.swagFindOne(swag, "findOneUser", "#/definitions/userModel");
 
 	return router;
-}
-
-/**
-*	@api {get} /api/user Find
-*	@apiName FindUsers
-*	@apiGroup User
-*
-* @apiUse SuccessUser
-*
-*	@apiSuccessExample {json} Success-Response:
-*	HTTP/1.1 200 OK
-*	[
-*		{
-*			"username": "johndoe",
-*			"email": "john.doe@example.com",
-*			"lastname": "John",
-*			"firstname": "Doe",
-*			"gender": "male",
-*			"admin": 10
-*		},
-*		{
-*			"username": "janedoe",
-*			"email": "jane.doe@example.com",
-*			"lastname": "Jane",
-*			"firstname": "Doe",
-*			"gender": "female",
-*			"admin": 0
-*		}
-*	]
-*/
-
-/**
-*	@api {get} /api/user/:id FindOne
-* @apiName FindOneUser
-* @apiGroup User
-*
-*	@apiParam	{String} id User unique ID
-*
-* @apiUse SuccessUser
-*
-* @apiUse SuccessResponseUser
-*/
-
-/**
-*	@apiDefine AuthorizationHeader User
-* @apiHeader {String} Authorization Authenticate yourself to the api
-*	@apiHeaderExample Authorization
-* Authorization: Bearer a231bc43b3fe3573685632ed
-*/
-
-/**
-* @apiDefine SuccessUser User
-* @apiSuccess {String} username Username of User
-* @apiSuccess {String} email Email of User
-* @apiSuccess {String} lastname Lastname of User
-* @apiSuccess {String} firstname Firstname of User
-* @apiSuccess {String="na","male","female"} gender Gender of User
-* @apiSuccess {Number} admin Admin level of User
-*/
-
-/**
-* @apiDefine SuccessResponseUser User
-*	@apiSuccessExample {json} Success-Response:
-*	HTTP/1.1 200 OK
-*	{
-*		"username": "johndoe",
-*		"email": "john.doe@example.com",
-*		"lastname": "John",
-*		"firstname": "Doe",
-*		"gender": "male",
-*		"admin": 10
-*	}
-*/
+};
