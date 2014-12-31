@@ -7,5 +7,12 @@ module.exports = {
   cors: {
     origin: true,
     credentials: true
+  },
+  io: {
+    adapter: {
+      host: 'localhost',
+      port: 6379,
+      key: "nourriture_socket.io"
+    }
   }
 };

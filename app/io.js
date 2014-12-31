@@ -3,6 +3,11 @@ function IO() {}
 IO.prototype.addServer = function(server) {
   var io = require("socket.io")(server);
 
+  if (process.env.NODE_ENV == "production") {
+    var redis = require('socket.io-redis');
+    io.adapter(redis(APP.config.http.io.adapter));
+  }
+
   io.on("connection", function(socket) {
     socket.on("subscribe", function(data) {
       if (data.names != undefined) {
