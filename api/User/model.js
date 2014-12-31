@@ -7,6 +7,7 @@ function hashPasswd(data) {
 module.exports = {
   connection: "default",
   identity: "user",
+  schema: true,
 
   attributes: {
     username: {
