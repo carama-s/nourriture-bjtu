@@ -87,7 +87,7 @@ module.exports = function(cb) {
 
       "create": function(req, res, next) {
         Model.create(req.body).then(function(entry) {
-          APP.dbEvent(Model, "create", entry);
+          APP.dbEvent(Model, "create", entry, req.user);
           res.json(entry);
         }, function(err) {
           if (err.code == 'E_VALIDATION') return res.status(400).json(err);
@@ -106,7 +106,7 @@ module.exports = function(cb) {
           if (!entry) return next("route");
           _.extend(model, req.body);
           return model.save().then(function(entry) {
-            APP.dbEvent(Model, "update", entry);
+            APP.dbEvent(Model, "update", entry, req.user);
             res.json(entry);
           }, function(err) {
             if (err.code == 'E_VALIDATION') return res.status(400).json(err);
@@ -117,7 +117,7 @@ module.exports = function(cb) {
 
       "destroy": function(req, res, next) {
         Model.destroy(req.params.id).then(function(entry) {
-          APP.dbEvent(Model, "destroy", entry);
+          APP.dbEvent(Model, "destroy", entry, req.user);
           res.json(entry);
         }, next);
       },

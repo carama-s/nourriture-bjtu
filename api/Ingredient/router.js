@@ -32,7 +32,7 @@ function ingredientCreate(req, res, next) {
 	data = parseBodyData(data);
 
 	function finish(ing) {
-		APP.dbEvent(Ingredient, "create", ing);
+		APP.dbEvent(Ingredient, "create", ing, req.user);
 		return res.json(ing);
 	}
 
@@ -55,7 +55,7 @@ function ingredientCreate(req, res, next) {
 function ingredientUpdate(req, res, next) {
 
 	function finish(ing) {
-		APP.dbEvent(Ingredient, "update", ing);
+		APP.dbEvent(Ingredient, "update", ing, req.user);
 		return res.json(ing);
 	}
 

@@ -65,8 +65,8 @@ APP.prototype.stop = function() {
   return Q.ninvoke(this.orm, "teardown");
 };
 
-APP.prototype.dbEvent = function(Model, event, data) {
-  this.emit("DBEvent", Model, name, data);
+APP.prototype.dbEvent = function(Model, event, data, user) {
+  this.emit("DBEvent", Model, name, data, user);
 };
 
 module.exports = new APP();

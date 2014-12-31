@@ -1,15 +1,24 @@
-function makeConnection() {
+function makeConnections() {
   if (process.env.NODE_ENV === "production") return {
-    adapter: "mongoDB",
-    host: 'localhost',
-    port: 27017,
-    database: 'nourriture'
+    "default": {
+      adapter: "mongoDB",
+      host: 'localhost',
+      port: 27017,
+      database: 'nourriture'
+    },
+    "fast": {
+      adapter: "redis",
+      port: 6379,
+      host: 'localhost'
+    }
   }
   if (process.env.NODE_ENV === "test") return {
-    adapter: "memory"
+    "default": {adapter: "memory"},
+    "fast": {adapter: "memory"}
   }
   return {
-    adapter: "disk"
+    "default": {adapter: "disk"},
+    "fast": {adapter: "disk"}
   }
 }
 
@@ -18,12 +27,11 @@ module.exports = {
     'default': 'disk',
     disk: require("sails-disk"),
     memory: require("sails-memory"),
-    mongoDB: require('sails-mongo')
+    mongoDB: require('sails-mongo'),
+    redis: require("sails-redis")
   },
 
-  connections: {
-    "default": makeConnection()
-  },
+  connections: makeConnections(),
 
   defaults: {
     migrate: 'alter'
