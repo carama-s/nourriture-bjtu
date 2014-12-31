@@ -1,17 +1,11 @@
-var PHOTO_URI = "/ingredient/";
+var PHOTO_URI = "/recipe/";
 
 var CATEGORIES = require("./categories.json");
 
 module.exports = {
 
   connection: "default",
-  identity: "ingredient",
-
-  types: {
-    period: function(p) {
-      return p.length == 12;
-    }
-  },
+  identity: "recipe",
 
   attributes: {
     name: {
@@ -27,19 +21,27 @@ module.exports = {
     category: {
       type: "string",
       enum: _.pluck(CATEGORIES, "value"),
-      defaultsTo: "other"
+      defaultsTo: "other",
+      required: true
     },
-    cooking_tips: "text",
-    allergy: "array",
-    period: {
-      type: "array",
-      period: true,
-      defaultsTo: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    servings: {
+      type: "integer",
+      required: true
     },
-    recipes: {
-      collection: 'recipe',
-      via: 'ingredients'
+    preparation_time: {
+      type: "integer",
+      required: true
     },
+    cooking_time: {
+      type: "integer",
+      required: true
+    },
+    ingredients: {
+      collection: 'ingredient',
+      via: 'recipes',
+      dominant: true
+    },
+    directions: "array",
 
     toJSON: function() {
       var obj = this.toObject();
@@ -52,7 +54,7 @@ module.exports = {
     Upload.destroy({id: _.pluck(ings, 'photo')}).exec(next);
   },
 
-  toPopulate: ["photo"],
+  toPopulate: ["photo", "ingredients"],
 
   CATEGORIES: CATEGORIES,
   PHOTO_URI: PHOTO_URI,

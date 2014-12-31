@@ -28,7 +28,7 @@ function isImage(file) {
 }
 
 function ingredientCreate(req, res, next) {
-	var data = _.omit(req.body, "photo");
+	var data = _.omit(req.body, "photo", "recipes");
 	data = parseBodyData(data);
 
 	function finish(ing) {
@@ -61,7 +61,7 @@ function ingredientUpdate(req, res, next) {
 
 	Ingredient.findOneById(req.params.id).populate("photo").then(function(ing) {
 		if (ing === undefined) return next("route");
-		var data = _.omit(req.body, "photo");
+		var data = _.omit(req.body, "photo", "recipes");
 		data = parseBodyData(data);
 		_.extend(ing, data);
 		ing.save().then(function(ing) {

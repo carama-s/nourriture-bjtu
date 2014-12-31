@@ -1,0 +1,8 @@
+[
+  {"name": "Dessert", "value": "dessert"},
+  {"name": "Main dish", "value": "main"},
+  {"name": "Vegetarian", "value": "vegetarian"},
+  {"name": "Appetizer", "value": "appetizer"},
+  {"name": "Starter", "value": "starter"},
+  {"name": "Other", "value": "other"}
+]
