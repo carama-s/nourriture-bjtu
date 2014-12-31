@@ -2,8 +2,10 @@ module.exports = function(pol) {
 	APP.on("DBEvent", function(Model, evt, data, user) {
 		idt = Model.identity;
 		if (idt == "ingredient") {
-			Timeline.create({name: evt, domain: idt, user: user, ingredient: data}).then(function(entry) {
-				APP.dbEvent(Timeline, "create", entry);
+			return Timeline.create({name: evt, domain: idt, user: user, ingredient: data}).then(function(entry) {
+				return Timeline.findOneById(entry.id).populate("user").then(function(entry) {
+					APP.dbEvent(Timeline, "create", entry);
+				})
 			});
 		}
 	});
