@@ -1,9 +1,4 @@
-var events = require("events");
-var util = require("util");
-
 function IO() {}
-
-util.inherits(IO, events.EventEmitter);
 
 IO.prototype.addServer = function(server) {
   var io = require("socket.io")(server);
@@ -26,30 +21,10 @@ IO.prototype.addServer = function(server) {
     });
   });
 
-  this.on("DBEvent", function(name, data) {
+  APP.on("DBEvent", function(Model, evt, data) {
+    var name = Model.identity + "." + evt;
     io.to(name).emit(name, data);
   });
-};
-
-IO.prototype.dbEvent = function(name, data) {
-  this.emit("DBEvent", name, data);
-};
-
-IO.prototype.handler = function(Model) {
-  var ident = Model.identity;
-  var io = this;
-
-  return {
-    create: function(data) {
-      io.dbEvent(ident + ".create", data);
-    },
-    update: function(data) {
-      io.dbEvent(ident + ".update", data);
-    },
-    destroy: function(data) {
-      io.dbEvent(ident + ".destroy", data);
-    }
-  };
 };
 
 module.exports = IO;

@@ -1,7 +1,5 @@
 module.exports = function(cb) {
   cb(null, function(Model) {
-    var io = APP.io.handler(Model);
-
     return {
       "find": function(req, res, next) {
         var parser = ReqParser(req);
@@ -89,7 +87,7 @@ module.exports = function(cb) {
 
       "create": function(req, res, next) {
         Model.create(req.body).then(function(entry) {
-          io.create(entry);
+          APP.dbEvent(Model, "create", entry);
           res.json(entry);
         }, function(err) {
           if (err.code == 'E_VALIDATION') return res.status(400).json(err);
@@ -108,7 +106,7 @@ module.exports = function(cb) {
           if (!entry) return next("route");
           _.extend(model, req.body);
           return model.save().then(function(entry) {
-            io.update(entry);
+            APP.dbEvent(Model, "update", entry);
             res.json(entry);
           }, function(err) {
             if (err.code == 'E_VALIDATION') return res.status(400).json(err);
@@ -119,7 +117,7 @@ module.exports = function(cb) {
 
       "destroy": function(req, res, next) {
         Model.destroy(req.params.id).then(function(entry) {
-          io.destroy(entry);
+          APP.dbEvent(Model, "destroy", entry);
           res.json(entry);
         }, next);
       },
