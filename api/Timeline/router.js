@@ -3,7 +3,6 @@ module.exports = function(pol) {
 		idt = Model.identity
 		if (idt == "ingredient") {
 			Timeline.create({name: evt, domain: idt, user: user, ingredient: data}).then(function(entry) {
-				console.log(entry);
 				APP.dbEvent(Timeline, "create", entry);
 			});
 		}
