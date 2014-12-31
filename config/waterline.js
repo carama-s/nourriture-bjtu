@@ -34,6 +34,7 @@ module.exports = {
   connections: makeConnections(),
 
   defaults: {
-    migrate: 'alter'
+    migrate: 'alter',
+    schema: true
   }
 };
