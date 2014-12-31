@@ -116,9 +116,10 @@ module.exports = function(cb) {
       },
 
       "destroy": function(req, res, next) {
-        Model.destroy(req.params.id).then(function(entry) {
-          APP.dbEvent(Model, "destroy", entry, req.user);
-          res.json(entry);
+        Model.destroy(req.params.id).then(function(entries) {
+          if (entries.length == 0) return res.json({});
+          APP.dbEvent(Model, "destroy", entries[0], req.user);
+          res.json(entries[0]);
         }, next);
       },
 
