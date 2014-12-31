@@ -55,7 +55,7 @@ APP.prototype.initialize = function() {
 
       // Socket.io config
       this.io.addServer(this.server);
-
+      this.emit("initialized");
     }.bind(this));
   }.bind(this));
 };
