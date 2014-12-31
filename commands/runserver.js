@@ -18,7 +18,7 @@ function runserver(args) {
       console.log();
     });
   }, function(err) {
-    console.trace(err);
+    console.error(err);
     process.exit(1);
   });
 }
