@@ -2,6 +2,7 @@ module.exports = {
 
   connection: "default",
   identity: "timeline",
+  schema: false,
 
   attributes: {
     name: {
@@ -16,7 +17,7 @@ module.exports = {
       model: "user"
     },
     ingredient: {
-      model: "ingredient"
+      type: "json"
     }
   },
 
