@@ -21,5 +21,5 @@ module.exports = {
     }
   },
 
-  toPopulate: ["user", "ingredient"]
+  toPopulate: ["user"]
 };
