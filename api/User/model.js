@@ -51,6 +51,10 @@ module.exports = {
       via: "user",
       protected: true
     },
+    comments: {
+      collection: "recipe_comment",
+      via: "user"
+    },
     admin: {
       type: "integer",
       required: true,

@@ -41,6 +41,10 @@ module.exports = {
       via: 'recipes',
       dominant: true
     },
+    comments: {
+      collection: "recipe_comment",
+      via: "recipe"
+    },
     directions: "array",
 
     toJSON: function() {
