@@ -1,23 +1,103 @@
-function recipeCommentCreate(req, res, next) {
-	var data = _.omit(req.body, "user");
-	data.user = req.user;
+var fs = require("fs-extra");
+var path = require("path");
 
-	RecipeComment.create(data).then(function(com) {
-		APP.dbEvent(RecipeComment, "create", com, req.user);
-		res.json(com);
+function parseBodyData(data) {
+	_.each(["tags", "directions", "ingredients"], function(k) {
+		if (data[k] !== undefined) {
+			switch (typeof(data[k])) {
+			case "array":
+				break;
+			case "string":
+				try {
+					data[k] = JSON.parse(data[k]);
+				} catch(err) {
+					data[k] = undefined;
+				}
+				break;
+			default:
+				data[k] = undefined;
+			}
+		}
+	});
+	return data;
+}
+
+function isImage(file) {
+	var mime_regex = /^image\//i;
+	return mime_regex.test(file.type);
+}
+
+function recipeCreate(req, res, next) {
+	var data = _.omit(req.body, "photo");
+	data = parseBodyData(data);
+
+	function finish(rec) {
+		APP.dbEvent(Recipe, "create", rec, req.user);
+		return res.json(rec);
+	}
+
+	Recipe.create(data).then(function(rec) {
+		var photo = req.files.photo;
+		if (photo === undefined || !isImage(photo)) return finish(rec);
+		var app_path = path.join(Recipe.PHOTO_URI, path.basename(photo.path));
+		Upload.create({path: app_path}).then(function(up) {
+			fs.move(photo.path, up.real_path(), function(err) {
+				if (err) return next(err);
+				rec.photo = up;
+				rec.save().then(function(rec) {
+					finish(rec);
+				}, next)
+			});
+		}, next);
 	}, ValCb(res, next));
 }
 
-function recipeCommentDestroy(req, res, next) {
-	RecipeComment.destroy({id: req.params.id, user: req.user.id}).then(function(entries) {
-		if (entries.length == 0) return res.json({});
-		APP.dbEvent(RecipeComment, "destroy", entries[0], req.user);
-		res.json(entries[0]);
+function recipeUpdate(req, res, next) {
+
+	function finish(rec) {
+		APP.dbEvent(Recipe, "update", rec, req.user);
+		return res.json(rec);
+	}
+
+	Recipe.findOneById(req.params.id).populate("photo").then(function(ing) {
+		if (rec === undefined) return next("route");
+		var data = _.omit(req.body, "photo");
+		data = parseBodyData(data);
+		_.extend(rec, data);
+		rec.save().then(function(rec) {
+			var photo = req.files.photo;
+			if (photo === undefined || !isImage(photo)) return finish(rec);
+			var app_path = path.join(Recipe.PHOTO_URI, path.basename(photo.path));
+
+			function setPhoto() {
+				return Upload.create({path: app_path}).then(function(up) {
+					fs.move(photo.path, up.real_path(), function(err) {
+						if (err) return next(err);
+						rec.photo = up;
+						rec.save().then(function(rec) {
+							finish(rec);
+						}, next)
+					});
+				}, next);
+			}
+
+			if (rec.photo === undefined) return setPhoto();
+			return rec.photo.destroy().then(function() {
+				return setPhoto();
+			});
+		}, ValCb(res, next));
 	}, next);
+}
+
+function categories(req, res, next) {
+	res.json(Recipe.CATEGORIES);
 }
 
 module.exports = function(pol) {
 	var router = require("express").Router();
+
+	router.route("/categories")
+	.get(categories);
 
 	var rest = Rest(Recipe);
 
@@ -26,11 +106,12 @@ module.exports = function(pol) {
 
 	router.route("/")
 	.get(rest.find)
-	.post(pol.isAuthenticated, recipeCommentCreate);
+	.post(pol.isAuthenticated, recipeCreate);
 
 	router.route("/:id")
 	.get(rest.findOne)
-	.delete(pol.isAuthenticated, recipeCommentDestroy);
+	.put(pol.isAuthenticated, recipeUpdate)
+	.delete(pol.isAuthenticated, rest.destroy);
 
 	return router;
 };
