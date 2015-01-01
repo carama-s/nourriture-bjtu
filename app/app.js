@@ -13,7 +13,8 @@ module.exports = function(api) {
   _.forOwn(api, function(value, key) {
     var router = value.router;
     if (router === undefined) return;
-    var prefix = "/" + key.toLowerCase();
+    var model = value.model;
+    var prefix = "/" + ((model === undefined) ? key.toLowerCase() : model.identity);
     app.use(config.prefix + prefix, router(policies, prefix));
   });
 

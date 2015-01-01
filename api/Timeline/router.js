@@ -1,7 +1,7 @@
 module.exports = function(pol) {
 	APP.on("DBEvent", function(Model, evt, data, user) {
 		idt = Model.identity;
-		if (idt == "ingredient") {
+		if (_.contains(["ingredient", "recipe", "recipe_comment"], idt)) {
 			return Timeline.create({name: evt, domain: idt, user: user, ingredient: data}).then(function(entry) {
 				return Timeline.findOneById(entry.id).populate("user").then(function(entry) {
 					APP.dbEvent(Timeline, "create", entry);
