@@ -1,3 +1,5 @@
+var gm = require("gm");
+
 module.exports = function(cb) {
   cb(null, function(photo, width, height) {
     if (photo) {

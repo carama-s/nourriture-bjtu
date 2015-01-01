@@ -1,6 +1,5 @@
 var fs = require("fs-extra");
 var path = require("path");
-var gm = require("gm");
 
 function parseBodyData(data) {
 	_.each(["tags", "allergy", "period"], function(k) {
