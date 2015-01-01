@@ -55,7 +55,10 @@ module.exports = {
   },
 
   afterDestroy: function(ings, next) {
-    Upload.destroy({id: _.pluck(ings, 'photo')}).exec(next);
+    var tmp = _(ings);
+    Upload.destroy({id: tmp.pluck('photo').value()}).exec(function() {
+      RecipeComment.destroy({id: tmp.pluck("comments").flatten().value()})
+    });
   },
 
   toPopulate: ["photo", "ingredients"],
