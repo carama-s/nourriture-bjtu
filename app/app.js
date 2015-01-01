@@ -22,6 +22,7 @@ module.exports = function(api) {
   });
 
   app.use(config.prefix + "/ui", serveStatic(path.join(__rootDir, "ui")));
+  app.use("/uploads", serveStatic(path.join(__rootDir, "uploads")));
 
   app = middlewares.after(app);
 

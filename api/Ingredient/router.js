@@ -1,5 +1,6 @@
 var fs = require("fs-extra");
 var path = require("path");
+var gm = require("gm");
 
 function parseBodyData(data) {
 	_.each(["tags", "allergy", "period"], function(k) {
@@ -27,12 +28,30 @@ function isImage(file) {
 	return mime_regex.test(file.type);
 }
 
+function photoResizer(ing) {
+	if (ing.photo) {
+		var img_path = ing.photo.real_path();
+		gm(img_path).size(function(err, size) {
+			if (err) return;
+			var new_size = undefined;
+			if (size.height >= size.width && size.width > 300) new_size = {width: 300};
+			else if (size.height < size.width && size.height > 300) new_size = {height: 300};
+			if (new_size !== undefined) {
+				gm(img_path).resize(new_size.width, new_size.height).write(img_path, function(err) {
+					if (err) console.error("Error resize photo of ingredient", err);
+				});
+			}
+		});
+	}
+}
+
 function ingredientCreate(req, res, next) {
 	var data = _.omit(req.body, "photo", "recipes");
 	data = parseBodyData(data);
 
 	function finish(ing) {
 		APP.dbEvent(Ingredient, "create", ing, req.user);
+		photoResizer(ing);
 		return res.json(ing);
 	}
 
@@ -56,6 +75,7 @@ function ingredientUpdate(req, res, next) {
 
 	function finish(ing) {
 		APP.dbEvent(Ingredient, "update", ing, req.user);
+		photoResizer(ing);
 		return res.json(ing);
 	}
 
