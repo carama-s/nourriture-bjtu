@@ -1,17 +1,17 @@
-function recipeCommentCreate(req, res, next) {
+function recipeRateCreate(req, res, next) {
 	var data = _.omit(req.body, "user");
 	data.user = req.user;
 
-	RecipeComment.create(data).then(function(com) {
-		APP.dbEvent(RecipeComment, "create", com, req.user);
+	RecipeRate.create(data).then(function(com) {
+		APP.dbEvent(RecipeRate, "create", com, req.user);
 		res.json(com);
 	}, ValCb(res, next));
 }
 
-function recipeCommentDestroy(req, res, next) {
-	RecipeComment.destroy({id: req.params.id, user: req.user.id}).then(function(entries) {
+function recipeRateDestroy(req, res, next) {
+	RecipeRate.destroy({id: req.params.id, user: req.user.id}).then(function(entries) {
 		if (entries.length == 0) return res.json({});
-		APP.dbEvent(RecipeComment, "destroy", entries[0], req.user);
+		APP.dbEvent(RecipeRate, "destroy", entries[0], req.user);
 		res.json(entries[0]);
 	}, next);
 }
@@ -19,18 +19,18 @@ function recipeCommentDestroy(req, res, next) {
 module.exports = function(pol) {
 	var router = require("express").Router();
 
-	var rest = Rest(RecipeComment);
+	var rest = Rest(RecipeRate);
 
 	router.route("/count")
 	.get(rest.count);
 
 	router.route("/")
 	.get(rest.find)
-	.post(pol.isAuthenticated, recipeCommentCreate);
+	.post(pol.isAuthenticated, recipeRateCreate);
 
 	router.route("/:id")
 	.get(rest.findOne)
-	.delete(pol.isAuthenticated, recipeCommentDestroy);
+	.delete(pol.isAuthenticated, recipeRateDestroy);
 
 	return router;
 };
