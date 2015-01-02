@@ -37,7 +37,7 @@ module.exports = {
 
     if (app.get("env") === 'production') {
       app.set("trust proxy", "loopback");
-      app.use(morgan("combined"));
+      app.use(morgan("short"));
     } else if (app.get("env") === "test") {
       app.set("trust proxy");
     } else {
