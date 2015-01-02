@@ -19,7 +19,7 @@ function recipeCommentDestroy(req, res, next) {
 module.exports = function(pol) {
 	var router = require("express").Router();
 
-	var rest = Rest(Recipe);
+	var rest = Rest(RecipeComment);
 
 	router.route("/count")
 	.get(rest.count);
