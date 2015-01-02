@@ -11,12 +11,6 @@ function makeConnections() {
       port: 6379,
       host: 'localhost'
     }
-    // "fast": {
-    //   adapter: "mongoDB",
-    //   host: "localhost",
-    //   port: 27017,
-    //   database: "nourriture"
-    // }
   }
   if (process.env.NODE_ENV === "test") return {
     "default": {adapter: "memory"},

@@ -16,21 +16,17 @@ module.exports = {
       }, done);
     });
 
-    passport.use(new BearerStrategy(function(accessToken, next) {
+    passport.use(new BearerStrategy(function(accessToken, done) {
       Token.findOneByToken(accessToken).populate("user").then(function(token) {
-        if (!token) return next(null, undefined);
+        if (!token) return done(null, undefined);
         if (token.stillValid() && token.user) {
-          console.log("TOKEN VALID");
-          return token.updateAccess().then(function(token) {
-            next(null, token.user);
-          });
+          token.updateAccess().then();
+          return done(null, token.user);
         }
-        console.log("TOKEN INVALID");
-        return token.destroy().then(function() {
-          next(null, undefined);
-        });
+        token.destroy().then();
+        return done(null, undefined);
       })
-      .then(null, next);
+      .then(null, done);
     }));
 
     // Express config
