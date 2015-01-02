@@ -88,6 +88,14 @@ function update_self(req, res, next) {
 	}, ValCb(res, next));
 }
 
+function google_callback(req, res, next) {
+
+}
+
+function get_google_state(req, res, next) {
+	l
+}
+
 module.exports = function(pol, prefix) {
 	APP.swag.addDefinition({
 		"resGetTokenOK": {
