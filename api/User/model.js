@@ -87,7 +87,7 @@ module.exports = {
     Token.destroy({user: _.pluck(users, 'id')}).exec(cb);
   },
 
-  toPopulate: ["tokens"],
+  toPopulate: [],
 
   hashPasswd: hashPasswd
 };

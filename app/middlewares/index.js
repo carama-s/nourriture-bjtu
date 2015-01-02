@@ -18,8 +18,17 @@ module.exports = {
 
     passport.use(new BearerStrategy(function(accessToken, next) {
       Token.findOneByToken(accessToken).populate("user").then(function(token) {
-        if (token) return next(null, token.user);
-        return next(null, undefined);
+        if (!token) return next(null, undefined);
+        if (token.stillValid() && token.user) {
+          console.log("TOKEN VALID");
+          return token.updateAccess().then(function(token) {
+            next(null, token.user);
+          });
+        }
+        console.log("TOKEN INVALID");
+        return token.destroy().then(function() {
+          next(null, undefined);
+        });
       })
       .then(null, next);
     }));

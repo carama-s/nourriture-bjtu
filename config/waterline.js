@@ -6,10 +6,16 @@ function makeConnections() {
       port: 27017,
       database: 'nourriture'
     },
+    // "fast": {
+    //   adapter: "redis",
+    //   port: 6379,
+    //   host: 'localhost'
+    // }
     "fast": {
-      adapter: "redis",
-      port: 6379,
-      host: 'localhost'
+      adapter: "mongoDB",
+      host: "localhost",
+      port: 27017,
+      database: "nourriture"
     }
   }
   if (process.env.NODE_ENV === "test") return {

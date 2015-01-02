@@ -4,7 +4,6 @@ function me(req, res, next) {
 
 function get_token(req, res, next) {
 	function resToken(user) {
-		if (user.tokens.length > 0) return res.json({user: user, token: user.tokens[0]});
 		return Token.create({user: user}).then(function(token) {
 			res.json({token: token, user: user});
 		});
@@ -93,7 +92,7 @@ function google_callback(req, res, next) {
 }
 
 function get_google_state(req, res, next) {
-	l
+
 }
 
 module.exports = function(pol, prefix) {

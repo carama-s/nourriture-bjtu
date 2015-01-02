@@ -2,9 +2,17 @@ var crypto = require("crypto");
 var uuid = require("node-uuid");
 
 function generateToken() {
-  var shasum = crypto.createHash("sha256");
-  shasum.update(uuid.v1());
+  var shasum = crypto.createHash("sha1");
+  shasum.update(uuid.v4());
   return shasum.digest("hex");
+}
+
+function now() {
+  return Math.floor(_.now() / 1000);
+}
+
+function destroyExpiredTokens() {
+  return Token.destroy({lastAccess: {"<": now() - APP.config.http.token_lifetime}});
 }
 
 module.exports = {
@@ -21,10 +29,25 @@ module.exports = {
       required: true,
       defaultsTo: generateToken,
       primaryKey: true
+    },
+    lastAccess: {
+      type: "integer",
+      defaultsTo: now,
+      required: true
+    },
+
+    updateAccess: function() {
+      this.lastAccess = now();
+      return this.save();
+    },
+
+    stillValid: function() {
+      return (now() < (this.lastAccess + APP.config.http.token_lifetime));
     }
   },
 
-  toPopulate: ["user"],
+  toPopulate: [],
 
-  generateToken: generateToken
+  generateToken: generateToken,
+  destroyExpiredTokens: destroyExpiredTokens
 };
