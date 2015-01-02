@@ -38,7 +38,9 @@ APP.prototype.initialize = function() {
       console.log("Connected to DB !");
 
       var collections = _.transform(models.collections, function(result, value, key) {
-        result[S(key).capitalize()] = value;
+        var k = S(key).camelize().s;
+        k = k.charAt(0).toUpperCase() + k.slice(1);
+        result[k] = value;
       });
       _.extend(global, collections);
       this.models = collections;
