@@ -43,6 +43,15 @@ function get_token(req, res, next) {
 	}
 }
 
+function logout(req, res, next) {
+	var header = req.get("Authorization");
+	if (!header) return res.json({});
+	var token = header.split(" ")[1];
+	Token.destroy({token: token}).then(function() {
+		res.json({});
+	}, next);
+}
+
 function signup(req, res, next) {
 	function create_user(data) {
 		return User.create(data).then(function(user) {
@@ -164,6 +173,8 @@ module.exports = function(pol, prefix) {
 			}
 		}
 	});
+
+	router.route("/logout").get(logout);
 
 	router.route("/signup").post(signup);
 	swag("/signup", {
