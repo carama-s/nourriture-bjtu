@@ -31,7 +31,7 @@ function recipeCreate(req, res, next) {
 	var data = _.omit(req.body, "photo");
 	data = parseBodyData(data);
 	var ingredients = data.ingredients;
-	data = _.omit(req.body, "ingredients");
+	data = _.omit(data, "ingredients");
 
 	function finish(rec) {
 		APP.dbEvent(Recipe, "create", rec, req.user);
