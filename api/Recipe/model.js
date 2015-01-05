@@ -44,6 +44,10 @@ module.exports = {
       collection: "recipe_comment",
       via: "recipe"
     },
+    rates: {
+      collection: "recipe_rate",
+      via: "recipe"
+    },
     directions: "array",
 
     toJSON: function() {
@@ -55,9 +59,15 @@ module.exports = {
 
   afterDestroy: function(ings, next) {
     var tmp = _(ings);
-    Upload.destroy({id: tmp.pluck('photo').value()}).exec(function() {
-      RecipeComment.destroy({id: tmp.pluck("comments").flatten().value()})
-    });
+    Upload.destroy({id: tmp.pluck('photo').value()}).then(function() {
+      return RecipeComment.destroy({id: tmp.pluck("comments").flatten().value()});
+    }).then(function() {
+      return RecipeIngredient.destroy({id: tmp.pluck("ingredients").flatten().value()});
+    }).then(function() {
+      return RecipeRate.destroy({id: tmp.pluck("rates").flatten().value()});
+    }).then(function() {
+      next();
+    }, next);
   },
 
   toPopulate: ["photo", "ingredients"],
