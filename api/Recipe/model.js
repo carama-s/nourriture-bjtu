@@ -37,9 +37,8 @@ module.exports = {
       required: true
     },
     ingredients: {
-      collection: 'ingredient',
-      via: 'recipes',
-      dominant: true
+      collection: 'recipe_ingredient',
+      via: 'recipe'
     },
     comments: {
       collection: "recipe_comment",
