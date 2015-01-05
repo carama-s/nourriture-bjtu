@@ -30,6 +30,8 @@ function isImage(file) {
 function recipeCreate(req, res, next) {
 	var data = _.omit(req.body, "photo");
 	data = parseBodyData(data);
+	var ingredients = data.ingredients;
+	data = _.omit(req.body, "ingredients");
 
 	function finish(rec) {
 		APP.dbEvent(Recipe, "create", rec, req.user);
@@ -37,18 +39,24 @@ function recipeCreate(req, res, next) {
 	}
 
 	Recipe.create(data).then(function(rec) {
-		var photo = req.files.photo;
-		if (photo === undefined || !isImage(photo)) return finish(rec);
-		var app_path = path.join(Recipe.PHOTO_URI, path.basename(photo.path));
-		Upload.create({path: app_path}).then(function(up) {
-			fs.move(photo.path, up.real_path(), function(err) {
-				if (err) return next(err);
-				rec.photo = up;
-				rec.save().then(function(rec) {
-					finish(rec);
-				}, next)
+		_.forEach(ingredients, function(ing) {
+			rec.ingredients.add(ing);
+		});
+		rec.save().then(function(rec) {
+			var photo = req.files.photo;
+			if (photo === undefined || !isImage(photo)) return finish(rec);
+			var app_path = path.join(Recipe.PHOTO_URI, path.basename(photo.path));
+			return Upload.create({path: app_path}).then(function(up) {
+				fs.move(photo.path, up.real_path(), function(err) {
+					if (err) return next(err);
+					rec.photo = up;
+					rec.save().then(function(rec) {
+						finish(rec);
+					}, next)
+				});
 			});
-		}, next);
+		})
+		.then(null, next);
 	}, ValCb(res, next));
 }
 
