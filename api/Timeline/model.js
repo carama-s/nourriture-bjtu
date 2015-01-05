@@ -16,7 +16,7 @@ module.exports = {
     user: {
       model: "user"
     },
-    ingredient: {
+    data: {
       type: "json"
     }
   },
