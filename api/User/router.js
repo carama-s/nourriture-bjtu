@@ -77,8 +77,7 @@ function change_passwd(req, res, next) {
 	if (req.body.old_passwd && req.body.new_passwd) {
 		req.user.checkPasswd(req.body.old_passwd).then(function(ok) {
 			if (!ok) return res.status(400).json({error: "Invalid credentials."});
-			req.user.passwd = req.body.new_passwd;
-			return req.user.save().then(function(user) {
+			return req.user.changePasswd(req.body.new_passwd).then(function(user) {
 				res.json(user);
 			}, ValCb(res, next));
 		})

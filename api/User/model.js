@@ -62,6 +62,11 @@ module.exports = {
 
     checkPasswd: function(passwd) {
       return Q.nfcall(bcrypt.compare, passwd, this.passwd);
+    },
+
+    changePasswd: function(new_passwd) {
+      this.newPasswd = new_passwd;
+      return this.save();
     }
   },
 
@@ -73,10 +78,8 @@ module.exports = {
   },
 
   beforeUpdate: function(values, next) {
-    console.log(values);
-    console.log(this);
-    if (values.passwd && values.passwd != this.passwd) {
-      return hashPasswd(values.passwd).then(function(hash) {
+    if (values.newPasswd) {
+      return hashPasswd(values.newPasswd).then(function(hash) {
         values.passwd = hash;
         next();
       }, next);
