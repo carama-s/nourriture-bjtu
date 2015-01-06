@@ -19,8 +19,7 @@ module.exports = {
       type: "string",
       required: true,
       unique: true,
-      email: true,
-      protected: true
+      email: true
     },
     facebook_id: {
       type: "string",
