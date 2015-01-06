@@ -18,7 +18,19 @@ module.exports = {
     },
     data: {
       type: "json"
+    },
+    destroyed: {
+      type: "boolean",
+      defaultsTo: false
     }
+  },
+
+  beforeCreate: function(values, next) {
+    if (values.name != "destroy" || data == undefined || data.id == undefined) return next();
+    values.destroyed = true;
+    Timeline.update({data: {id: values.data.id}}, {destroyed: true}).then(function(res) {
+      next();
+    }, next);
   },
 
   toPopulate: ["user"]
