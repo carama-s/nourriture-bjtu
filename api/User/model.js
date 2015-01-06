@@ -73,7 +73,7 @@ module.exports = {
   },
 
   beforeUpdate: function(values, next) {
-    if (values.passwd) {
+    if (values.passwd && values.passwd != this.passwd) {
       return hashPasswd(values.passwd).then(function(hash) {
         values.passwd = hash;
         next();
