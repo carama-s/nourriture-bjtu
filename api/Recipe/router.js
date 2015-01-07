@@ -39,14 +39,11 @@ function recipeCreate(req, res, next) {
 	}
 
 	Recipe.create(data).then(function(rec) {
-		console.log(ingredients);
 		_.forEach(ingredients, function(ing) {
-			console.log(ing);
+			ing.recipe = rec.id;
 			rec.ingredients.add(ing);
 		});
-		console.log(rec.ingredients);
-		console.log("End add ingredient");
-		rec.save().then(function(rec) {
+		return rec.save().then(function(rec) {
 			var photo = req.files.photo;
 			if (photo === undefined || !isImage(photo)) return finish(rec);
 			var app_path = path.join(Recipe.PHOTO_URI, path.basename(photo.path));
