@@ -35,12 +35,11 @@ function recipeCreate(req, res, next) {
 
 	function finish(rec) {
 		APP.dbEvent(Recipe, "create", rec, req.user);
-		return res.json(rec);
+		res.json(rec);
 	}
 
 	Recipe.create(data).then(function(rec) {
 		_.forEach(ingredients, function(ing) {
-			ing.recipe = rec.id;
 			rec.ingredients.add(ing);
 		});
 		return rec.save().then(function(rec) {
@@ -57,7 +56,7 @@ function recipeCreate(req, res, next) {
 				});
 			});
 		})
-		.then(null, next);
+		.then(null, ValCb(res, next));
 	}, ValCb(res, next));
 }
 
