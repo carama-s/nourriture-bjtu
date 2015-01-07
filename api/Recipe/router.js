@@ -38,14 +38,14 @@ function recipeCreate(req, res, next) {
 		return res.json(rec);
 	}
 
-	console.log("Create start");
-	console.log(data);
 	Recipe.create(data).then(function(rec) {
-		console.log("Create end");
-		console.log(rec);
+		console.log(ingredients);
 		_.forEach(ingredients, function(ing) {
+			console.log(ing);
 			rec.ingredients.add(ing);
 		});
+		console.log(rec.ingredients);
+		console.log("End add ingredient");
 		rec.save().then(function(rec) {
 			var photo = req.files.photo;
 			if (photo === undefined || !isImage(photo)) return finish(rec);
