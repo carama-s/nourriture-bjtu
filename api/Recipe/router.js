@@ -38,7 +38,11 @@ function recipeCreate(req, res, next) {
 		return res.json(rec);
 	}
 
+	console.log("Create start");
+	console.log(data);
 	Recipe.create(data).then(function(rec) {
+		console.log("Create end");
+		console.log(rec);
 		_.forEach(ingredients, function(ing) {
 			rec.ingredients.add(ing);
 		});
