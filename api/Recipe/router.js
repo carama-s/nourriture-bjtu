@@ -33,34 +33,43 @@ function recipeCreate(req, res, next) {
 	var ingredients = data.ingredients;
 	data = _.omit(data, "ingredients");
 
-	function finish(rec) {
-		APP.dbEvent(Recipe, "create", rec, req.user);
-		res.json(rec);
+	function finish(rec_id) {
+		return Recipe.findOne(rec_id).then(function(rec) {
+			APP.dbEvent(Recipe, "create", rec, req.user);
+			res.json(rec);
+		}, next);
 	}
 
-	Recipe.create(data).then(function(rec) {
+	function addIngredients(rec_id) {
+		if (ingredients.length <= 0) return addPhoto(rec_id);
 		ingredients = _.map(ingredients, function(ing) {
-			ing.recipe = rec.id;
+			ing.recipe = rec_id;
 			return ing;
 		});
 		return RecipeIngredient.create(ingredients).then(function(ings) {
-			var photo = req.files.photo;
-			if (photo === undefined || !isImage(photo)) return finish(rec);
-			var app_path = path.join(Recipe.PHOTO_URI, path.basename(photo.path));
-			return Upload.create({path: app_path}).then(function(up) {
-				fs.move(photo.path, up.real_path(), function(err) {
-					if (err) return next(err);
-					rec.photo = up.id;
-					console.log("BEFORE LAST SAVE");
-					console.log(rec);
-					rec.save().then(function(rec) {
-						finish(rec);
-					}, ValCb(res, next))
-				});
+			return addPhoto(rec_id);
+		}, ValCb(res, next));
+	}
+
+	function addPhoto(rec_id) {
+		var photo = req.files.photo;
+		if (photo === undefined || !isImage(photo)) return finish(rec_id);
+		var app_path = path.join(Recipe.PHOTO_URI, path.basename(photo.path));
+		return Upload.create({path: app_path}).then(function(up) {
+			fs.move(photo.path, up.real_path(), function(err) {
+				if (err) return next(err);
+				rec.photo = up.id;
+				return Recipe.update(rec_id, {photo: up.id}).then(function(rec) {
+					return finish(rec.id);
+				}, ValCb(res, next))
 			});
 		});
-	})
-	.then(null, ValCb(res, next));
+	}
+
+	return Recipe.create(data).then(function(rec) {
+		return addIngredients(rec.id);
+	}, ValCb(res, next))
+	.then(null, next);
 }
 
 function recipeUpdate(req, res, next) {
