@@ -32,18 +32,24 @@ module.exports = {
   },
 
   afterCreate: function(rate, next) {
-    updateRecipeMeanRate(rate.recipe).then(null, next);
+    updateRecipeMeanRate(rate.recipe).then(function() {
+      next();
+    }, next);
   },
 
   afterUpdate: function(rate, next) {
-    updateRecipeMeanRate(rate.recipe).then(null, next);
+    updateRecipeMeanRate(rate.recipe).then(function() {
+      next();
+    }, next);
   },
 
   afterDestroy: function(rates, next) {
     var actions = _(rates).pluck("recipe").uniq().map(function(recipe_id) {
       return updateRecipeMeanRate(recipe_id);
     }).value();
-    Q.all(actions).then(null, next);
+    Q.all(actions).then(function() {
+      next();
+    }, next);
   },
 
   toPopulate: []
