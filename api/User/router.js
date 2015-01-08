@@ -107,8 +107,8 @@ module.exports = function(pol, prefix) {
 	APP.swag.addDefinition({
 		"resGetTokenOK": {
 			"properties": {
-				"token": {"schema": {"$ref": "#/definitions/tokenModel"}},
-				"user": {"schema": {"$ref": "#/definitions/userModel"}}
+				"token": {"$ref": "#/definitions/tokenModel"},
+				"user": {"$ref": "#/definitions/userModel"}
 			}
 		},
 		"tokenModel": {
@@ -221,7 +221,7 @@ module.exports = function(pol, prefix) {
 			}],
 			"responses": {
 				"400": {"schema": {"$ref": "#/definitions/error"}},
-				"200": {"schema": {"$ref": "#/definitions/resGetTokenOK"}}
+				"200": {"schema": {"$ref": "#/definitions/userModel"}}
 			}
 		}
 	});

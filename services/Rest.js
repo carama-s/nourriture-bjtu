@@ -45,10 +45,10 @@ module.exports = function(cb) {
             }],
             "responses": {
               "400": {"schema": {"$ref": "#/definitions/error"}},
-              "200": {
+              "200": {"schema": {
                 "type": "array",
                 "items": {"$ref": schema}
-              }
+              }}
             }
           }
         });
@@ -141,11 +141,9 @@ module.exports = function(cb) {
               "type": "string"
             }],
             "responses": {
-              "200": {
-                "properties": {
-                  "count": {"type": "integer"}
-                }
-              }
+              "200": {"properties": {
+                "count": {"type": "integer"}
+              }}
             }
           }
         });
