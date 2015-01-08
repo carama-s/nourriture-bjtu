@@ -34,7 +34,9 @@ function recipeCreate(req, res, next) {
 	data = _.omit(data, "ingredients");
 
 	function finish(rec_id) {
+		console.log("FINISH");
 		return Recipe.findOne(rec_id).then(function(rec) {
+			console.log("AFTER FINISH");
 			APP.dbEvent(Recipe, "create", rec, req.user);
 			res.json(rec);
 		}, next);
@@ -52,7 +54,7 @@ function recipeCreate(req, res, next) {
 					return finish(rec.id);
 				}, ValCb(res, next))
 			});
-		});
+		}, ValCb(res, next));
 	}
 
 	function addIngredients(rec_id) {
