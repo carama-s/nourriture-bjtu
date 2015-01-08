@@ -97,6 +97,13 @@ function recipeUpdate(req, res, next) {
 	}, next);
 }
 
+function recipeMyRate(req, res, next) {
+	RecipeRate.findOne({user: req.user.id, recipe: req.params.id}).then(function(rate) {
+		if (!rate) return res.json({});
+		return res.json(rate);
+	}, next);
+}
+
 function categories(req, res, next) {
 	res.json(Recipe.CATEGORIES);
 }
@@ -115,6 +122,9 @@ module.exports = function(pol) {
 	router.route("/")
 	.get(rest.find)
 	.post(pol.isAuthenticated, recipeCreate);
+
+	router.route("/:id/my_rate")
+	.get(pol.isAuthenticated, recipeMyRate);
 
 	router.route("/:id")
 	.get(rest.findOne)
