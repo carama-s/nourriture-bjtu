@@ -2,17 +2,18 @@ function recipeRateCreate(req, res, next) {
 	var data = _.omit(req.body, "user");
 	data.user = req.user;
 
-	function finish(rate) {
-		APP.dbEvent(RecipeRate, "create", rate, req.user);
-		res.json(rate);
-	}
-
 	RecipeRate.findOne({recipe: data.recipe, user: data.user}).then(function(rate) {
 		if (rate) {
 			rate.rate = data.rate;
-			return rate.save().then(finish);
+			return rate.save().then(function(rate) {
+				APP.dbEvent(RecipeRate, "update", rate, req.user);
+				res.json(rate);
+			});
 		}
-		return RecipeRate.create(data).then(finish);
+		return RecipeRate.create(data).then(function(rate) {
+			APP.dbEvent(RecipeRate, "create", rate, req.user);
+			res.json(rate);
+		});
 	})
 	.then(null, ValCb(res, next));
 }

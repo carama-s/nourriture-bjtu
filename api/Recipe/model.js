@@ -52,6 +52,10 @@ module.exports = {
       type: "number",
       defaultsTo: 0
     },
+    nb_rates: {
+      type: "integer",
+      defaultsTo: 0
+    },
     directions: "array",
 
     toJSON: function() {

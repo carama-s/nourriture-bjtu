@@ -7,7 +7,7 @@ function updateRecipeMeanRate(recipe) {
         return acc + val.rate;
       }, 0) / nb;
     }
-    return Recipe.update(recipe, {rate: mean});
+    return Recipe.update(recipe, {rate: mean, nb_rates: nb});
   });
 }
 
