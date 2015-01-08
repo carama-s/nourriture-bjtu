@@ -34,9 +34,7 @@ function recipeCreate(req, res, next) {
 	data = _.omit(data, "ingredients");
 
 	function finish(rec_id) {
-		console.log("FINISH");
 		return Recipe.findOne(rec_id).then(function(rec) {
-			console.log("AFTER FINISH");
 			APP.dbEvent(Recipe, "create", rec, req.user);
 			res.json(rec);
 		}, next);
@@ -49,7 +47,6 @@ function recipeCreate(req, res, next) {
 		return Upload.create({path: app_path}).then(function(up) {
 			fs.move(photo.path, up.real_path(), function(err) {
 				if (err) return next(err);
-				rec.photo = up.id;
 				return Recipe.update(rec_id, {photo: up.id}).then(function(rec) {
 					return finish(rec.id);
 				}, ValCb(res, next))
