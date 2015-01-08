@@ -2,9 +2,17 @@ function recipeRateCreate(req, res, next) {
 	var data = _.omit(req.body, "user");
 	data.user = req.user;
 
-	RecipeRate.create(data).then(function(com) {
-		APP.dbEvent(RecipeRate, "create", com, req.user);
-		res.json(com);
+	function finish(rate) {
+		APP.dbEvent(RecipeRate, "create", rate, req.user);
+		res.json(rate);
+	}
+
+	RecipeRate.findOne({recipe: data.recipe. user: data.user}).then(function(rate) {
+		if (rate) {
+			rate.rate = data.rate;
+			return rate.save().then(finish);
+		}
+		return RecipeRate.create(data).then(finish);
 	}, ValCb(res, next));
 }
 
