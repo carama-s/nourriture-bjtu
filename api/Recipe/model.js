@@ -49,7 +49,7 @@ module.exports = {
       via: "recipe"
     },
     rate: {
-      type: "number",
+      type: "float",
       defaultsTo: 0
     },
     nb_rates: {
