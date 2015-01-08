@@ -38,11 +38,13 @@ function recipeCreate(req, res, next) {
 		res.json(rec);
 	}
 
+	console.log("BEFORE CREATE");
 	Recipe.create(data).then(function(rec) {
 		_.forEach(ingredients, function(ing) {
 			ing.recipe = rec.id;
 			rec.ingredients.add(ing);
 		});
+		console.log("BEFORE FIRST SAVE");
 		return rec.save().then(function(rec) {
 			var photo = req.files.photo;
 			if (photo === undefined || !isImage(photo)) return finish(rec);
@@ -51,6 +53,7 @@ function recipeCreate(req, res, next) {
 				fs.move(photo.path, up.real_path(), function(err) {
 					if (err) return next(err);
 					rec.photo = up;
+					console.log("BEFORE LAST SAVE");
 					rec.save().then(function(rec) {
 						finish(rec);
 					}, ValCb(res, next))
