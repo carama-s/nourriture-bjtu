@@ -48,7 +48,7 @@ function recipeCreate(req, res, next) {
 			fs.move(photo.path, up.real_path(), function(err) {
 				if (err) return next(err);
 				return Recipe.update(rec_id, {photo: up.id}).then(function(rec) {
-					return finish(rec.id);
+					return finish(rec_id);
 				}, ValCb(res, next))
 			});
 		}, ValCb(res, next));
