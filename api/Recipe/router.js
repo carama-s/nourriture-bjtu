@@ -40,6 +40,7 @@ function recipeCreate(req, res, next) {
 
 	Recipe.create(data).then(function(rec) {
 		_.forEach(ingredients, function(ing) {
+			ing.recipe = rec.id;
 			rec.ingredients.add(ing);
 		});
 		return rec.save().then(function(rec) {
