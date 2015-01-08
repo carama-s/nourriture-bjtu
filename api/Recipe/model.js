@@ -48,6 +48,10 @@ module.exports = {
       collection: "recipe_rate",
       via: "recipe"
     },
+    rate: {
+      type: "number",
+      defaultsTo: 0
+    },
     directions: "array",
 
     toJSON: function() {
