@@ -97,17 +97,6 @@ function recipeUpdate(req, res, next) {
 	}, next);
 }
 
-function recipeMeanRate(req, res, next) {
-	RecipeRate.find({recipe: req.params.id}).then(function(rates) {
-		var nb = rates.length;
-		if (nb == 0) return res.json({rate: 0});
-		var sum = _.reduce(rates, function(acc, val) {
-			return acc + val.rate;
-		}, 0);
-		return res.json({rate: (sum / nb)});
-	}, next);
-}
-
 function categories(req, res, next) {
 	res.json(Recipe.CATEGORIES);
 }
@@ -126,9 +115,6 @@ module.exports = function(pol) {
 	router.route("/")
 	.get(rest.find)
 	.post(pol.isAuthenticated, recipeCreate);
-
-	router.route("/:id/rate")
-	.get(recipeMeanRate);
 
 	router.route("/:id")
 	.get(rest.findOne)
