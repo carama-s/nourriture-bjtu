@@ -52,12 +52,12 @@ function recipeCreate(req, res, next) {
 					rec.photo = up;
 					rec.save().then(function(rec) {
 						finish(rec);
-					}, next)
+					}, ValCb(res, next))
 				});
 			});
-		})
-		.then(null, ValCb(res, next));
-	}, ValCb(res, next));
+		});
+	})
+	.then(null, ValCb(res, next));
 }
 
 function recipeUpdate(req, res, next) {
