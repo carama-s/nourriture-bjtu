@@ -13,7 +13,8 @@ function recipeRateCreate(req, res, next) {
 			return rate.save().then(finish);
 		}
 		return RecipeRate.create(data).then(finish);
-	}, ValCb(res, next));
+	})
+	.then(null, ValCb(res, next));
 }
 
 function recipeRateDestroy(req, res, next) {
