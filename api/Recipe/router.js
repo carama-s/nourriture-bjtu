@@ -50,7 +50,7 @@ function recipeCreate(req, res, next) {
 			return Upload.create({path: app_path}).then(function(up) {
 				fs.move(photo.path, up.real_path(), function(err) {
 					if (err) return next(err);
-					rec.photo = up;
+					rec.photo = up.id;
 					console.log("BEFORE LAST SAVE");
 					console.log(rec);
 					rec.save().then(function(rec) {
