@@ -1,5 +1,5 @@
-function updateRecipeMeanRate(recipe, next) {
-  RecipeRate.find({recipe: recipe}).then(function(rates) {
+function updateRecipeMeanRate(recipe) {
+  return RecipeRate.find({recipe: recipe}).then(function(rates) {
     var nb = rates.length;
     var mean = 0;
     if (nb > 0) {
@@ -8,8 +8,7 @@ function updateRecipeMeanRate(recipe, next) {
       }, 0) / nb;
     }
     return Recipe.update(recipe, {rate: mean});
-  })
-  .then(null, next);
+  });
 }
 
 module.exports = {
@@ -33,11 +32,18 @@ module.exports = {
   },
 
   afterCreate: function(rate, next) {
-    updateRecipeMeanRate(rate.recipe, next);
+    updateRecipeMeanRate(rate.recipe).then(null, next);
   },
 
   afterUpdate: function(rate, next) {
-    updateRecipeMeanRate(rate.recipe, next);
+    updateRecipeMeanRate(rate.recipe).then(null, next);
+  },
+
+  afterDestroy: function(rates, next) {
+    var actions = _(rates).pluck("recipe").uniq().map(function(recipe_id) {
+      return updateRecipeMeanRate(recipe_id);
+    }).value();
+    Q.all(actions).then(null, next);
   },
 
   toPopulate: []
