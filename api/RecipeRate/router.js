@@ -7,7 +7,7 @@ function recipeRateCreate(req, res, next) {
 		res.json(rate);
 	}
 
-	RecipeRate.findOne({recipe: data.recipe. user: data.user}).then(function(rate) {
+	RecipeRate.findOne({recipe: data.recipe, user: data.user}).then(function(rate) {
 		if (rate) {
 			rate.rate = data.rate;
 			return rate.save().then(finish);
