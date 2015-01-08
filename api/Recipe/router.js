@@ -40,17 +40,6 @@ function recipeCreate(req, res, next) {
 		}, next);
 	}
 
-	function addIngredients(rec_id) {
-		if (ingredients.length <= 0) return addPhoto(rec_id);
-		ingredients = _.map(ingredients, function(ing) {
-			ing.recipe = rec_id;
-			return ing;
-		});
-		return RecipeIngredient.create(ingredients).then(function(ings) {
-			return addPhoto(rec_id);
-		}, ValCb(res, next));
-	}
-
 	function addPhoto(rec_id) {
 		var photo = req.files.photo;
 		if (photo === undefined || !isImage(photo)) return finish(rec_id);
@@ -64,6 +53,17 @@ function recipeCreate(req, res, next) {
 				}, ValCb(res, next))
 			});
 		});
+	}
+
+	function addIngredients(rec_id) {
+		if (ingredients.length <= 0) return addPhoto(rec_id);
+		ingredients = _.map(ingredients, function(ing) {
+			ing.recipe = rec_id;
+			return ing;
+		});
+		return RecipeIngredient.create(ingredients).then(function(ings) {
+			return addPhoto(rec_id);
+		}, ValCb(res, next));
 	}
 
 	return Recipe.create(data).then(function(rec) {
