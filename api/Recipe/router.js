@@ -28,7 +28,7 @@ function isImage(file) {
 }
 
 function recipeCreate(req, res, next) {
-	var data = _.omit(req.body, "photo");
+	var data = _.omit(req.body, "photo", "rate", "nb_rates", "rates", "comments");
 	data = parseBodyData(data);
 	var ingredients = data.ingredients || [];
 	data = _.omit(data, "ingredients");
@@ -80,7 +80,7 @@ function recipeUpdate(req, res, next) {
 
 	Recipe.findOneById(req.params.id).populate("photo").then(function(ing) {
 		if (rec === undefined) return next("route");
-		var data = _.omit(req.body, "photo");
+		var data = _.omit(req.body, "photo", "rate", "nb_rates", "rates", "comments", "ingredients");
 		data = parseBodyData(data);
 		_.extend(rec, data);
 		rec.save().then(function(rec) {
@@ -119,7 +119,36 @@ function categories(req, res, next) {
 	res.json(Recipe.CATEGORIES);
 }
 
-module.exports = function(pol) {
+module.exports = function(pol, prefix) {
+	APP.swag.addDefinition({
+		"recipeIngredientModel": {
+			"properties": {
+				"ingredient": {"type": "string"},
+				"recipe": {"type": "string"},
+				"quantity": {"type": "string"}
+			}
+		},
+		"recipeModel": {
+			"required": ["name", "category", "servings", "preparation_time", "cooking_time"],
+			"properties": {
+				"name": {"type": "string"},
+				"tags": {"type": "array", "items": {"type": "string"}},
+				"description": {"type": "string"},
+				"category": {"type": "string", "enum": _.pluck(Recipe.CATEGORIES, "value"), "default": "other"},
+				"servings": {"type": "integer"},
+				"preparation_time": {"type": "integer"},
+				"cooking_time": {"type": "integer"},
+				"ingredients": {"type": "array", "items": {"$ref": "#/definitions/recipeIngredientModel"}},
+				"comments": {"type": "array", "items": {"type": "string"}},
+				"rates": {"type": "array", "items": {"type": "string"}},
+				"rate": {"type": "float", "default": 0},
+				"nb_rates": {"type": "integer", "default": 0},
+				"directions": {"type": "array", "items": {"type": "string"}}
+			}
+		}
+	});
+
+	var swag = APP.swag.handlerPaths(prefix, ["Recipe"]);
 	var router = require("express").Router();
 
 	router.route("/categories")
@@ -133,6 +162,7 @@ module.exports = function(pol) {
 	router.route("/")
 	.get(rest.find)
 	.post(pol.isAuthenticated, recipeCreate);
+	rest.swagFind(swag, "findRecipe", "#/definitions/recipeModel");
 
 	router.route("/:id/my_rate")
 	.get(pol.isAuthenticated, recipeMyRate);
@@ -141,6 +171,7 @@ module.exports = function(pol) {
 	.get(rest.findOne)
 	.put(pol.isAuthenticated, recipeUpdate)
 	.delete(pol.isAuthenticated, rest.destroy);
+	rest.swagFindOne(swag, "findOneRecipe", "#/definitions/recipeModel");
 
 	return router;
 };
