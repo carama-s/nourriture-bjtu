@@ -1,9 +1,9 @@
 function searchView(req, res, next) {
-	var mapping = {"recipe": recipeSearch, "ingredient": ingredientSearch};
+	var all_what = ["recipe", "ingredient"];
 	var what = req.query.what;
-	if (what === undefined) {
-		what = _.keys(mapping);
-	} else if (_(mapping).keys().contains(what)) {
+	if (what === undefined || what === "all") {
+		what = all_what;
+	} else if (_.contains(all_what, what)) {
 		what = [what];
 	} else {
 		return res.status(400).json({error: "Wrong what."});
@@ -14,42 +14,28 @@ function searchView(req, res, next) {
 	}
 	search = search.split(" ");
 
-	function ingredientSearch() {
+	function mySearch(Model, name) {
 		var where = {or: _.map(search, function(e) {
 			return {name: {contains: e}};
 		})};
-		return Ingredient.find(where).populate("photo").then(function(ings) {
-			var results = _.map(ings, function(ing) {
+		return Model.find(where).populate("photo").then(function(entries) {
+			var results = _.map(entries, function(ent) {
 				var nb = _.filter(search, function(word) {
-					return (ing.name.toLowerCase().indexOf(word) >= 0);
+					return (ent.name.toLowerCase().indexOf(word) >= 0);
 				}).length;
-				return {data: ing, what: "ingredient", weight: nb};
+				return {data: ent, what: name, weight: nb};
 			});
-			return {total: {value: results.length, name: "ingredient"}, data: results};
+			return {total: {value: results.length, name: name}, data: results};
 		});
 	}
 
-	function recipeSearch() {
-		var where = {or: _.map(search, function(e) {
-			return {name: {contains: e}};
-		})};
-		return Recipe.find(where).populate("photo").then(function(recipes) {
-			var results = _.map(recipes, function(rec) {
-				var nb = _.filter(search, function(word) {
-					return (rec.name.toLowerCase().indexOf(word) >= 0);
-				}).length;
-				return {data: rec, what: "recipe", weight: nb};
-			});
-			return {total: {value: results.length, name: "recipe"}, data: results};
-		});
-	}
-
-	var actions = _.map(what, function(w) {return mapping[w]();});
-	Q.all(actions).then(function(results) {
+	Q.all([mySearch(Recipe, "recipe"), mySearch(Ingredient, "ingredient")]).then(function(results) {
 		var parser = ReqParser(req);
 		var limit = parser.limit();
 		var skip = parser.skip();
-		var data = _(results).pluck("data").flatten().sortBy("weight").value();
+		var data = _(results).pluck("data").flatten().filter(function(e) {
+			return _.contains(what, e.what);
+		}).sortBy("weight").value();
 		var total = _(results).pluck("total").reduce(function(acc, curr) {
 			acc[curr.name] = curr.value;
 			acc.all += curr.value;
