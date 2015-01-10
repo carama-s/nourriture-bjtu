@@ -27,21 +27,44 @@ function recipeCommentDestroy(req, res, next) {
 	}, next);
 }
 
-module.exports = function(pol) {
+module.exports = function(pol, prefix) {
+	APP.swag.addDefinition({
+		"recipeCommentModel": {
+			"required": ["rate", "user", "recipe", "comment"],
+			"properties": {
+				"rate": {"type": "integer"},
+				"user": {"type": "string"},
+				"recipe": {"type": "string"},
+				"comment": {"type": "string"}
+			}
+		}
+	});
+
+	var swag = APP.swag.handlerPaths(prefix, ["RecipeComment"]);
 	var router = require("express").Router();
 
 	var rest = Rest(RecipeComment);
 
 	router.route("/count")
 	.get(rest.count);
+	rest.swagCount(swag, "countRecipeComment");
 
 	router.route("/")
 	.get(rest.find)
 	.post(pol.isAuthenticated, recipeCommentCreate);
+	rest.swagFind(swag, "findRecipeComment", "#/definitions/recipeCommentModel");
+	rest.swagCreate(swag, "createRecipeComment", "#/definitions/recipeCommentModel", [{
+		"name": "rate", "in": "form", "required": true, "type": "integer"
+	}, {
+		"name": "comment", "in": "form", "required": true, "type": "string"
+	}, {
+		"name": "recipe", "in": "form", "required": true, "type": "string"
+	}]);
 
 	router.route("/:id")
 	.get(rest.findOne)
 	.delete(pol.isAuthenticated, recipeCommentDestroy);
+	rest.swagFindOne(swag, "findOneRecipeComment", "#/definitions/recipeCommentModel");
 
 	return router;
 };

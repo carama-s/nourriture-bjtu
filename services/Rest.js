@@ -95,6 +95,19 @@ module.exports = function(cb) {
         });
       },
 
+      "swagCreate": function(swag, id, schema, params) {
+        swag("/", {
+          "post": {
+            "operationId": id,
+            "parameters": params,
+            "responses": {
+              "400": {"schema": {"$ref": "#/definitions/error"}},
+              "200": {"schema": {"$ref": schema}}
+            }
+          }
+        });
+      },
+
       "update": function(req, res, next) {
         var query = Model.findById(req.params.id);
         if (Model.toPopulate) {

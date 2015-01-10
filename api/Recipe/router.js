@@ -158,6 +158,7 @@ module.exports = function(pol, prefix) {
 
 	router.route("/count")
 	.get(rest.count);
+	rest.swagCount(swag, "countRecipe");
 
 	router.route("/")
 	.get(rest.find)
