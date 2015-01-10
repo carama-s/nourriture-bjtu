@@ -78,7 +78,7 @@ function recipeUpdate(req, res, next) {
 		return res.json(rec);
 	}
 
-	Recipe.findOneById(req.params.id).populate("photo").then(function(ing) {
+	Recipe.findOneById(req.params.id).populate("photo").then(function(rec) {
 		if (rec === undefined) return next("route");
 		var data = _.omit(req.body, "photo", "rate", "nb_rates", "rates", "comments", "ingredients");
 		data = parseBodyData(data);
