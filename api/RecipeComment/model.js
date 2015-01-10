@@ -56,5 +56,5 @@ module.exports = {
     }, next);
   },
 
-  toPopulate: []
+  toPopulate: ["user"]
 };
