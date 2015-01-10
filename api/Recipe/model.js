@@ -44,10 +44,6 @@ module.exports = {
       collection: "recipe_comment",
       via: "recipe"
     },
-    rates: {
-      collection: "recipe_rate",
-      via: "recipe"
-    },
     rate: {
       type: "float",
       defaultsTo: 0
@@ -71,8 +67,6 @@ module.exports = {
       return RecipeComment.destroy({id: tmp.pluck("comments").flatten().value()});
     }).then(function() {
       return RecipeIngredient.destroy({id: tmp.pluck("ingredients").flatten().value()});
-    }).then(function() {
-      return RecipeRate.destroy({id: tmp.pluck("rates").flatten().value()});
     }).then(function() {
       next();
     }, next);

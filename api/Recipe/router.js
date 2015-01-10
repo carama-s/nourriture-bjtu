@@ -28,7 +28,7 @@ function isImage(file) {
 }
 
 function recipeCreate(req, res, next) {
-	var data = _.omit(req.body, "photo", "rate", "nb_rates", "rates", "comments");
+	var data = _.omit(req.body, "photo", "rate", "nb_rates", "comments");
 	data = parseBodyData(data);
 	var ingredients = data.ingredients || [];
 	data = _.omit(data, "ingredients");
@@ -108,10 +108,10 @@ function recipeUpdate(req, res, next) {
 	}, next);
 }
 
-function recipeMyRate(req, res, next) {
-	RecipeRate.findOne({user: req.user.id, recipe: req.params.id}).then(function(rate) {
-		if (!rate) return res.json({});
-		return res.json(rate);
+function recipeMyComment(req, res, next) {
+	RecipeComment.findOne({user: req.user.id, recipe: req.params.id}).then(function(com) {
+		if (!com) return res.json({});
+		return res.json(com);
 	}, next);
 }
 
@@ -164,8 +164,8 @@ module.exports = function(pol, prefix) {
 	.post(pol.isAuthenticated, recipeCreate);
 	rest.swagFind(swag, "findRecipe", "#/definitions/recipeModel");
 
-	router.route("/:id/my_rate")
-	.get(pol.isAuthenticated, recipeMyRate);
+	router.route("/:id/my_comment")
+	.get(pol.isAuthenticated, recipeMyComment);
 
 	router.route("/:id")
 	.get(rest.findOne)

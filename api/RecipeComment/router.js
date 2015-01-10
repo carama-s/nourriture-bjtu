@@ -2,10 +2,21 @@ function recipeCommentCreate(req, res, next) {
 	var data = _.omit(req.body, "user");
 	data.user = req.user;
 
-	RecipeComment.create(data).then(function(com) {
-		APP.dbEvent(RecipeComment, "create", com, req.user);
-		res.json(com);
-	}, ValCb(res, next));
+	RecipeComment.findOne({recipe: data.recipe, user: data.user}).then(function(com) {
+		if (rate) {
+			com.rate = data.rate;
+			com.comment = data.comment;
+			return com.save().then(function(com) {
+				APP.dbEvent(RecipeComment, "update", com, req.user);
+				res.json(com);
+			});
+		}
+		return RecipeComment.create(data).then(function(com) {
+			APP.dbEvent(RecipeComment, "create", com, req.user);
+			res.json(com);
+		});
+	})
+	.then(null, ValCb(res, next));
 }
 
 function recipeCommentDestroy(req, res, next) {
