@@ -18,7 +18,7 @@ function searchView(req, res, next) {
 		var where = {or: _.map(search, function(e) {
 			return {name: {contains: e}};
 		})};
-		return Ingredient.find(where).then(function(ings) {
+		return Ingredient.find(where).populate("photo").then(function(ings) {
 			return _.map(ings, function(ing) {
 				var nb = _.filter(search, function(word) {
 					return (ing.name.toLowerCase().indexOf(word) >= 0);
@@ -32,7 +32,7 @@ function searchView(req, res, next) {
 		var where = {or: _.map(search, function(e) {
 			return {name: {contains: e}};
 		})};
-		return Recipe.find(where).then(function(recipes) {
+		return Recipe.find(where).populate("photo").then(function(recipes) {
 			return _.map(recipes, function(rec) {
 				var nb = _.filter(search, function(word) {
 					return (rec.name.toLowerCase().indexOf(word) >= 0);
