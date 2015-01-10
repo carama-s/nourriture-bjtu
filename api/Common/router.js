@@ -44,7 +44,12 @@ function searchView(req, res, next) {
 
 	var actions = _.map(what, function(w) {return mapping[w]();});
 	Q.all(actions).then(function(results) {
+		var parser = ReqParser(req);
+		var limit = parser.limit();
+		var skip = parser.skip();
 		results = _(results).flatten().sortBy("weight").value();
+		if (skip) results = results.slice(skip);
+		if (limit) results = results.slice(0, limit);
 		res.json(results);
 	}, next);
 }
