@@ -28,10 +28,11 @@ function isImage(file) {
 }
 
 function recipeCreate(req, res, next) {
-	var data = _.omit(req.body, "photo", "rate", "nb_rates", "comments");
+	var data = _.omit(req.body, "photo", "rate", "nb_rates", "comments", "user");
 	data = parseBodyData(data);
 	var ingredients = data.ingredients || [];
 	data = _.omit(data, "ingredients");
+	data.user = req.user;
 
 	function finish(rec_id) {
 		return Recipe.findOne(rec_id).then(function(rec) {

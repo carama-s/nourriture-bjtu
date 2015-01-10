@@ -17,6 +17,9 @@ module.exports = {
       model: "upload",
       unique: true
     },
+    user: {
+      model: 'user'
+    },
     description: "text",
     category: {
       type: "string",
