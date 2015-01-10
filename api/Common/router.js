@@ -52,9 +52,9 @@ function searchView(req, res, next) {
 		var data = _(results).pluck("data").flatten().sortBy("weight").value();
 		var total = _(results).pluck("total").reduce(function(acc, curr) {
 			acc[curr.name] = curr.value;
-			acc.total += curr.value;
+			acc.all += curr.value;
 			return acc;
-		}, {total: 0});
+		}, {all: 0});
 		if (skip) data = data.slice(skip);
 		if (limit) data = data.slice(0, limit);
 		res.json({results: data, total: total});
