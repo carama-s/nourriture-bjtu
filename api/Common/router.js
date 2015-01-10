@@ -1,5 +1,5 @@
 function searchView(req, res, next) {
-	var mapping = {"ingredient": ingredientSearch, "recipe": recipeSearch};
+	var mapping = {"recipe": recipeSearch, "ingredient": ingredientSearch};
 	var what = req.query.what;
 	if (what === undefined) {
 		what = _.keys(mapping);
