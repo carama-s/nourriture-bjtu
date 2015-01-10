@@ -49,7 +49,7 @@ function recipeCreate(req, res, next) {
 			fs.move(photo.path, up.real_path(), function(err) {
 				if (err) return next(err);
 				return Recipe.update(rec.id, {photo: up.id}).then(function(recs) {
-					return finish(recs[0].id);
+					return finish(recs[0]);
 				}, ValCb(res, next))
 			});
 		}, ValCb(res, next));
@@ -95,8 +95,8 @@ function recipeUpdate(req, res, next) {
 			return Upload.create({path: app_path}).then(function(up) {
 				fs.move(photo.path, up.real_path(), function(err) {
 					if (err) return next(err);
-					return Recipe.update(rec.id, {photo: up.id}).then(function(rec) {
-						return finish(rec);
+					return Recipe.update(rec.id, {photo: up.id}).then(function(recs) {
+						return finish(recs[0]);
 					}, ValCb(res, next))
 				});
 			}, ValCb(res, next));
