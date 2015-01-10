@@ -34,79 +34,96 @@ function recipeCreate(req, res, next) {
 	data = _.omit(data, "ingredients");
 	data.user = req.user;
 
-	function finish(rec_id) {
-		return Recipe.findOne(rec_id).then(function(rec) {
+	function finish(rec) {
+		return Recipe.findOne(rec.id).then(function(rec) {
 			APP.dbEvent(Recipe, "create", rec, req.user);
 			res.json(rec);
 		}, next);
 	}
 
-	function addPhoto(rec_id) {
+	function addPhoto(rec) {
 		var photo = req.files.photo;
-		if (photo === undefined || !isImage(photo)) return finish(rec_id);
+		if (photo === undefined || !isImage(photo)) return finish(rec);
 		var app_path = path.join(Recipe.PHOTO_URI, path.basename(photo.path));
 		return Upload.create({path: app_path}).then(function(up) {
 			fs.move(photo.path, up.real_path(), function(err) {
 				if (err) return next(err);
-				return Recipe.update(rec_id, {photo: up.id}).then(function(rec) {
-					return finish(rec_id);
+				return Recipe.update(rec.id, {photo: up.id}).then(function(recs) {
+					return finish(recs[0].id);
 				}, ValCb(res, next))
 			});
 		}, ValCb(res, next));
 	}
 
-	function addIngredients(rec_id) {
-		if (ingredients.length <= 0) return addPhoto(rec_id);
+	function addIngredients(rec) {
+		if (ingredients.length <= 0) return addPhoto(rec);
 		ingredients = _.map(ingredients, function(ing) {
-			ing.recipe = rec_id;
+			ing.recipe = rec.id;
 			return ing;
 		});
-		return RecipeIngredient.create(ingredients).then(function(ings) {
-			return addPhoto(rec_id);
+		return RecipeIngredient.create(ingredients).then(function() {
+			return addPhoto(rec);
 		}, ValCb(res, next));
 	}
 
 	return Recipe.create(data).then(function(rec) {
-		return addIngredients(rec.id);
+		return addIngredients(rec);
 	}, ValCb(res, next))
 	.then(null, next);
 }
 
 function recipeUpdate(req, res, next) {
+	var data = _.omit(req.body, "photo", "rate", "nb_rates", "comments", "user");
+	data = parseBodyData(data);
+	var ingredients = data.ingredients || [];
+	data = _.omit(data, "ingredients");
+	data.user = req.user;
 
 	function finish(rec) {
-		APP.dbEvent(Recipe, "update", rec, req.user);
-		return res.json(rec);
+		return Recipe.findOne(rec.id).then(function(rec) {
+			APP.dbEvent(Recipe, "update", rec, req.user);
+			res.json(rec);
+		}, next);
 	}
 
-	Recipe.findOneById(req.params.id).populate("photo").then(function(rec) {
-		if (rec === undefined) return next("route");
-		var data = _.omit(req.body, "photo", "rate", "nb_rates", "rates", "comments", "ingredients");
-		data = parseBodyData(data);
-		_.extend(rec, data);
-		rec.save().then(function(rec) {
-			var photo = req.files.photo;
-			if (photo === undefined || !isImage(photo)) return finish(rec);
-			var app_path = path.join(Recipe.PHOTO_URI, path.basename(photo.path));
+	function updatePhoto(rec) {
+		var photo = req.files.photo;
+		if (photo === undefined || !isImage(photo)) return finish(rec);
+		var app_path = path.join(Recipe.PHOTO_URI, path.basename(photo.path));
 
-			function setPhoto() {
-				return Upload.create({path: app_path}).then(function(up) {
-					fs.move(photo.path, up.real_path(), function(err) {
-						if (err) return next(err);
-						rec.photo = up;
-						rec.save().then(function(rec) {
-							finish(rec);
-						}, next)
-					});
-				}, next);
-			}
+		function setPhoto() {
+			return Upload.create({path: app_path}).then(function(up) {
+				fs.move(photo.path, up.real_path(), function(err) {
+					if (err) return next(err);
+					return Recipe.update(rec.id, {photo: up.id}).then(function(rec) {
+						return finish(rec);
+					}, ValCb(res, next))
+				});
+			}, ValCb(res, next));
+		}
 
-			if (rec.photo === undefined) return setPhoto();
-			return rec.photo.destroy().then(function() {
-				return setPhoto();
-			});
-		}, ValCb(res, next));
-	}, next);
+		if (rec.photo === undefined) return setPhoto();
+		return Upload.destroy(rec.photo).then(setPhoto);
+	}
+
+	function updateIngredients(rec) {
+		if (ingredients.length <= 0) return updatePhoto(rec);
+		ingredients = _.map(ingredients, function(ing) {
+			ing.recipe = rec.id;
+			return ing;
+		});
+		return RecipeIngredient.destroy({recipe: rec.id}).then(function() {
+			return RecipeIngredient.create(ingredients).then(function() {
+				return updatePhoto(rec);
+			}, ValCb(res, next));
+		});
+	}
+
+	Recipe.update(req.params.id, data).then(function(recs) {
+		if (recs.length <= 0) return next("route");
+		return updateIngredients(recs[0].id);
+	}, ValCb(res, next))
+	.then(null, next);
 }
 
 function recipeMyComment(req, res, next) {
