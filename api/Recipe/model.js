@@ -75,7 +75,7 @@ module.exports = {
     }, next);
   },
 
-  toPopulate: ["photo", "ingredients"],
+  toPopulate: ["photo", "ingredients", "user"],
 
   CATEGORIES: CATEGORIES,
   PHOTO_URI: PHOTO_URI,
