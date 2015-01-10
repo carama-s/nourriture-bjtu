@@ -121,7 +121,7 @@ function recipeUpdate(req, res, next) {
 
 	Recipe.update(req.params.id, data).then(function(recs) {
 		if (recs.length <= 0) return next("route");
-		return updateIngredients(recs[0].id);
+		return updateIngredients(recs[0]);
 	}, ValCb(res, next))
 	.then(null, next);
 }
