@@ -32,7 +32,7 @@ function recipeCreate(req, res, next) {
 	data = parseBodyData(data);
 	var ingredients = data.ingredients || [];
 	data = _.omit(data, "ingredients");
-	data.user = req.user;
+	data.user = req.user.id;
 
 	function finish(rec) {
 		return Recipe.findOne(rec.id).then(function(rec) {
@@ -77,7 +77,7 @@ function recipeUpdate(req, res, next) {
 	data = parseBodyData(data);
 	var ingredients = data.ingredients || [];
 	data = _.omit(data, "ingredients");
-	data.user = req.user;
+	data.user = req.user.id;
 
 	function finish(rec) {
 		return Recipe.findOne(rec.id).then(function(rec) {
