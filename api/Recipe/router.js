@@ -103,7 +103,7 @@ function recipeUpdate(req, res, next) {
 		}
 
 		if (rec.photo === undefined) return setPhoto();
-		return Upload.destroy(rec.photo).then(setPhoto);
+		return Upload.destroy({id: rec.photo}).then(setPhoto);
 	}
 
 	function updateIngredients(rec) {
