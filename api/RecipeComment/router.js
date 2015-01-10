@@ -3,7 +3,7 @@ function recipeCommentCreate(req, res, next) {
 	data.user = req.user;
 
 	RecipeComment.findOne({recipe: data.recipe, user: data.user}).then(function(com) {
-		if (rate) {
+		if (com) {
 			com.rate = data.rate;
 			com.comment = data.comment;
 			return com.save().then(function(com) {
