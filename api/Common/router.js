@@ -25,7 +25,7 @@ function searchView(req, res, next) {
 				}).length;
 				return {data: ing, what: "ingredient", weight: nb};
 			});
-			return {total: {total: results.length, name: "ingredient"}, data: results};
+			return {total: {value: results.length, name: "ingredient"}, data: results};
 		});
 	}
 
