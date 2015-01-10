@@ -19,12 +19,13 @@ function searchView(req, res, next) {
 			return {name: {contains: e}};
 		})};
 		return Ingredient.find(where).populate("photo").then(function(ings) {
-			return _.map(ings, function(ing) {
+			var results = _.map(ings, function(ing) {
 				var nb = _.filter(search, function(word) {
 					return (ing.name.toLowerCase().indexOf(word) >= 0);
 				}).length;
 				return {data: ing, what: "ingredient", weight: nb};
 			});
+			return {total: {total: results.length, name: "ingredient"}, data: results};
 		});
 	}
 
@@ -33,12 +34,13 @@ function searchView(req, res, next) {
 			return {name: {contains: e}};
 		})};
 		return Recipe.find(where).populate("photo").then(function(recipes) {
-			return _.map(recipes, function(rec) {
+			var results = _.map(recipes, function(rec) {
 				var nb = _.filter(search, function(word) {
 					return (rec.name.toLowerCase().indexOf(word) >= 0);
 				}).length;
 				return {data: rec, what: "recipe", weight: nb};
 			});
+			return {total: {value: results.length, name: "recipe"}, data: results};
 		});
 	}
 
@@ -47,11 +49,15 @@ function searchView(req, res, next) {
 		var parser = ReqParser(req);
 		var limit = parser.limit();
 		var skip = parser.skip();
-		results = _(results).flatten().sortBy("weight").value();
-		var length = results.length;
-		if (skip) results = results.slice(skip);
-		if (limit) results = results.slice(0, limit);
-		res.json({results: results, total: length});
+		var data = _(results).pluck("data").flatten().sortBy("weight").value();
+		var total = _(results).pluck("total").reduce(function(acc, curr) {
+			acc[curr.name] = curr.value;
+			acc.total += curr.value;
+			return acc;
+		}, {total: 0});
+		if (skip) data = data.slice(skip);
+		if (limit) data = data.slice(0, limit);
+		res.json({results: data, total: total});
 	}, next);
 }
 
