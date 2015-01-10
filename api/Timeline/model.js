@@ -25,8 +25,8 @@ module.exports = {
     }
   },
 
-  beforeCreate: function(values, next) {
-    if (values.name != "destroy" || data == undefined || data.id == undefined) return next();
+  afterCreate: function(values, next) {
+    if (values.name != "destroy" || values.data == undefined || values.data.id == undefined) return next();
     values.destroyed = true;
     Timeline.update({"data.id": values.data.id}, {destroyed: true}).then(function(res) {
       next();
