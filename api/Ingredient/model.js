@@ -42,7 +42,7 @@ module.exports = {
     },
     nutrition: {
       type: "array"
-    }
+    },
 
     toJSON: function() {
       var obj = this.toObject();
