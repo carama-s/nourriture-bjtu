@@ -40,6 +40,9 @@ module.exports = {
       collection: 'recipe',
       via: 'ingredients'
     },
+    nutrition: {
+      type: "array"
+    }
 
     toJSON: function() {
       var obj = this.toObject();
