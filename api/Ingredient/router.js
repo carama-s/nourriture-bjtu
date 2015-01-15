@@ -2,7 +2,7 @@ var fs = require("fs-extra");
 var path = require("path");
 
 function parseBodyData(data) {
-	_.each(["tags", "allergy", "period", "nutrition"], function(k) {
+	_.each(["tags", "allergy", "period", "nutritions"], function(k) {
 		if (data[k] !== undefined) {
 			switch (typeof(data[k])) {
 			case "array":

@@ -41,7 +41,8 @@ module.exports = {
       via: 'ingredients'
     },
     nutritions: {
-      type: "array"
+      type: "array",
+      defaultsTo: []
     },
 
     toJSON: function() {
