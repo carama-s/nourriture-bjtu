@@ -40,7 +40,7 @@ module.exports = {
       collection: 'recipe',
       via: 'ingredients'
     },
-    nutrition: {
+    nutritions: {
       type: "array"
     },
 
