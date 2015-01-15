@@ -47,10 +47,28 @@ function searchView(req, res, next) {
 	}, next);
 }
 
-module.exports = function(pol) {
+module.exports = function(pol, prefix) {
+	var swag = APP.swag.handlerPaths(prefix, ["Common"]);
 	var router = require("express").Router();
 
 	router.route("/search").get(searchView);
+	swag("/search", {
+		"get": {
+			"operationId": "searchCommon",
+			"parameters": [{
+				"name": "search",
+				"in": "query",
+				"type": "string"
+			}, {
+				"name": "what",
+				"in": "query",
+				"type": "array"
+			}],
+			"responses": {
+				"400": {"schema": {"$ref": "#/definitions/error"}},
+			}
+		}
+	});
 
 	return router;
 };
