@@ -2,7 +2,6 @@
 ssh nourriture-prod@nourriture.dennajort.fr <<EOF
   cd ~/nourriture-bjtu-api
   git pull
-  exit
   docker build -t nourriture-bjtu-api .
   docker stop nourriture-bjtu-api
   docker rm nourriture-bjtu-api
