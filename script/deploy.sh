@@ -11,7 +11,7 @@ ssh nourriture-prod@nourriture.dennajort.fr <<EOF
     --restart=always \
     -p 3000:3000 \
     --link nourriture-bjtu-mongodb:mongodb \
-    -v /app/uploads:/home/nourriture-prod/nourriture-bjtu-api_uploads \
+    -v /home/nourriture-prod/uploads:/app/uploads \
     nourriture-bjtu-api
   exit
 EOF
