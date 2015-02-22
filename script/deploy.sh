@@ -2,8 +2,16 @@
 ssh nourriture-prod@nourriture.dennajort.fr <<EOF
   cd ~/nourriture-bjtu-api
   git pull
-  npm install --production
-  npm dedupe
-  pm2 startOrReload processes.json
+  exit
+  docker build -t nourriture-bjtu-api .
+  docker stop nourriture-bjtu-api
+  docker rm nourriture-bjtu-api
+  docker run -d \
+    --name=nourriture-bjtu-api \
+    --restart=always \
+    -p 3000:3000 \
+    --link nourriture-bjtu-mongodb:mongodb \
+    -v /app/uploads:/home/nourriture-prod/nourriture-bjtu-api_uploads \
+    nourriture-bjtu-api
   exit
 EOF

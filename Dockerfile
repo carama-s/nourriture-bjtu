@@ -11,7 +11,7 @@ RUN     apt-get update -y && apt-get install -y \
         npm \
         graphicsmagick
 COPY    package.json /app/
-RUN     cd /app; npm install
+RUN     cd /app; npm install --production
 COPY    . /app/
 
 CMD     ["node", "manage.js", "runserver"]
