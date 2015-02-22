@@ -8,8 +8,8 @@ function getWaterline() {
         connections: {
           "default": {
             adapter: "mongoDB",
-            host: 'localhost',
-            port: 27017,
+            host: process.env.MONGODB_PORT_27017_TCP_ADDR || 'localhost',
+            port: process.env.MONGODB_PORT_27017_TCP_PORT || 27017,
             database: 'nourriture'
           }
         }
