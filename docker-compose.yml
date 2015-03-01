@@ -1,0 +1,14 @@
+web:
+  build: .
+  environment:
+    NODE_ENV: production
+  links:
+    - mongodb
+  ports:
+    - "3000:3000"
+  volumes:
+    - ./run/uploads:/app/uploads
+mongodb:
+  image: mongo:2.6.7
+  volumes:
+    - ./run/mongodb:/data/db
