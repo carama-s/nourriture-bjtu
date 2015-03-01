@@ -12,3 +12,4 @@ mongodb:
   image: mongo:2.6.7
   volumes:
     - ./run/mongodb:/data/db
+  command: mongod --smallfiles
