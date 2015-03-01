@@ -8,8 +8,11 @@ web:
     - "3000:3000"
   volumes:
     - ./run/uploads:/app/uploads
+  restart: always
+
 mongodb:
   image: mongo:2.6.7
+  command: mongod --smallfiles
   volumes:
     - ./run/mongodb:/data/db
-  command: mongod --smallfiles
+  restart: always
