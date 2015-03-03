@@ -1,15 +1,15 @@
-FROM    ubuntu:14.10
+FROM    centos:centos7
 MAINTAINER  Gosselin Jean-Baptiste <gosselinjb@gmail.com>
 
-WORKDIR /app
-VOLUME  /app/uploads
+RUN     yum install -y epel-release && yum install -y GraphicsMagick
 
-RUN     apt-get update -y && apt-get install -y \
-        nodejs-legacy \
-        npm \
-        graphicsmagick
-COPY    package.json /app/
-RUN     cd /app; npm install --production
-COPY    . /app/
+RUN     yum install -y gcc gcc-c++ make tar && \
+curl http://nodejs.org/dist/v0.12.0/node-v0.12.0.tar.gz | tar xz && \
+cd node-v0.12.0 && \
+./configure && \
+make && \
+make install
 
-CMD     ["node", "manage.js", "runserver"]
+RUN     mkdir /app
+COPY    script/runserver.sh /runserver.sh
+CMD     ["sh", "/runserver.sh"]
