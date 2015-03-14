@@ -1,0 +1,35 @@
+nginx:
+  build: ../www/
+  links:
+    - api
+  volumes_from:
+    - apiupload
+  ports:
+    - "80:80"
+
+api:
+  build: ../api/
+  environment:
+    UPLOADS_PATH: "/uploads"
+  links:
+    - mongodb
+  volumes_from:
+    - apiupload
+
+apiupload:
+  image: busybox
+  volumes:
+    - /uploads
+  command: true
+
+mongodb:
+  image: mongo:2.6.7
+  command: mongod --smallfiles
+  volumes_from:
+    - mongodbdata
+
+mongodbdata:
+  image: busybox
+  volumes:
+    - /data/db
+  command: true
