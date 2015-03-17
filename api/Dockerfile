@@ -1,10 +1,10 @@
 FROM  centos:centos7
 
-# Install node.js v0.12
+# Install node.js v0.12.0
 RUN yum install -y gcc gcc-c++ make tar && \
-curl http://nodejs.org/dist/v0.12.0/node-v0.12.0.tar.gz | tar xz && \
-cd node-v0.12.0 && ./configure && make && make install && \
-cd .. && rm -r node-v0.12.0
+curl http://nodejs.org/dist/v0.12.0/node-v0.12.0-linux-x64.tar.gz | tar xz --strip-components 1 -C /usr/local && \
+node --version && \
+npm --version
 
 # Install GraphicsMagick
 RUN yum install -y epel-release && yum install -y GraphicsMagick
