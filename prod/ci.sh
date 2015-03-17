@@ -7,4 +7,6 @@ echo "Push images" && \
 docker push docker.dennajort.fr/nourriturebjtu_api && \
 docker push docker.dennajort.fr/nourriturebjtu_nginx && \
 echo "Run deploy script" && \
-sh ./prod/deploy.sh
+sh ./prod/deploy.sh && \
+echo "Remove dangling" && \
+sh ./prod/remove_dangling.sh
