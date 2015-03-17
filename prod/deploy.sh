@@ -1,6 +1,6 @@
 #!/bin/bash
+scp ./prod/docker-compose.yml nourriture-prod@nourriture.dennajort.fr:docker-compose.yml && \
 ssh nourriture-prod@nourriture.dennajort.fr <<EOF
-  cd ~/nourriture-bjtu-api && git pull && \
-  cd prod && ./build_and_up.sh
-  exit
+  docker-compose -p "nourriturebjtu" pull && \
+  docker-compose -p "nourriturebjtu" up -d
 EOF

@@ -18,5 +18,5 @@ COPY  . /app/
 # Set CMD
 WORKDIR /app
 EXPOSE  3000
-ENV     HTTP_PORT=3000 NODE_ENV=production
+ENV     HTTP_PORT=3000
 CMD     ["node", "/app/manage.js", "runserver"]

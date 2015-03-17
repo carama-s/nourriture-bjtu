@@ -1,5 +1,5 @@
 nginx:
-  build: ../www/
+  image: docker.dennajort.fr/nourriturebjtu_nginx
   links:
     - api
   volumes_from:
@@ -8,9 +8,10 @@ nginx:
     - "80:80"
 
 api:
-  build: ../api/
+  image: docker.dennajort.fr/nourriturebjtu_api
   environment:
     UPLOADS_PATH: "/uploads"
+    NODE_ENV: "production"
   links:
     - mongodb
   volumes_from:
