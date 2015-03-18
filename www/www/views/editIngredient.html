@@ -9,7 +9,7 @@
   <div class=row>
     <div class="col-md-4">
       <div ng-if="loaded" class="ratio-container" id="containerPreviewImage">
-        <div class="ratio-4_3 background-image" id="previewImage" ng-click="simulateClickFile();" ng-style="{'background-image': 'url(http://nourriture.dennajort.fr{{ingredient.photo_url}})'}"></div>
+        <div class="ratio-4_3 background-image" id="previewImage" ng-click="simulateClickFile();" ng-style="{'background-image': 'url({{ingredient.photo_url}})'}"></div>
       </div>
       <input class="hidden" id="uploadImage" type="file" file-model="photoIngredient"/>
     </div>

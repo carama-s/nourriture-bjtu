@@ -22,7 +22,7 @@
         <div class="col-xs-12 home-latest-recipe-container">
           <a ng-href="#/recipe/{{rec.id}}">
             <div class="row home-latest-recipe-img-container">
-              <img ng-if="rec.photo_url" class="home-latest-recipe-img" ng-src="http://nourriture.dennajort.fr{{rec.photo_url}}"/>
+              <img ng-if="rec.photo_url" class="home-latest-recipe-img" ng-src="{{rec.photo_url}}"/>
               <img ng-if="!rec.photo_url" class="home-latest-recipe-img" src="/images/default-preview.png"/>
             </div>
             <div class="row home-latest-recipe-name">
@@ -46,7 +46,7 @@
       <div class="row home-best-recipes-row" ng-repeat="rec in recipes track by rec.id" ng-if="!loading && recipes.length > 0">
         <div class="col-xs-2 home-best-recipe-img-div">
           <a ng-href="#/recipe/{{rec.id}}">
-            <img ng-if="rec.photo_url" class="home-best-recipe-img" ng-src="http://nourriture.dennajort.fr{{rec.photo_url}}"/>
+            <img ng-if="rec.photo_url" class="home-best-recipe-img" ng-src="{{rec.photo_url}}"/>
             <img ng-if="!rec.photo_url" class="home-best-recipe-img" src="/images/default-preview.png"/>
           </a>
         </div>

@@ -65,7 +65,7 @@
             <div class="col-md-12 no-margin no-padding" style="border: 1px solid #EEE">
               <div class="ratio-container">
                 <a ng-href="#/recipe/{{ recipe.id }}">
-                  <div ng-if="recipe.photo_url" class="ratio-4_3 background-image" style="background-size: 90%" ng-style="{'background-image': 'url(http://nourriture.dennajort.fr{{recipe.photo_url}})'}"></div>
+                  <div ng-if="recipe.photo_url" class="ratio-4_3 background-image" style="background-size: 90%" ng-style="{'background-image': 'url({{recipe.photo_url}})'}"></div>
                   <div ng-if="!recipe.photo_url" class="ratio-4_3 background-image" style="background-size: 90%" ng-style="{'background-image': 'url(/images/default-preview.png)'}"></div>
                 </a>
               </div>
@@ -83,7 +83,7 @@
             <div class="col-xs-4 no-margin no-padding container-ratio-container">
               <div class="ratio-container">
                 <a ng-href="#/recipe/{{ recipe.id }}">
-                  <div ng-if="recipe.photo_url" class="ratio-4_3 background-image" style="background-size: 90%" ng-style="{'background-image': 'url(http://nourriture.dennajort.fr{{recipe.photo_url}})'}"></div>
+                  <div ng-if="recipe.photo_url" class="ratio-4_3 background-image" style="background-size: 90%" ng-style="{'background-image': 'url({{recipe.photo_url}})'}"></div>
                   <div ng-if="!recipe.photo_url" class="ratio-4_3 background-image" style="background-size: 90%" ng-style="{'background-image': 'url(/images/default-preview.png)'}"></div>
                 </a>
               </div>

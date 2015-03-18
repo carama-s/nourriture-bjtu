@@ -8,7 +8,7 @@
       <ul id="ingredient-menu">
         <li>
           <div class="ratio-container" style="padding: 8px 18px; width: auto;">
-            <div class="ratio-4_3 background-image" ng-style="{'background-image': 'url(http://nourriture.dennajort.fr{{ingredient.photo_url}})'}"></div>
+            <div class="ratio-4_3 background-image" ng-style="{'background-image': 'url({{ingredient.photo_url}})'}"></div>
           </div>
         </li>
         <li><a href="#presentation">Presentation</a></li>
@@ -26,7 +26,7 @@
       <!--<span>{{ ingredient_categories_mapper[ingredient.category].name }}</span>-->
 
       <div class="ratio-container hidden-sm hidden-md hidden-lg">
-        <div class="ratio-4_3 background-image" ng-style="{'background-image': 'url(http://nourriture.dennajort.fr{{ingredient.photo_url}})'}"></div>
+        <div class="ratio-4_3 background-image" ng-style="{'background-image': 'url({{ingredient.photo_url}})'}"></div>
       </div>
 
       <br />

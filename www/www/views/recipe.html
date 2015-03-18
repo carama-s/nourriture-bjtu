@@ -6,7 +6,7 @@
 
       <div class="col-sm-4">
         <div ng-if="loaded" class="ratio-container">
-          <div ng-if="recipe.photo_url" class="ratio-4_3 background-image" ng-style="{'background-image': 'url(http://nourriture.dennajort.fr{{recipe.photo_url}})'}"></div>
+          <div ng-if="recipe.photo_url" class="ratio-4_3 background-image" ng-style="{'background-image': 'url({{recipe.photo_url}})'}"></div>
           <div ng-if="!recipe.photo_url" class="ratio-4_3 background-image" ng-style="{'background-image': 'url(/images/default-preview.png)'}"></div>
         </div>
       </div>
@@ -16,7 +16,7 @@
 
             <a href="" ng-click="deleteRecipe()"><i class="fa fa-trash btn-icon-ingredient"></i></a>
             <a ng-href="#/recipe/{{ recipe.id }}/edit"><i class="fa fa-cog btn-icon-ingredient" style="margin-right: 15px;"></i></a>
-        
+
           </p>
           <p class="col-xs-12">
             <span>{{ nb_comments }} Comment<span ng-if="recipe.nb_rates">s</span><span ng-if="recipe.user"> | Created by <span class="second-color">{{ recipe.user.username }}</span></span> | On {{ recipe.createdAt | date:'longDate'}}</span>
@@ -47,7 +47,7 @@
           <ul>
             <li class="col-sm-4 col-xs-6" ng-repeat="ingredient in recipe.ingredients">
               <div class="ratio-container" ng-if="loaded">
-                <div class="ratio-4_3 background-image" style="background-size: 90%" ng-style="{'background-image': 'url(http://nourriture.dennajort.fr/{{ ingredient.photo_url }})'}"></div>
+                <div class="ratio-4_3 background-image" style="background-size: 90%" ng-style="{'background-image': 'url({{ ingredient.photo_url }})'}"></div>
               </div>
               <div class="col-xs-12 ingredient-container">
                   <a ng-href="#/ingredient/{{ ingredient.id }}"><span class="recipe-ingredient-name">{{ ingredient.name }}</span></a>

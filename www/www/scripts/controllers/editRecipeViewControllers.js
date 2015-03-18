@@ -141,7 +141,7 @@ editRecipeViewControllers.controller('EditRecipeViewCtrl', ['$scope', "$routePar
           }
 
           if ($scope.recipe.ingredients[i].photo_url) {
-            new_ingredient.photo_url = "http://nourriture.dennajort.fr" + $scope.recipe.ingredients[i].photo_url;
+            new_ingredient.photo_url = $scope.recipe.ingredients[i].photo_url;
           }
           else {
             new_ingredient.photo_url = '/images/default-preview.png';
