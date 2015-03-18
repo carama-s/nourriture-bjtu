@@ -1,0 +1,5 @@
+src/www/bower/
+node_modules/
+src/www/scripts.min.js
+src/www/scripts.min.js.map
+src/www/styles/css/style.css

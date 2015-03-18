@@ -3,7 +3,8 @@ dump.rdb
 npm-debug.log
 *~
 *#
-/www/www/bower
-/www/www/scripts.min.js
-/www/www/scripts.min.js.map
-/www/www/styles/css/style.css
+/api/node_modules
+/api/src/www/bower
+/api/src/www/scripts.min.js
+/api/src/www/scripts.min.js.map
+/api/src/www/styles/css/style.css

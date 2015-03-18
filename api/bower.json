@@ -31,6 +31,6 @@
     "jquery-loadingdots": "~1.2.0"
   },
   "resolutions": {
-    "angular": "1.3.8"
+    "angular": "1.3.15"
   }
 }

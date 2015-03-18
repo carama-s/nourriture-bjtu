@@ -24,8 +24,8 @@ module.exports = function(grunt) {
           report: "gzip",
           preserveComments: false
         },
-        dest: "www/scripts.min.js",
-        src: ["www/scripts/**/*.js"]
+        dest: "src/www/scripts.min.js",
+        src: ["src/www/scripts/**/*.js"]
       }
     },
     less: {
@@ -35,20 +35,20 @@ module.exports = function(grunt) {
           optimization: 2,
         },
         files: {
-          "www/styles/css/style.css": "www/styles/less/style.less"
+          "src/www/styles/css/style.css": "src/www/styles/less/style.less"
         }
       }
     },
     watch: {
       styles: {
-        files: ['www/styles/less/**/*.less'], // which files to watch
+        files: ['src/www/styles/less/**/*.less'], // which files to watch
         tasks: ['less'],
         options: {
           nospawn: true
         }
       },
       uglify: {
-        files: ["www/scripts/**/*.js"],
+        files: ["src/www/scripts/**/*.js"],
         tasks: ["uglify"],
         options: {
           nospawn: true
