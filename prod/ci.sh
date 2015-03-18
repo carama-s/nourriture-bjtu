@@ -1,5 +1,5 @@
 #!/bin/bash
-FIG_PROJECT_NAME=nourriturebjtu
+export FIG_PROJECT_NAME=nourriturebjtu
 echo "Build images" && \
 docker build --force-rm=true --pull=true -t docker.dennajort.fr/"$FIG_PROJECT_NAME"_api api/ && \
 docker build --force-rm=true --pull=true -t docker.dennajort.fr/"$FIG_PROJECT_NAME"_nginx www/ && \

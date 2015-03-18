@@ -1,5 +1,5 @@
 #!/bin/bash
-FIG_PROJECT_NAME=nourriturebjtu
+export FIG_PROJECT_NAME=nourriturebjtu
 docker-compose pull --allow-insecure-ssl && \
 docker pull docker.dennajort.fr/"$FIG_PROJECT_NAME"_api && \
 docker pull docker.dennajort.fr/"$FIG_PROJECT_NAME"_nginx && \
