@@ -1,0 +1,64 @@
+<div class="full" style="display: table; background-color: #EEE;">
+<div class="row-fluid">
+<div class="container centering" data-ng-cloak>
+  <i ng-controller="RouteCtrl" class="fa fa-close icon-corner-top-right" ng-click="go('#/')"></i>
+
+  <div class="row">
+    <div class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
+
+      <p class="title-login">Sign in to <span class="regular">nourriture</span></p>
+      Use Facebook or you email to sign in.<br />
+      <a id="a-new-on-nourriture" href="#/registerUser">New on nourriture ? <span class="keyword">Join us</span> !</a>
+
+      <br /><br /><br />
+      <div class="row">
+
+        <!-- Social -->
+        <div class="col-sm-6">
+          <div class="center centering">
+            <button data-ng-click="loginWithFB()" class="btn btn-default">Sign in with facebook</button>
+          </div>
+        </div>
+
+        <div class="col-xs-12 hidden-sm hidden-md hidden-lg" style="height: 30px;"></div>
+
+        <!-- Address mail -->
+        <div class="col-sm-6" ng-controller="LogInFormCtrl">
+          <form role="form" name="formLogIn" ng-submit="submitLogIn(formLogIn.$valid)" novalidate>
+            <div class="form-group">
+              <label class="form-label" for="loginInputEmail">Email address</label>
+              <input required type="email" ng-class="{'input-text-error': submitted && (formLogIn.loginInputEmail.$error.required || formLogIn.loginInputEmail.$invalid)}" class="form-control input-text" ng-model="loginInputEmail" name="loginInputEmail" id="loginInputEmail" placeholder="Enter email" ng-change="badPassword = false">
+              <div class="block-error" ng-show="submitted && formLogIn.loginInputEmail.$error.required">The email adress is required and cannot be empty.</div>
+              <div class="block-error" ng-show="submitted && !formLogIn.loginInputEmail.$error.required && formLogIn.loginInputEmail.$invalid">The email address is not valid.</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="loginInputPassword">Password</label>
+              <input required type="password" ng-class="{'input-text-error': submitted && (formLogIn.loginInputPassword.$error.required)}" class="form-control input-text" ng-model="loginInputPassword" name="loginInputPassword" id="loginInputPassword" placeholder="Password" ng-change="badPassword = false">
+              <div class="block-error" ng-show="submitted && formLogIn.loginInputPassword.$error.required">The password is required and cannot be empty.</div>
+            </div>
+
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" id="remember" name="loginInputRemember" ng-model="loginInputRemember"> Remember me ?
+              </label>
+            </div>
+
+            <div class="block-error" ng-show="badPassword">
+              The email address or password you entered is not valid. Please try again.
+            </div>
+
+            <div class="center" style="margin-top: 40px;">
+              <button type="submit" class="btn btn-default">Sign in</button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>
+</div>
+</div>

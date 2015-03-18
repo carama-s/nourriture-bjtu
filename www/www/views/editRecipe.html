@@ -1,0 +1,175 @@
+<div ng-include="'/views/navbar.html'"></div>
+
+<div class="container" ng-cloak>
+
+  <p class="title-page">Edit recipe</p>
+
+  <br />
+  <p class="sub-title-page">Identity</p>
+  <div class="row">
+    <div class="col-md-4">
+      <div ng-if="loaded" class="ratio-container" id="containerPreviewImage">
+        <div class="ratio-4_3 background-image" id="previewImage" ng-click="simulateClickFile();" ng-style="{'background-image': 'url(http://nourriture.dennajort.fr{{recipe.photo_url}})'}"></div>
+      </div>
+      <input class="hidden" id="uploadImage" type="file" file-model="photoRecipe"/>
+    </div>
+
+    <div class="col-md-8">
+      <div class="form-group">
+        <label class="form-label" for="nameIngredient">Recipe name</label>
+        <input type="text" ng-class="{'input-text-error': submitted && emptyRecipeName}" class="form-control input-text" ng-model="nameRecipe" name="nameRecipe" id="nameRecipe" placeholder="Recipe name" ng-change="emptyRecipeName = false;">
+        <div class="block-error" ng-show="submitted && emptyRecipeName">The recipe name is required and cannot be empty.</div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12 form-group">
+          <label class="form-label">Recipe category</label><br />
+          <div data-ng-repeat="(k, v) in recipe_categories_mapper track by $index" ng-style="recipe.category == k  && {'background-color': v.color}" ng-click="changeCategory($event, k)" class="col-sm-2 col-xs-4 categories">
+            {{ v.name }}
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-4 form group">
+          <label class="form-label">Servings</label><br />
+          <div class="input-group">
+            <input type="number" class="form-control input-text" ng-model="servingsRecipe" name="servingsRecipe" id="servingsRecipe" min="1">
+            <div class="input-group-addon input-text" ng-if="servingsRecipe <= 1">&nbsp;Person&nbsp;</div>
+            <div class="input-group-addon input-text" ng-if="servingsRecipe > 1">Persons</div>
+          </div>
+        </div>
+
+        <div class="col-xs-4 form group">
+          <label class="form-label">Preparation Time</label><br />
+          <div class="input-group">
+            <input type="number" class="form-control input-text" ng-model="prepTimeValueRecipe" name="prepTimeValueRecipe" id="prepTimeValueRecipe" min="0">
+            <div class="input-group-addon input-text" ng-if="prepTimeValueRecipe <= 1">&nbsp;Minute&nbsp;</div>
+            <div class="input-group-addon input-text" ng-if="prepTimeValueRecipe > 1">Minutes</div>
+          </div>
+        </div>
+
+        <div class="col-xs-4 form group">
+          <label class="form-label">Cooking Time</label><br />
+          <div class="input-group">
+            <input type="number" class="form-control input-text" ng-model="cookTimeValueRecipe" name="cookTimeValueRecipe" id="cookTimeValueRecipe" min="0">
+            <div class="input-group-addon input-text" ng-if="cookTimeValueRecipe <= 1">&nbsp;Minute&nbsp;</div>
+            <div class="input-group-addon input-text" ng-if="cookTimeValueRecipe > 1">Minutes</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <br />
+  <p class="sub-title-page">Description</p>
+  <div class="row">
+    <div class="col-xs-12 form-group">
+      <label class="form-label">Recipe description</label><br />
+      <textarea class="form-control input-text" ng-class="{'input-text-error': submitted && emptyRecipeDescription}" rows="3" ng-model="descriptionRecipe" name="descriptionRecipe" id="descriptionAddRecipe" placeholder="Recipe description"></textarea>
+      <div class="block-error" ng-show="submitted && emptyRecipeDescription">The recipe description is required and cannot be empty.</div>
+    </div>
+  </div>
+
+  <br />
+  <p class="sub-title-page">Ingredients</p>
+  <div class="row">
+    <div class="col-xs-12 form-group">
+      <label class="form-label" for="ingredients">Search ingredients</label>
+      <angucomplete-alt id="ingredients"
+      placeholder="Search ingredients"
+      pause="400"
+      minlength="1"
+      match-class="highlight"
+      selected-object="addIngredientToRecipe"
+      remote-url="http://nourriture.dennajort.fr/api/ingredient/autocomplete?{{urlIngredientExclude}}name="
+      remote-url-data-field=""
+      title-field="name"
+      description-field="category"
+      image-field="photo_url"
+      template-url="/my-custom-template.html"
+      input-class="form-control input-text"/>
+    </div>
+    <div class="col-xs-12">
+      <p class="main-color" ng-show="recipeIngredients.length == 0">No ingredient defined for this new recipe</p>
+      <div class="row">
+        <div class="col-xs-12">
+        <ul class="recipe-add-ingredient-ul">
+          <li class="col-lg-2 col-md-3 col-sm-6" ng-repeat="ingredient in recipeIngredients">
+            <div class="ratio-container">
+              <div class="ratio-4_3 background-image" style="background-size: 90%" ng-style="{'background-image': 'url({{ ingredient.photo_url }})'}"></div>
+            </div>
+            <div class="col-xs-12 recipe-add-ingredient-content">
+              <div>
+                {{ ingredient.name }} &nbsp;<i class="glyphicon glyphicon-remove recipe-remove-ingredient-btn" ng-click="removeIngredientFromRecipe($index)"></i>
+              </div>
+              <div class="recipe-add-ingredient-container">
+                <a href="#" buttons="no" editable-text="ingredient.quantity" onbeforesave="checkQuantity($data)">
+                  {{ ingredient.quantity || 'empty' }}
+                </a>
+              </div>
+            </div>
+          </li>
+        </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <br />
+  <p class="sub-title-page">Steps<button type="button" class="no-btn" ng-click="addStep()"><i class="fa fa-plus"></i></button></p>
+  <div class="row" ng-repeat="step in stepsRecipe track by $index">
+    <div class="col-xs-12 form-group">
+      <label class="form-label">Step {{$index + 1}}</label>
+      <span class="pull-right"><i class="fa fa-times add-recipe-remove-step-icon" ng-click="removeStep($index)"></i></span>
+      <textarea ng-if="!$last" class="form-control input-text add-recipe-step-text" rows="3" ng-model="stepsRecipe[$index]"></textarea>
+      <textarea ng-if="$last" class="form-control input-text add-recipe-step-text" rows="3" ng-model="stepsRecipe[$index]" id="lastStepTextAddRecipe"></textarea>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <p class="main-color" ng-show="stepsRecipe.length == 0">No steps defined for this new recipe</p>
+
+    </div>
+  </div>
+
+  <div class="row center" style="margin-top: 40px;">
+    <button type="button" class="btn btn-default" ng-click="editRecipe()">Edit Recipe</button>
+  </div>
+  <br />
+</div>
+
+<script type="text/ng-template" id="/my-custom-template.html">
+  <div class="angucomplete-holder" ng-class="{'angucomplete-dropdown-visible': showDropdown}">
+    <input ng-model="searchStr"
+    ng-disabled="disableInput"
+    type="text"
+    placeholder="{{placeholder}}"
+    ng-focus="onFocusHandler()"
+    class="{{inputClass}}"
+    ng-focus="resetHideResults()"
+    ng-blur="hideResults($event)"
+    autocapitalize="off"
+    autocorrect="off"
+    autocomplete="off"
+    ng-change="inputChangeHandler(searchStr);"/>
+    <div class="angucomplete-dropdown" ng-show="showDropdown">
+      <div class="angucomplete-searching" ng-show="searching" ng-bind="textSearching"></div>
+      <div class="angucomplete-searching" ng-show="!searching && (!results || results.length == 0)" ng-bind="textNoResults"></div>
+      <div class="angucomplete-row" ng-repeat="result in results" ng-click="selectResult(result)" ng-mouseenter="hoverRow($index)" ng-class="{'angucomplete-selected-row': $index == currentIndex}">
+        <div ng-if="imageField" class="angucomplete-image-holder">
+          <img ng-if="result.image && result.image != ''" ng-src="{{result.image}}" class="angucomplete-image"/>
+          <div ng-if="!result.image && result.image != ''" class="angucomplete-image-default"></div>
+        </div>
+        <div class="angucomplete-title" ng-if="matchClass" ng-bind-html="result.title"></div>
+        <div class="angucomplete-title" ng-if="!matchClass">{{ result.title }}</div>
+        <div ng-if="matchClass && result.description && result.description != ''" class="angucomplete-description" ng-bind-html="result.description"></div>
+        <div ng-if="!matchClass && result.description && result.description != ''" class="angucomplete-description">{{result.description}}</div>
+      </div>
+      <div class="angucomplete-row" ng-click="selectResult({title: searchStr, originalObject: { name: searchStr, custom: true }})" ng-mouseenter="hoverRow(results.length)" ng-class="{'angucomplete-selected-row': results.length == currentIndex}">
+        <div class="angucomplete-title">Select custom ingredient '{{ searchStr }}'</div>
+      </div>
+    </div>
+  </div>
+</script>

@@ -1,0 +1,109 @@
+<div ng-include="'/views/navbar.html'"></div>
+
+<div class="container">
+  <div class="row">
+    <ul class="list-unstyled">
+      <li class="col-sm-4 col-xs-12" style="margin-bottom: 20px;">
+        <div class="ratio-container">
+          <a href="" ng-click="changeCategory('fruit')">
+            <div class="ratio-4_3 background-image background-image-zoom" ng-style="{'background-image': 'url(/images/category_fruit.jpg)'}"></div>
+            <div class="ingredients-category-banner ingredients-category-banner-fruits">
+              <a href="" ng-click="changeCategory('fruit')" class="ingredients-category-banner-text">{{ ingredient_categories_mapper['fruit'].name }}</a>
+            </div>
+          </a>
+        </div>
+      </li>
+
+      <li class="col-sm-4 col-xs-12" style="margin-bottom: 20px;">
+        <div class="ratio-container">
+          <a href="" ng-click="changeCategory('vegetable')">
+            <div class="ratio-4_3 background-image background-image-zoom" ng-style="{'background-image': 'url(/images/category_vegetable.jpg)'}"></div>
+            <div class="ingredients-category-banner ingredients-category-banner-vegetables">
+              <a href="" ng-click="changeCategory('vegetable')" class="ingredients-category-banner-text">{{ ingredient_categories_mapper['vegetable'].name }}</a>
+            </div>
+          </a>
+        </div>
+      </li>
+
+      <li class="col-sm-4 col-xs-12" style="margin-bottom: 20px;">
+        <div class="ratio-container">
+          <a href="" ng-click="changeCategory('fish')">
+            <div class="ratio-4_3 background-image background-image-zoom" ng-style="{'background-image': 'url(/images/category_fish.jpg)'}"></div>
+            <div class="ingredients-category-banner ingredients-category-banner-fish">
+              <a href="" ng-click="changeCategory('fish')" class="ingredients-category-banner-text">{{ ingredient_categories_mapper['fish'].name }}</a>
+            </div>
+          </a>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <br />
+  <div class="row">
+    <div class="col-sm-3 col-xs-12">
+      <div ng-show="apiFactory.isRole()" class="ingredients-menu-title"><a style="color: #EE6E73 !important;" href="#/addIngredient">Add Ingredient</a><br /></div>
+      <div class="ingredients-menu-title">Categories</div>
+      <ul>
+        <li class="category-li"><a href="#/ingredients" ng-click="changeCategory('all')" ng-class="selectedCategory == 'All' ? 'category-li-selected' : ''">All</a></li>
+        <li class="category-li" data-ng-repeat="(k, v) in ingredient_categories_mapper">
+          <a href="#/ingredients" ng-click="changeCategory(k)" ng-class="selectedCategory == v.name ? 'category-li-selected' : ''">{{ v.name }}</a>
+        </li>
+      </ul>
+      <!--<div class="ingredients-menu-title">Popular Tags</div>-->
+    </div>
+
+    <div class="col-sm-9 col-xs-12">
+      <div class="row">
+        <div class="col-md-12 ingredients-menu-title">
+          Ingredients <span style="font-size: 16px;">(<span class="second-color">{{ nbElements }}</span>)</span>
+          <i ng-click="switchView('list')" ng-class="{'ingredients-switch-view-selected': modeDisplay == 'list'}" class="ingredients-switch-view fa fa-th-list" style="margin-left: 10px;"></i>
+          <i ng-click="switchView('module')" ng-class="{'ingredients-switch-view-selected': modeDisplay == 'module'}" class="ingredients-switch-view fa fa-th"></i>
+        </div>
+      </div>
+      <div class="row">
+        <ul>
+          <!-- display module -->
+          <li ng-repeat="ingredient in ingredients" class="col-md-4 col-sm-6 col-xs-6 ingredient-li" ng-show="modeDisplay == 'module'">
+            <div class="col-md-12 no-margin no-padding" style="border: 1px solid #EEE">
+              <div class="ratio-container">
+                <a ng-href="#/ingredient/{{ ingredient.id }}">
+                  <div ng-if="ingredient.photo_url" class="ratio-4_3 background-image" style="background-size: 90%" ng-style="{'background-image': 'url(http://nourriture.dennajort.fr{{ingredient.photo_url}})'}"></div>
+                  <div ng-if="!ingredient.photo_url" class="ratio-4_3 background-image" style="background-size: 90%" ng-style="{'background-image': 'url(/images/default-preview.png)'}"></div>
+
+                </a>
+              </div>
+              <div class="ingredient-li-content">
+                <div class="ingredient-li-content-name">{{ ingredient.name }}</div>
+                <div class="ingredient-li-content-category" style="color: {{ ingredient_categories_mapper[ingredient.category].color }}">{{ ingredient.category }}</div>
+                <div class="ingredient-li-content-description">{{ ingredient.description | limitTo : 92}}...</div><br/>
+              </div>
+            </div>
+          </li>
+
+        <!-- display list -->
+        <li ng-repeat="ingredient in ingredients" class="col-xs-12 ingredient-li-horizontal" ng-show="modeDisplay == 'list'">
+          <div class="col-xs-12 no-margin no-padding ingredient-li-horizontal-container" style="border: 1px solid #EEE">
+            <div class="col-xs-4 no-margin no-padding container-ratio-container">
+              <div class="ratio-container">
+                <a ng-href="#/ingredient/{{ ingredient.id }}">
+                  <div ng-if="ingredient.photo_url" class="ratio-4_3 background-image" style="background-size: 90%" ng-style="{'background-image': 'url(http://nourriture.dennajort.fr{{ingredient.photo_url}})'}"></div>
+                  <div ng-if="!ingredient.photo_url" class="ratio-4_3 background-image" style="background-size: 90%" ng-style="{'background-image': 'url(/images/default-preview.png)'}"></div>
+                </a>
+              </div>
+            </div>
+            <div class="col-xs-8 no-margin no-padding ingredient-li-horizontal-content ingredient-li-horizontal-container">
+              <div class="ingredient-li-horizontal-content-name">{{ ingredient.name }}</div>
+              <div class="ingredient-li-horizontal-content-category" style="color: {{ ingredient_categories_mapper[ingredient.category].color }}">{{ ingredient.category }}</div>
+              <div class="ingredient-li-content-description">{{ ingredient.description | limitTo : 200}}...</div>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <div class="row">
+        <div class="col-xs-12 center">
+          <pagination total-items="nbElements" items-per-page="perPage" ng-model="currentPage" ng-change="pageChanged()"></pagination>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

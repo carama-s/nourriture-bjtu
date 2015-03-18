@@ -1,0 +1,163 @@
+.home-bandeau {
+  background-color: #2ecc71;
+  padding-top: 75px;
+  padding-bottom: 75px;
+}
+
+.home-bandeau-searchbar {
+  padding: 12px;
+  background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.15);
+}
+
+.home-bandeau-searchbar-container {
+  background-color: white;
+  padding: 10px 8px;
+}
+
+.home-bandea-search-bar-icon {
+  cursor: pointer;
+  font-size: 24px !important;
+  vertical-align: middle;
+}
+.home-bandea-search-bar-icon:hover {
+  color: @mainColor;
+}
+
+.right-inner-addon {
+  position: relative;
+}
+.right-inner-addon input {
+  padding-right: 30px;
+}
+.right-inner-addon i {
+  position: absolute;
+  right: 0px;
+  padding: 5px 6px;
+}
+
+.home-latest-recipe {
+  padding: 10px 30px 0px 30px;
+
+  .home-latest-recipe-container {
+    background: darkblue;
+    color: white;
+
+    a {
+      color: white;
+    }
+
+    .home-latest-recipe-img-container {
+      padding: 10px;
+
+      .home-latest-recipe-img {
+        max-width: 100%;
+        max-height: 100%;
+        display: block;
+        margin: auto;
+      }
+    }
+
+    .home-latest-recipe-name {
+      text-align: center;
+      vertical-align: center;
+      line-height: 20px;
+      padding: 0px 0px 10px 0px;
+    }
+  }
+}
+
+.home-categories {
+  padding: 0px 30px;
+  padding-top: 10px;
+}
+
+.home-best-recipes-header, .home-latest-comments-header {
+  padding: 10px 20px;
+  color: white;
+}
+
+.home-latest-comments-header {
+  background-color: darkgreen;
+}
+
+.home-best-recipes-header {
+  background-color: darkred;
+}
+
+.home-best-recipes-row, .home-latest-comments-row {
+  padding: 10px 20px;
+  color: white;
+  vertical-align: middle;
+
+  a {
+    color: white;
+  }
+}
+
+.home-best-recipes-row {
+  background-color: crimson;
+
+  .home-best-recipe-img-div {
+    text-align: center;
+    padding: 0px;
+  }
+
+  .home-best-recipe-img {
+    height: 40px;
+    max-width: 100%;
+  }
+
+  .home-best-recipe-text {
+    vertical-align: middle;
+  }
+}
+
+.home-latest-comments-row {
+  background-color: green;
+}
+
+@media (min-width: @screen-md-min) {
+  .home-best-recipes-row {
+    line-height: 40px;
+    height: 60px;
+  }
+
+  .home-latest-comments-row {
+    line-height: 20px;
+    height: 60px;
+  }
+
+  .home-best-recipe-text {
+    white-space: nowrap;
+    overflow: hidden;
+  }
+}
+
+#home-timeline-container {
+  position: fixed;
+  bottom: 0px;
+  right: 200px;
+  width: 400px;
+
+  .home-timeline-header {
+    background-color: @mainColor;
+    color: white;
+    padding: 10px 16px;
+    width: 100%;
+
+    .home-timeline-opener {
+      cursor: pointer;
+    }
+  }
+
+  .home-timeline-content {
+    height: 300px;
+    overflow-y: auto;
+    background-color: pink;
+
+    .home-timeline-line {
+      width: 100%;
+      padding: 14px 8px;
+    }
+  }
+}

@@ -1,0 +1,106 @@
+<div ng-include="'/views/navbar.html'"></div>
+
+<div class="container" ng-show="loaded">
+
+  <div class="row">
+
+      <div class="col-sm-4">
+        <div ng-if="loaded" class="ratio-container">
+          <div ng-if="recipe.photo_url" class="ratio-4_3 background-image" ng-style="{'background-image': 'url(http://nourriture.dennajort.fr{{recipe.photo_url}})'}"></div>
+          <div ng-if="!recipe.photo_url" class="ratio-4_3 background-image" ng-style="{'background-image': 'url(/images/default-preview.png)'}"></div>
+        </div>
+      </div>
+      <div class="col-sm-8">
+        <div class="row">
+          <p class="col-xs-12 title-page">{{ recipe.name }}
+
+            <a href="" ng-click="deleteRecipe()"><i class="fa fa-trash btn-icon-ingredient"></i></a>
+            <a ng-href="#/recipe/{{ recipe.id }}/edit"><i class="fa fa-cog btn-icon-ingredient" style="margin-right: 15px;"></i></a>
+        
+          </p>
+          <p class="col-xs-12">
+            <span>{{ nb_comments }} Comment<span ng-if="recipe.nb_rates">s</span><span ng-if="recipe.user"> | Created by <span class="second-color">{{ recipe.user.username }}</span></span> | On {{ recipe.createdAt | date:'longDate'}}</span>
+          </p>
+          <p class="col-xs-12">
+            <rating style="font-size: 20px;" class="no-outline" ng-model="rate" max="5" rating-states="ratingStates" readonly="true"></rating>
+          </p>
+          <p class="col-xs-12" style="margin-top: 25px;">
+            Preparation time: {{ recipe.preparation_time }} minute<span ng-if="recipe.preparation_time > 1">s</span><br />
+            Cooking time: {{ recipe.cooking_time }} minute<span ng-if="recipe.cooking_time > 1">s</span><br />
+            Servings: {{ recipe.servings }}
+          </p>
+        </div>
+
+      </div>
+  </div>
+  <div class="row" style="margin-top: 25px;">
+    <div class="col-xs-12" style="padding-bottom: 20px;" ng-bind-html="recipe.description | sanitize"></div>
+  </div>
+
+  <div class="row" style="margin-top: 25px;">
+    <div class="col-sm-6">
+      <p class="sub-title-page">Ingredients</p>
+
+
+      <div class="row" ng-cloak>
+        <div class="col-xs-12">
+          <ul>
+            <li class="col-sm-4 col-xs-6" ng-repeat="ingredient in recipe.ingredients">
+              <div class="ratio-container" ng-if="loaded">
+                <div class="ratio-4_3 background-image" style="background-size: 90%" ng-style="{'background-image': 'url(http://nourriture.dennajort.fr/{{ ingredient.photo_url }})'}"></div>
+              </div>
+              <div class="col-xs-12 ingredient-container">
+                  <a ng-href="#/ingredient/{{ ingredient.id }}"><span class="recipe-ingredient-name">{{ ingredient.name }}</span></a>
+                  <br />
+                  {{ ingredient.quantity }}
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+    <div class="col-sm-6">
+      <p class="sub-title-page">Directions</p>
+      <div class="direction" ng-repeat="direction in recipe.directions">
+        <span class="direction-index">{{ $index + 1 }}. </span> {{ direction }}
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row" style="margin-top: 25px;">
+    <div class="col-xs-12">
+      <p class="sub-title-page">Comments ({{ nb_comments }})</p>
+
+      <div class="col-xs-12 recipe-comment" ng-repeat="comment in comments">
+        <p class="recipe-comment-user">{{ comment.user.username}}</p>
+        <rating style="font-size: 14px;" class="no-outline" ng-model="comment.rate" readonly="true" max="max" rating-states="ratingStates"></rating>
+
+        <p>{{ comment.comment}}</p>
+        <p class="recipe-comment-date">{{ comment.createdAt | date:'longDate' }}</p>
+      </div>
+
+      <div ng-show="!commented" class="col-xs-12" style="margin-top: 25px;">
+        <div class="form-group sub-title-page main-color">
+          Post a comment
+        </div>
+        <div class="form-group">
+          <label class="form-label">Rate</label><br>
+          <rating style="font-size: 20px;" class="no-outline" ng-model="my_rate" max="5" ng-change="emptyRate = false" rating-states="ratingStates" on-hover="hoveringOver(value)" on-leave="overStar = null"></rating>
+          <div class="block-error" ng-show="submitted && emptyRate">The rate is required.</div>
+
+        </div>
+        <div class="form-group">
+          <label class="form-label">Comment</label>
+          <textarea ng-class="{'input-text-error': submitted && emptyComment}" class="form-control input-text" rows="3" ng-model="comment" name="comment" id="comment" placeholder="Comment the recipe" ng-change="$parent.emptyComment = false"></textarea>
+          <div class="block-error" ng-show="submitted && emptyComment">The comment is required and cannot be empty.</div>
+        </div>
+        <div class="row center" style="margin-top: 40px;">
+          <button type="button" class="btn btn-default" ng-click="submit()">Post Comment</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

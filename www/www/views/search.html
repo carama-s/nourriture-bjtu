@@ -1,0 +1,130 @@
+<div ng-include="'/views/navbar.html'"></div>
+
+<div class="container" style="width: 100%;">
+  <div class="row home-bandeau">
+    <div class="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 home-bandeau-searchbar">
+      <div class="home-bandeau-searchbar-container" ng-controller="SearchBarCtrl">
+        <div class="right-inner-addon">
+          <i class="fa fa-search home-bandea-search-bar-icon" ng-click="onSubmit()"></i>
+          <form ng-submit="onSubmit()">
+            <input type="search" class="form-control input-text-no-border" placeholder="Find Everything on Nourriture..." ng-model="searchValue"/>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container" ng-controller="SearchViewResult">
+  <br/>
+  <div class="row">
+    <div class="col-sm-3 col-xs-12">
+      <div class="ingredients-menu-title">Categories</div>
+      <ul>
+        <li class="category-li">
+          <a ng-click="changeCategory('all')" ng-class="{'category-li-selected': selectedCategory == 'all'}">All</a>
+          &nbsp;(<span class="second-color">{{ nbElements.all }}</span>)
+        </li>
+        <li class="category-li">
+          <a ng-click="changeCategory('recipe')" ng-class="{'category-li-selected': selectedCategory == 'recipe'}">Recipe</a>
+          &nbsp;(<span class="second-color">{{ nbElements.recipe }}</span>)
+        </li>
+        <li class="category-li">
+          <a ng-click="changeCategory('ingredient')" ng-class="{'category-li-selected': selectedCategory == 'ingredient'}">Ingredient</a>
+          &nbsp;(<span class="second-color">{{ nbElements.ingredient }}</span>)
+        </li>
+      </ul>
+    </div>
+
+    <div class="col-sm-9 col-xs-12">
+      <div class="row">
+        <div class="col-md-12 ingredients-menu-title">
+          <i ng-click="switchView('list')" ng-class="{'ingredients-switch-view-selected': modeDisplay == 'list'}" class="ingredients-switch-view fa fa-th-list" style="margin-left: 10px;"></i>
+          <i ng-click="switchView('module')" ng-class="{'ingredients-switch-view-selected': modeDisplay == 'module'}" class="ingredients-switch-view fa fa-th"></i>
+        </div>
+      </div>
+
+      <div class="row">
+        <ul>
+
+          <!-- display module -->
+          <li ng-repeat="result in results" class="col-md-4 col-sm-6 col-xs-6 ingredient-li" ng-show="modeDisplay == 'module'">
+            <!-- recipe -->
+            <div ng-if="result.what == 'recipe'" class="col-md-12 no-margin no-padding" style="border: 1px solid #EEE">
+              <div class="ratio-container">
+                <a ng-href="#/recipe/{{ result.data.id }}">
+                  <div ng-if="result.data.photo_url" class="ratio-4_3 background-image" style="background-size: 90%" ng-style="{'background-image': 'url(http://nourriture.dennajort.fr{{result.data.photo_url}})'}"></div>
+                  <div ng-if="!result.data.photo_url" class="ratio-4_3 background-image" style="background-size: 90%" ng-style="{'background-image': 'url(/images/default-preview.png)'}"></div>
+                </a>
+              </div>
+              <div class="ingredient-li-content">
+                <div class="ingredient-li-content-name">{{ result.data.name }}</div>
+                <div class="ingredient-li-content-category" style="color: {{ recipe_categories_mapper[result.data.category].color }}">{{ result.data.category }}</div>
+                <div class="ingredient-li-content-description">{{ result.data.description | limitTo : 92}}...</div><br/>
+              </div>
+            </div>
+            <!-- ingredient -->
+            <div ng-if="result.what == 'ingredient'" class="col-md-12 no-margin no-padding" style="border: 1px solid #EEE">
+              <div class="ratio-container">
+                <a ng-href="#/ingredient/{{ result.data.id }}">
+                  <div ng-if="result.data.photo_url" class="ratio-4_3 background-image" style="background-size: 90%" ng-style="{'background-image': 'url(http://nourriture.dennajort.fr{{result.data.photo_url}})'}"></div>
+                  <div ng-if="!result.data.photo_url" class="ratio-4_3 background-image" style="background-size: 90%" ng-style="{'background-image': 'url(/images/default-preview.png)'}"></div>
+                </a>
+              </div>
+              <div class="ingredient-li-content">
+                <div class="ingredient-li-content-name">{{ result.data.name }}</div>
+                <div class="ingredient-li-content-category" style="color: {{ ingredient_categories_mapper[result.data.category].color }}">{{ result.data.category }}</div>
+                <div class="ingredient-li-content-description">{{ result.data.description | limitTo : 92}}...</div><br/>
+              </div>
+            </div>
+          </li>
+
+          <!-- display list -->
+          <li ng-repeat="result in results" class="col-xs-12 ingredient-li-horizontal" ng-show="modeDisplay == 'list'">
+            <!-- recipe -->
+            <div ng-if="result.what == 'recipe'" class="col-xs-12 no-margin no-padding ingredient-li-horizontal-container" style="border: 1px solid #EEE">
+              <div class="col-xs-4 no-margin no-padding container-ratio-container">
+                <div class="ratio-container">
+                  <a ng-href="#/recipe/{{ result.data.id }}">
+                    <div ng-if="result.data.photo_url" class="ratio-4_3 background-image" style="background-size: 90%" ng-style="{'background-image': 'url(http://nourriture.dennajort.fr{{result.data.photo_url}})'}"></div>
+                    <div ng-if="!result.data.photo_url" class="ratio-4_3 background-image" style="background-size: 90%" ng-style="{'background-image': 'url(/images/default-preview.png)'}"></div>
+                  </a>
+                </div>
+              </div>
+              <div class="col-xs-8 no-margin no-padding ingredient-li-horizontal-content ingredient-li-horizontal-container">
+                <div class="ingredient-li-horizontal-content-name">{{ result.data.name }}</div>
+                <div class="ingredient-li-horizontal-content-category" style="color: {{ recipe_categories_mapper[result.data.category].color }}">{{ result.data.category }}</div>
+                <div class="ingredient-li-content-description">{{ result.data.description | limitTo : 200}}...</div>
+              </div>
+            </div>
+            <!-- ingredient -->
+            <div ng-if="result.what == 'ingredient'" class="col-xs-12 no-margin no-padding ingredient-li-horizontal-container" style="border: 1px solid #EEE">
+              <div class="col-xs-4 no-margin no-padding container-ratio-container">
+                <div class="ratio-container">
+                  <a ng-href="#/ingredient/{{ result.data.id }}">
+                    <div ng-if="result.data.photo_url" class="ratio-4_3 background-image" style="background-size: 90%" ng-style="{'background-image': 'url(http://nourriture.dennajort.fr{{result.data.photo_url}})'}"></div>
+                    <div ng-if="!result.data.photo_url" class="ratio-4_3 background-image" style="background-size: 90%" ng-style="{'background-image': 'url(/images/default-preview.png)'}"></div>
+                  </a>
+                </div>
+              </div>
+              <div class="col-xs-8 no-margin no-padding ingredient-li-horizontal-content ingredient-li-horizontal-container">
+                <div class="ingredient-li-horizontal-content-name">{{ result.data.name }}</div>
+                <div class="ingredient-li-horizontal-content-category" style="color: {{ ingredient_categories_mapper[result.data.category].color }}">{{ result.data.category }}</div>
+                <div class="ingredient-li-content-description">{{ result.data.description | limitTo : 200}}...</div>
+              </div>
+            </div>
+          </li>
+
+        </ul>
+
+        <div class="row">
+          <div class="col-xs-12 center">
+            <pagination total-items="nbElements[selectedCategory]" items-per-page="perPage" ng-model="currentPage" ng-change="pageChanged()"></pagination>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <br/>
+</div>

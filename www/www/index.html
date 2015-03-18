@@ -1,5 +1,71 @@
-<html>
-<body>
-  It works good in docker !
+<!doctype html>
+<html ng-app="nourritureApp" ng-controller="MainAppCtrl" ng-strict-di>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BJTU Nourriture</title>
+  <link rel="stylesheet" type="text/css" href="/styles/css/style.css">
+
+</head>
+
+<body class="full">
+
+
+  <main class="full">
+    <!-- loading -->
+    <div id="main-background-wrapper-load" data-ng-if="!loaded">
+      <div id="main-background-container-load" class="container-fluid full">
+        <div class="row-fluid">
+
+          <div class="container centering center" data-ng-if="!loaded">
+            <!--
+            <svg class="circular">
+              <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+            </svg>
+            -->
+            <p id="init-text" class="navbar-brand-text">nourriture</p>
+            <p id="loading-text" class="navbar-brand-text" data-loadingdots-word="nourriture" data-loadingdots-speed="350"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="main-background-wrapper" data-ng-if="loaded">
+      <div id="main-background-container" class="container"></div>
+    </div>
+    <div class="full" ng-view data-ng-if="loaded"></div>
+  </main>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/bower/lodash/dist/lodash.min.js"></script>
+  <script src="/bower/jquery/dist/jquery.min.js"></script>
+  <script src="/bower/angular/angular.js"></script>
+  <script src="/bower/angular-route/angular-route.js"></script>
+  <script src="/bower/angular-socket-io/socket.min.js"></script>
+  <script src="/bower/angular-local-storage/dist/angular-local-storage.min.js"></script>
+  <script src="/bower/angular-scroll/angular-scroll.min.js"></script>
+  <script src="/bower/angucomplete-alt/dist/angucomplete-alt.min.js"></script>
+  <script src="/bower/angular-xeditable/dist/js/xeditable.min.js"></script>
+  <script src="/bower/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+  <script src="/bower/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="/bower/jquery-loadingdots/jquery.loadingdots.min.js"></script>
+
+  <script src="/scripts.min.js"></script>
+
+  <script>
+  $(function() {
+    $('#init-text').hide();
+    $('#loading-text').loadingdots();
+  });
+
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-57888386-1', 'auto');
+  ga('send', 'pageview');
+  </script>
 </body>
+
 </html>

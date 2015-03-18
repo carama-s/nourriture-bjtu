@@ -1,8 +1,9 @@
-/node_modules
 .tmp
 dump.rdb
 npm-debug.log
 *~
 *#
-/run
-!/run/.gitkeep
+/www/www/bower
+/www/www/scripts.min.js
+/www/www/scripts.min.js.map
+/www/www/styles/css/style.css

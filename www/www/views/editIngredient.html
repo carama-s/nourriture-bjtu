@@ -1,0 +1,111 @@
+<div ng-include="'/views/navbar.html'"></div>
+
+<div class="container" ng-controller="EditIngredientCtrl" ng-show="loaded" ng-cloak>
+  <input id="hiddenElement" type="hidden" />
+  <p class="title-page">Edit ingredient</p>
+
+  <br />
+  <p class="sub-title-page">Identity</p>
+  <div class=row>
+    <div class="col-md-4">
+      <div ng-if="loaded" class="ratio-container" id="containerPreviewImage">
+        <div class="ratio-4_3 background-image" id="previewImage" ng-click="simulateClickFile();" ng-style="{'background-image': 'url(http://nourriture.dennajort.fr{{ingredient.photo_url}})'}"></div>
+      </div>
+      <input class="hidden" id="uploadImage" type="file" file-model="photoIngredient"/>
+    </div>
+    <div class="col-md-8">
+      <div class="form-group">
+        <label class="form-label" for="nameIngredient">Ingredient name</label>
+        <input type="text" value="{{ ingredient.name }}" ng-class="{'input-text-error': submitted && emptyIngredientName}" class="form-control input-text" ng-model="nameIngredient" name="nameIngredient" id="nameIngredient" placeholder="Ingredient name" ng-change="emptyIngredientName = false;">
+        <div class="block-error" ng-show="submitted && emptyIngredientName">The ingredient name is required and cannot be empty.</div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12 form-group">
+          <label class="form-label">Ingredient category</label><br />
+          <div data-ng-repeat="(k, v) in ingredient_categories_mapper track by $index" ng-style="ingredient.category == k && {'background-color': v.color}" ng-click="changeCategory($event, k)" class="col-sm-2 col-xs-4 categories">
+            {{ v.name }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div ng-if="hasSeasonPeriod()">
+    <br /><br />
+    <p class="sub-title-page">Season</p>
+    <div class="row" >
+      <div class="col-xs-12 form-group">
+        <label class="form-label">Ingredient season</label><br />
+        <div class="col-lg-1 col-xs-2 month" data-ng-repeat="m in months track by $index" ng-class="m.active ? 'month-selected' : ''" ng-click="changeMonth($index);">
+          {{ m.name }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <br /><br />
+  <p class="sub-title-page">Description</p>
+  <div class="row">
+    <div class="col-xs-12 form-group">
+      <label class="form-label">Ingredient description</label><br />
+      <textarea class="form-control input-text" ng-class="{'input-text-error': submitted && emptyIngredientDescription}" rows="6" ng-model="descriptionIngredient" ng-change="emptyIngredientDescription = false;" placeholder="Ingredient description"></textarea>
+      <div class="block-error" ng-show="submitted && emptyIngredientDescription">The ingredient description is required and cannot be empty.</div>
+    </div>
+  </div>
+
+  <br /><br />
+  <p class="sub-title-page">Nutrition
+    <button type="button" class="no-btn" ng-click="addNutrition()"><i class="fa fa-plus"></i></button>
+  </p>
+  <div class="row">
+    <div class="col-xs-12">
+      <table class="table table-bordered table-striped table-hover">
+        <tr>
+          <th>Designation</th>
+          <th>Value</th>
+          <th>Daily value</th>
+          <th></th>
+        </tr>
+        <tr ng-repeat="nutrition in ingredient.nutritions">
+          <td style="padding: 0px !important;">
+            <input
+            ng-class="{'input-text-error': submitted && ingredient.nutritions[$index].designation.trim().length <= 0}"
+            type="text" class="form-control" ng-model="ingredient.nutritions[$index].designation" placeholder="Designation"/>
+          </td>
+          <td style="padding: 0px !important;">
+            <input
+            ng-class="{'input-text-error': submitted && ingredient.nutritions[$index].value.trim().length <= 0}"
+            type="text" class="form-control" ng-model="ingredient.nutritions[$index].value" placeholder="Value"/>
+          </td>
+          <td style="padding: 0px !important;">
+            <input
+            ng-class="{'input-text-error': submitted && ingredient.nutritions[$index].dailyValue.trim().length <= 0}"
+            type="text" class="form-control" ng-model="ingredient.nutritions[$index].dailyValue" placeholder="Daily value"/>
+          </td>
+          <td style="padding: 0px !important; vertical-align: middle; text-align: center;" width="30px;">
+            <button type="button" class="no-btn" ng-click="removeNutrition($index)"><i class="fa fa-times"></i></button>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="row center">
+    <button type="button" class="btn btn-default" ng-click="submitEditIngredient()">Edit Ingredient</button>
+  </div>
+</div>
+
+<script>
+$(document).ready(function() {
+  $("#uploadImage").change(function(){
+    if (this.files && this.files[0]) {
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        $('#previewImage').css('background-image', 'url(' + e.target.result + ')');
+      }
+      reader.readAsDataURL(this.files[0]);
+    }
+  });
+});
+</script>

@@ -1,0 +1,98 @@
+<div ng-include="'/views/navbar.html'"></div>
+
+<div class="container" ng-cloak>
+  <p class="title-page">Edit profile</p>
+  <br />
+
+
+  <div class="row">
+
+    <div class="col-sm-5" ng-controller="EditUserFormCtrl">
+      <p class="sub-title-page">Basic information</p>
+      <p class="bg-success" style="padding: 15px;" ng-show="editUserSuccess">You edited your basic information with success !</p>
+      <p>
+        Edit your basic account information for <span class="keyword">{{ apiFactory.getUser().username }}</span>.<br /><br />
+        Note: You can't reuse your old email address to login once you change it.
+      </p>
+      <br />
+      <form role="form" name="formEditUser" ng-submit="submitEditUser(formEditUser.$valid)" novalidate>
+
+        <div class="form-group">
+          <label class="form-label" for="editUserInputFirstname">Firstname</label>
+          <input required class="form-control input-text" ng-class="{'input-text-error': submitted && formEditUser.editUserInputFirstname.$error.required}" ng-model="editUserInputFirstname" name="editUserInputFirstname" id="editUserInputFirstname" placeholder="Firstname" type="text">
+          <div class="block-error" ng-show="submitted && formEditUser.editUserInputFirstname.$error.required">The firstname is required and cannot be empty.</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="editUserInputLastname">Lastname</label>
+          <input required class="form-control input-text" ng-class="{'input-text-error': submitted && formEditUser.editUserInputLastname.$error.required}" ng-model="editUserInputLastname" name="editUserInputLastname" id="editUserInputLastname" placeholder="Lastname" type="text">
+          <div class="block-error" ng-show="submitted && formEditUser.editUserInputLastname.$error.required">The lastname is required and cannot be empty.</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="">Gender</label><br />
+          <label class="radio-inline">
+            <input type="radio" ng-model="editUserInputGender" name="editUserInputGender" id="genderMale" value="male"> Male
+          </label>
+          <label class="radio-inline">
+            <input type="radio" ng-model="editUserInputGender" name="editUserInputGender" id="genderFemale" value="female"> Female
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="editUserInputEmail">Email address</label>
+          <input required class="form-control input-text" ng-model="editUserInputEmail" ng-class="{'input-text-error': submitted && (formEditUser.editUserInputEmail.$error.required || formEditUser.editUserInputEmail.$invalid || emailAlreadyExists)}" name="editUserInputEmail" placeholder="Email address" id="editUserInputEmail" type="email">
+          <div class="block-error" ng-show="submitted && formEditUser.editUserInputEmail.$error.required">The email address is required and cannot be empty.</div>
+          <div class="block-error" ng-show="submitted && !formEditUser.editUserInputEmail.$error.required && formEditUser.editUserInputEmail.$invalid">The email address is not valid.</div>
+          <div class="block-error" ng-show="submitted && emailAlreadyExists">The email address already exists.</div>
+        </div>
+
+        <div class="row center" style="margin-top: 40px;">
+          <button type="submit" class="btn btn-default">Edit profile</button>
+        </div>
+
+      </form>
+
+    </div>
+    <div class="col-xs-12 hidden-sm hidden-md hidden-lg" style="height: 30px;"></div>
+
+    <div class="col-sm-5 col-sm-offset-1" ng-controller="ChangePasswordFormCtrl">
+      <p class="sub-title-page">Change password</p>
+      <p class="bg-success" style="padding: 15px;" ng-show="editPasswordSuccess">You changed your password with success !</p>
+      <p>
+        Enter a new password for <span class="keyword">{{ apiFactory.getUser().email }}</span>.<br />We highly recommend you create a unique password - one that you don't use for any other websites.<br /><br />
+        Note: You can't reuse your old password once you change it.
+      </p>
+      <br />
+
+      <form role="form" name="formChangePassword" ng-submit="submitChangePassword(formChangePassword.$valid)" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="changePasswordInputCurrentPassword">Current Password</label>
+          <input required class="form-control input-text" ng-class="{'input-text-error': submitted && (formChangePassword.changePasswordInputCurrentPassword.$error.required || badCurrentPassword)}" ng-change="badCurrentPassword = false" ng-model="changePasswordInputCurrentPassword" placeholder="Current password" name="changePasswordInputCurrentPassword" id="changePasswordInputCurrentPassword" type="password">
+          <div class="block-error" ng-show="submitted && formChangePassword.changePasswordInputCurrentPassword.$error.required">The current password is required and cannot be empty.</div>
+          <div class="block-error" ng-show="submitted && badCurrentPassword">The password you gave is incorrect.</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="changePasswordInputNewPassword">New Password</label>
+          <input required class="form-control input-text" ng-class="{'input-text-error': submitted && (formChangePassword.changePasswordInputNewPassword.$error.required || formChangePassword.changePasswordInputNewPassword.$invalid)}" ng-minlength="6" ng-change="passwordDontMatch = false" placeholder="New password" ng-model="changePasswordInputNewPassword" name="changePasswordInputNewPassword" id="changePasswordInputNewPassword" type="password">
+          <div class="block-error" ng-show="submitted && formChangePassword.changePasswordInputNewPassword.$error.required">The new password is required and cannot be empty.</div>
+          <div class="block-error" ng-show="submitted && !formChangePassword.changePasswordInputNewPassword.$error.required && formChangePassword.changePasswordInputNewPassword.$invalid">The password must be at least 6 characters long.</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="changePasswordInputConfirmNewPassword">Confirm New Password</label>
+          <input required class="form-control input-text" ng-class="{'input-text-error': submitted && (formChangePassword.changePasswordInputConfirmNewPassword.$error.required || formChangePassword.changePasswordInputConfirmNewPassword.$invalid || passwordDontMatch)}" ng-minlength="6" placeholder="Confirm new password" ng-change="passwordDontMatch = false" ng-model="changePasswordInputConfirmNewPassword" name="changePasswordInputConfirmNewPassword" id="changePasswordInputConfirmNewPassword" type="password">
+          <div class="block-error" ng-show="submitted && formChangePassword.changePasswordInputConfirmNewPassword.$error.required">The confirm new password is required and cannot be empty.</div>
+          <div class="block-error" ng-show="submitted && !formChangePassword.changePasswordInputConfirmNewPassword.$error.required && formChangePassword.changePasswordInputConfirmNewPassword.$invalid">The password must be at least 6 characters long.</div>
+          <div class="block-error" ng-show="submitted && passwordDontMatch">The new passwords don't match.</div>
+        </div>
+
+        <div class="row center" style="margin-top: 40px;">
+          <button type="submit" class="btn btn-default">Change password</button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</div>

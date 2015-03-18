@@ -1,0 +1,554 @@
+/* ALL */
+
+html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: url("/images/background.jpg") no-repeat fixed center top transparent;
+  font-family: robotoRegular;
+}
+
+#main-background-wrapper {
+  position: fixed;
+  top:0;
+  left: 0;
+  z-index: -1;
+  height: 100%;
+  width: 100%;
+}
+
+#main-background-container {
+  height: 100%;
+  background-color: #FEFEFE;
+}
+
+#main-background-wrapper-load {
+  position: fixed;
+  top:0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+#main-background-container-load {
+  height: 100%;
+  background-color: @mainColor;
+  display: table;
+}
+
+.category-li {
+  cursor: pointer;
+}
+
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
+  background-color: @secondColor;
+  border-color: @secondColor;
+}
+
+.pagination > li > a, .pagination > li > span, .pagination > li > a:hover, .pagination > li > span:hover, .pagination > li > a:focus, .pagination > li > span:focus {
+  color: @secondColor;
+}
+
+.full {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.row-fluid {
+  height: 100%;
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.centering {
+  float: none;
+  margin: 0 auto;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+a, a:hover, a:focus {
+  text-decoration: none;
+}
+
+.table tbody td, .table thead th {
+  padding: 12px !important;
+}
+
+.table > thead > tr > th {
+  border-bottom: 1px solid #BBB;
+}
+
+.title-page {
+  color: @mainColor;
+  font-size: 24px;
+}
+
+.sub-title-page {
+  color: #555;
+  font-size: 20px;
+}
+
+.main-color {
+  color: @mainColor;
+}
+
+.second-color {
+  color: @secondColor;
+}
+
+.form-control {
+  height: 43px;
+}
+
+.form-label {
+  text-transform: uppercase;
+  font-family: robotoThin;
+  font-size: 12px;
+}
+
+.no-btn {
+  border: none;
+  background: none;
+}
+
+.btn-default {
+  background-color: @secondColor;
+  border-radius: 2px;
+  padding: 8px 18px !important;
+  color: white;
+  border: none;
+  outline: none !important;
+}
+
+.btn-default:hover, .btn-default:focus, .btn-default:active {
+  background-color: #2980b9;
+  color: white;
+  border: none;
+}
+
+.title {
+  font-family: robotoThin;
+  font-size: 34px;
+}
+
+.center {
+  text-align: center;
+}
+
+.keyword {
+  color: @secondColor !important;
+  font-family: robotoBold;
+}
+
+.no-margin {
+  margin: 0;
+}
+
+.no-padding {
+  padding: 0;
+}
+
+.no-outline {
+  outline: none;
+}
+
+.regular {
+  font-family: robotoRegular;
+}
+
+.bold {
+  font-family: robotoBold;
+}
+
+.thin {
+  font-family: robotoThin;
+}
+
+.icon-corner-top-right {
+  top: 20px;
+  right: 20px;
+  float: right;
+  position: fixed;
+  font-size: 28px !important;
+  color: @mainColor;
+  cursor: pointer;
+}
+.icon-corner-top-right:hover {
+  opacity: 0.75;
+}
+
+.input-text-no-border, .input-text-no-border:hover, .input-text-no-border:focus {
+  background-color: white;
+  border: 0;
+  border-radius: 0;
+  outline: none;
+  box-shadow: none;
+}
+
+.input-text {
+  background-color: white;
+  border: 0;
+  border-radius: 0;
+  outline: none;
+  box-shadow: none;
+  border: 1px solid #DDD;
+}
+
+.input-text:focus {
+  background-color: @colorInputTextFocus;
+  color: #222;
+  border: 0;
+  border-radius: 0;
+  outline: none;
+  box-shadow: none;
+  border: 1px solid #DDD;
+}
+
+.input-text-error {
+  background-color: @colorInputTextErrorBackground !important;
+}
+
+.block-error {
+  display: block;
+  padding-top: 4px;
+  font-size: 12px;
+  color: @erroColor;
+}
+
+.rating-star-selected {
+  color: @mainColor;
+}
+
+.rating-star-unselected {
+  color: grey;
+}
+
+/* Navbar icons */
+
+.navbar-icon {
+  padding-top: 20px !important;
+  padding-bottom: 20px !important;
+  font-size: 24px;
+}
+
+/* Ratio */
+
+div.ratio-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+
+  >.content {
+    position: absolute;
+    top: -100%;
+    bottom: -100%;
+    left: -100%;
+    right: -100%;
+    margin: auto;
+  }
+}
+
+div.ratio-1 {
+  padding-bottom: 100%;
+  background: white;
+}
+
+div.ratio-4_3 {
+  padding-bottom: 75%;
+  background: white;
+}
+
+div.ratio-4_3.background-image {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+div.ratio-4_3 > img {
+  position: absolute;
+  top: 0; bottom: 0; left: 0; right: 0;
+  text-align: center;
+}
+
+.ingredient-img-container {
+  overflow: hidden;
+  width: 100%;
+  text-align: center;
+
+  img {
+    display:inline-block;
+    margin:auto;
+  }
+}
+
+.editable-wrap { // override xeditable
+  display: block;
+}
+
+/* Img */
+
+.background-image-zoom {
+  -moz-transition: all .5s;
+  -webkit-transition: all .5s;
+  transition: all .5s;
+}
+
+.background-image-zoom:hover {
+  -moz-transform: scale(1.2, 1.2);
+  -webkit-transform: scale(1.2, 1.2);
+  transform: scale(1.2, 1.2);
+}
+
+/* Index.html */
+
+.navbar-brand-text {
+  font-family: myKGBlankSpaceSketch;
+  font-size: 22px;
+  line-height: 16px;
+  color: white;
+}
+.navbar-brand-text:hover {
+  color: #ffebee;
+}
+
+/* AddIngredient.html */
+
+.categories {
+  background-color: #DADADA;
+  border: 1px solid white;
+  padding: 8px 14px !important;
+  text-align: center;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+.month {
+  background-color: #DADADA;
+  border: 1px solid white;
+  padding: 8px 14px !important;
+  text-align: center;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+.month-selected {
+  background-color: @mainColor !important;
+}
+
+.btn-icon-nutrition {
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.form-text {
+  display: block;
+  width: 100%;
+  height: 43px;
+  padding: 11px 13px;
+  font-size: 14px;
+  line-height: 1.42857;
+}
+
+.table-nutrition-thead {
+  background-color: @mainColor;
+  color: white !important;
+}
+
+.table-nutrition-tr {
+  background-color: #fafafa;
+}
+
+.table-nutrition-tr-striped {
+  background-color: #f8f8f8;
+}
+
+/* Ingredient.html */
+
+#ingredient-menu > li > a {
+  color: #333;
+  padding: 8px 18px;
+  outline: none;
+}
+
+#ingredient-menu > li > a:hover {
+  color: #888;
+}
+
+.btn-icon-ingredient {
+  cursor: pointer;
+  font-size: 18px;
+  float: right;
+  color: #555;
+}
+.btn-icon-ingredient:hover {
+  color: #333;
+}
+/* Ingredients.html */
+
+.ingredients-category-banner-fruits:before {
+  border-color: transparent transparent transparent #f1c40f;
+}
+
+.ingredients-category-banner-vegetables:before {
+  border-color: transparent transparent transparent #27ae60;
+}
+
+.ingredients-category-banner-fish:before {
+  border-color: transparent transparent transparent #3498db;
+}
+
+
+.ingredients-category-banner:before {
+  position: absolute;
+  left: -1px;
+  bottom: 0px;
+  content: "";
+  width: 0px;
+  height: 0px;
+  border-style: solid;
+  border-width: 80px 0px 0px 230px;
+}
+
+.ingredients-category-banner {
+  text-align: left;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  width: 230px;
+  height: 80px;
+}
+
+.ingredients-category-banner-text {
+  position: absolute;
+  text-align: left;
+  left: 0px;
+  bottom: 0px;
+  display: block;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 40px 0px 6px 10px;
+  font-size: 18px !important;
+  line-height: 18px !important;
+  font-weight: 400;
+  font-family: "Roboto",sans-serif;
+  text-transform: none;
+  color: #FFF;
+  text-decoration: none;
+  outline: none;
+}
+
+.ingredients-category-banner > a {
+  outline: none;
+  text-decoration: none;
+  color: white;
+}
+
+.ingredients-menu-title {
+  color: #444;
+  font-size: 20px;
+  padding-bottom: 10px;
+}
+
+.category-li > a {
+  color: #555;
+  font-size: 16px;
+  margin-left: 10px;
+  outline: none;
+}
+.category-li > a:hover {
+  color: @mainColor !important;
+}
+.category-li-selected {
+  color: @mainColor !important;
+}
+
+/* normal */
+.ingredient-li {
+  margin-bottom: 25px;
+}
+
+.ingredient-li-content {
+  text-align: center;
+  background-color: white;
+  margin: 0px !important;
+  height: 180px;
+}
+
+.ingredient-li-content-name {
+  color: #555;
+  font-size: 18px;
+}
+.ingredient-li-content-category {
+  color: #999;
+  font-size: 14px;
+}
+.ingredient-li-content-description {
+  color: #999;
+  font-size: 14px;
+  padding: 12px 18px;
+}
+
+/* horizontal */
+
+.ingredient-li-horizontal {
+  display: table;
+  margin-bottom: 25px;
+}
+
+.ingredient-li-horizontal-container {
+  display: table-cell;
+  float: none !important;
+  vertical-align: top;
+  background-color: white;
+}
+
+.ingredient-li-horizontal-content {
+  text-align: left;
+  background-color: white;
+  margin: 0px !important;
+}
+
+.ingredient-li-horizontal-container {
+  display: table-cell;
+  float: none !important;
+  vertical-align: top;
+}
+
+.ingredient-li-horizontal-content-name {
+  color: #555;
+  font-size: 18px;
+  padding: 18px;
+  padding-top: 12px;
+  padding-bottom: 0px;
+}
+.ingredient-li-horizontal-content-category {
+  color: #999;
+  font-size: 14px;
+  padding: 0px 18px;
+}
+
+.ratio-container:hover + .ingredient-li-content > .ingredient-li-content-name { color: @mainColor !important; }
+.container-ratio-container:hover + .ingredient-li-horizontal-content > .ingredient-li-horizontal-content-name { color: @mainColor; }
+
+.ingredients-switch-view {
+  float: right;
+  cursor: pointer;
+}
+.ingredients-switch-view:hover {
+  color: @mainColor;
+}
+.ingredients-switch-view-selected {
+  color: @mainColor;
+}

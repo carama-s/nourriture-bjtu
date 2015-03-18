@@ -1,0 +1,82 @@
+<div ng-include="'/views/navbar.html'"></div>
+
+<div class="container" ng-if="loaded">
+
+  <div class="row">
+    <!-- Left menu -->
+    <div class="col-sm-3 col-lg-2 hidden-xs">
+      <ul id="ingredient-menu">
+        <li>
+          <div class="ratio-container" style="padding: 8px 18px; width: auto;">
+            <div class="ratio-4_3 background-image" ng-style="{'background-image': 'url(http://nourriture.dennajort.fr{{ingredient.photo_url}})'}"></div>
+          </div>
+        </li>
+        <li><a href="#presentation">Presentation</a></li>
+        <li ng-if="hasSeasonPeriod()"><a href="#season">Season</a></li>
+        <li><a href="#nutritions">Nutritions</a></li>
+      </ul>
+    </div>
+
+    <!-- Main bloc -->
+    <div class="col-sm-9 col-lg-10">
+      <p class="title-page">{{ ingredient.name }}
+        <a href="" ng-click="deleteIngredient()"><i class="fa fa-trash btn-icon-ingredient"></i></a>
+        <a ng-href="#/ingredient/{{ ingredient.id }}/edit"><i class="fa fa-cog btn-icon-ingredient" style="margin-right: 15px;"></i></a>
+      </p>
+      <!--<span>{{ ingredient_categories_mapper[ingredient.category].name }}</span>-->
+
+      <div class="ratio-container hidden-sm hidden-md hidden-lg">
+        <div class="ratio-4_3 background-image" ng-style="{'background-image': 'url(http://nourriture.dennajort.fr{{ingredient.photo_url}})'}"></div>
+      </div>
+
+      <br />
+      <div id="presentation">
+        <p class="sub-title-page">Presentation</p>
+        <div class="row">
+          <div class="col-xs-12" ng-bind-html="ingredient.description | sanitize"></div>
+        </div>
+      </div>
+
+      <div id="season" ng-if="hasSeasonPeriod()">
+        <br /><br />
+        <p class="sub-title-page">Season</p>
+        <div class="row">
+          <div class="col-xs-12">
+            <div data-ng-repeat="p in ingredient.period track by $index" ng-class="p == 1 ? 'month-selected' : ''" class="col-xs-2 col-lg-1 month" style="cursor: auto;">
+              {{ months[$index] }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <br /><br />
+      <div id="nutritions">
+        <p class="sub-title-page">Nutritions</p>
+        <div class="row">
+          <div class="col-xs-12">
+            <table class="table center">
+              <thead class="table-nutrition-thead">
+                <tr>
+                  <th class="col-xs-4 center" data-field="designation">Designation</th>
+                  <th class="col-xs-4 center" data-field="value">Value</th>
+                  <th class="col-xs-4 center" data-field="dailyValue">% Daily Value*</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="table-nutrition-tr" ng-class="{'table-nutrition-tr-striped': $index % 2 == 0}" ng-repeat="nutrition in ingredient.nutritions">
+                  <td>{{ nutrition.designation || 'Unknown' }}</td>
+                  <td>{{ nutrition.value || 'Unknown' }}</td>
+                  <td>{{ nutrition.dailyValue || 'Unknown' }}</td>
+
+                </tr>
+              </tbody>
+            </table>
+            <p>
+              *Percent Daily Values are based on a 2,000 calorie diet. Your daily values may be higher or lower depending on your calorie needs.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

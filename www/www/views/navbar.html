@@ -1,0 +1,30 @@
+<nav class="navbar navbar-default navbar-static-top" ng-class="{'no-margin': isActive('/home') || isActive('/search')}" ng-controller="RouteCtrl">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#/"><span class="navbar-brand-text">nourriture</span></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#/">Home</a></li>
+        <li><a href="#/recipes">Recipes</a></li>
+        <li><a href="#/ingredients">Ingredients</a></li>
+        <li ng-show="!apiFactory.isRole() && !isActive('/login')">
+          <a class="navbar-icon" href="#/login"><i class="fa fa-user"></i></a>
+        </li>
+        <li ng-show="apiFactory.isRole()" ng-controller="HomeNavUserCtrl">
+          <a style="padding-top: 12px !important; padding-bottom: 12px !important" href="#/editUser"><img class="img-circle" src="/images/profile.jpg" height="40" width="40" style="vertical-align: middle;"/></a>
+        </li>
+
+        <li ng-show="apiFactory.isRole()" ng-controller="HomeNavUserCtrl">
+          <a class="navbar-icon" href="#/" ng-click="logOut()"><i class="fa fa-sign-out"></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
