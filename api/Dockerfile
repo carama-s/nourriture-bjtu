@@ -19,9 +19,9 @@ RUN mkdir src
 COPY  .bowerrc .bowerrc
 COPY  bower.json bower.json
 RUN npm run bower_install
+COPY  ./src/ ./src/
 COPY  Gruntfile.js Gruntfile.js
 RUN npm run grunt_deploy
-COPY  ./src/ ./src/
 EXPOSE  3000
 ENV HTTP_PORT=3000
 CMD ["npm", "start"]
