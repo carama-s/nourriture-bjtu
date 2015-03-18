@@ -22,8 +22,8 @@ module.exports = function(api) {
     res.json(APP.swag.gen_api_doc());
   });
 
-  app.use(config.prefix + "/ui", serveStatic(path.join(__rootDir, "ui")));
-  app.use("/uploads", serveStatic(path.join(__rootDir, "uploads")));
+  app.use("/uploads", serveStatic(config.upload_dir));
+  app.use(serveStatic(path.join(__rootDir, "www")));
 
   app = middlewares.after(app);
 
