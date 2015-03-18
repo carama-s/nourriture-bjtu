@@ -39,9 +39,9 @@
     "supertest": "^0.15.0"
   },
   "scripts": {
-    "start": "node ./manage.js"
+    "start": "node ./src/manage.js runserver"
   },
-  "main": "manage.js",
+  "main": "./src/manage.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/gossel_j/nourriture-bjtu-api.git"

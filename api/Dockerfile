@@ -18,8 +18,8 @@ RUN apt-get clean
 RUN mkdir /app
 WORKDIR /app
 COPY  package.json ./package.json
-RUN npm install --production && npm dedupe
-COPY  . ./
+RUN npm install && npm dedupe
+COPY  ./src ./
 EXPOSE  3000
 ENV HTTP_PORT=3000
-CMD ["node", "manage.js", "runserver"]
+CMD ["npm", "start"]
