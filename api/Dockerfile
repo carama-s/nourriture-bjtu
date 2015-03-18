@@ -3,10 +3,10 @@ FROM  ubuntu:14.04
 # Install basic packages
 RUN apt-get update -y && apt-get install -y build-essential curl python
 
-# Install node.js v0.12.0
-RUN curl http://nodejs.org/dist/v0.12.0/node-v0.12.0-linux-x64.tar.gz | tar xz --strip-components 1 -C /usr/local && \
-echo "Node: `node --version`" && \
-echo "NPM:  `npm --version`"
+# Install io.js v1.5.1
+RUN curl https://iojs.org/dist/v1.5.1/iojs-v1.5.1-linux-x64.tar.xz | tar xJ --strip-components 1 -C /usr/local && \
+echo "io.js: `node --version`" && \
+echo "NPM:   `npm --version`"
 
 # Install GraphicsMagick
 RUN apt-get install -y graphicsmagick
