@@ -18,7 +18,7 @@ RUN apt-get clean
 RUN mkdir /app
 WORKDIR /app
 COPY  package.json ./package.json
-RUN npm install --production
+RUN npm install --production && npm dedupe
 COPY  . ./
 EXPOSE  3000
 ENV HTTP_PORT=3000
