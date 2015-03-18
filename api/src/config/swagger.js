@@ -1,4 +1,4 @@
-var pkg = require("../package.json");
+var pkg = require("../../package.json");
 var http = require("./http.js");
 
 module.exports = {
