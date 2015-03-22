@@ -1,9 +1,10 @@
-FROM  ubuntu:14.04
+FROM  debian:stable
 
 # Install packages
 RUN apt-get update -y && \
 apt-get install -y build-essential curl python git graphicsmagick && \
-apt-get clean
+apt-get clean && \
+rm -rf /var/lib/apt/lists/*
 
 # Install io.js v1.5.1
 RUN curl https://iojs.org/dist/v1.5.1/iojs-v1.5.1-linux-x64.tar.xz | tar xJ --strip-components 1 -C /usr/local && \
@@ -14,7 +15,7 @@ echo "NPM:   `npm --version`"
 RUN mkdir /app
 WORKDIR /app
 COPY  package.json ./package.json
-RUN npm install && npm dedupe
+RUN npm install && npm dedupe && npm cache clean
 RUN mkdir src
 COPY  .bowerrc .bowerrc
 COPY  bower.json bower.json

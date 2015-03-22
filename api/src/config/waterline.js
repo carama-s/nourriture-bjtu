@@ -29,7 +29,7 @@ function getWaterline() {
           "disk": require("sails-disk")
         },
         connections: {
-          "default": {adapter: "disk"}
+          "default": {adapter: "disk", filePath: "/tmp/db/"}
         }
       };
   }
