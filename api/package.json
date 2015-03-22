@@ -46,7 +46,7 @@
   },
   "scripts": {
     "start": "node ./src/manage.js runserver",
-    "bower_install": "bower --allow-root install",
+    "bower_install_and_clean": "bower --allow-root install && bower --allow-root cache clean",
     "grunt_deploy": "grunt deploy"
   },
   "main": "./src/manage.js",

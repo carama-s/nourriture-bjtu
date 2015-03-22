@@ -19,7 +19,7 @@ RUN npm install && npm dedupe && npm cache clean
 RUN mkdir src
 COPY  .bowerrc .bowerrc
 COPY  bower.json bower.json
-RUN npm run bower_install
+RUN npm run bower_install_and_clean
 COPY  ./src/ ./src/
 COPY  Gruntfile.js Gruntfile.js
 RUN npm run grunt_deploy
