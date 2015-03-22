@@ -6,8 +6,8 @@ apt-get install -y build-essential curl python git graphicsmagick && \
 apt-get clean && \
 rm -rf /var/lib/apt/lists/*
 
-# Install io.js v1.5.1
-RUN curl https://iojs.org/dist/v1.5.1/iojs-v1.5.1-linux-x64.tar.xz | tar xJ --strip-components 1 -C /usr/local && \
+# Install io.js v1.6.1
+RUN curl https://iojs.org/dist/v1.6.1/iojs-v1.6.1-linux-x64.tar.xz | tar xJ --strip-components 1 -C /usr/local && \
 echo "io.js: `node --version`" && \
 echo "NPM:   `npm --version`"
 
